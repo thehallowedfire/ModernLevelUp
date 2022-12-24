@@ -923,8 +923,8 @@
 		</Frames>
 	</Frame>
 
-    <!-- NOT READY -->
-    <!-- CharacterFrame main template -->
+	<!-- NOT READY -->
+    <!-- CharacterFrame MAIN template -->
     <Frame name="MCFCharacterFrame" toplevel="true" movable="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" hidden="true" inherits="MCFButtonFrameTemplate" virtual="true">
 		<Anchors>
 			<Anchor point="TOPLEFT" x="16" y="-116">
@@ -995,14 +995,12 @@
 					<OnLeave function="GameTooltip_Hide"/>
                 </Scripts>
             </Button>
-
 			<Frame name="MCFCharacterFrameInsetRight" inherits="MCFInsetFrameTemplate" hidden="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="MCFCharacterFrameInset" relativePoint="TOPRIGHT" x="1" y="0"/>
 					<Anchor point="BOTTOMRIGHT"  x="-4" y="4"/>
 				</Anchors>
 			</Frame>
-
 			<Button name="MCFCharacterFrameExpandButton">
 				<Size x="32" y="32"/>
 				<Anchors>
@@ -1014,11 +1012,11 @@
 					</OnLoad>
 					<OnClick>
 						if (MCFCharacterFrame.Expanded) then
-							MCF_SETTINGS["characterFrameCollapsed"] = "1"; <!-- MCFFIX Needs changing to SavedVariables system -->
+							MCF_SetSettings("characterFrameCollapsed", "1"); <!-- MCFFIX replaced SetCVar() with own MCF_SetSettings() -->
 							PlaySound(SOUNDKIT.IG_CHARACTER_INFO_CLOSE);
 							MCFCharacterFrame_Collapse();
 						else
-							MCF_SETTINGS["characterFrameCollapsed"] = "0"; <!-- MCFFIX Needs changing to SavedVariables system -->
+							MCF_SetSettings("characterFrameCollapsed", "0"); <!-- MCFFIX replaced SetCVar() with own MCF_SetSettings() -->
 							PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN);
 							MCFCharacterFrame_Expand();
 						end
@@ -1042,8 +1040,7 @@
 				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
 				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
 				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
-			</Button>
-			
+			</Button>		
 			<ScrollFrame name="MCFCharacterStatsPane" hidden="true" inherits="UIPanelScrollFrameTemplate2">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="MCFCharacterFrameInsetRight" x="4" y="-4"/>
@@ -1075,6 +1072,7 @@
 				</ScrollChild>
 			</ScrollFrame>
 		</Frames>
+		<!-- NOT READY -->
 		<Scripts>
 			<OnLoad function="MCFCharacterFrame_OnLoad"/>
             <OnEvent function="MCFCharacterFrame_OnEvent"/>
@@ -1084,7 +1082,7 @@
     </Frame>
 	
 	<!-- NOT READY -->
-	<!-- PaperDollFrame main template -->
+	<!-- PaperDollFrame MAIN template -->
 	<Frame name="MCFPaperDollFrame" setAllPoints="true" enableMouse="true" parent="MCFCharacterFrame" useParentLevel="true" id="1" virtual="true">
 		<Layers>
             <Layer level="ARTWORK">
@@ -1176,7 +1174,6 @@
 					</Button>
 				</Frames>
 			</Frame>
-
 			<ScrollFrame name="MCFPaperDollTitlesPane" inherits="HybridScrollFrameTemplate" hidden="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="MCFCharacterFrameInsetRight" x="4" y="-4"/>
@@ -1205,7 +1202,8 @@
 						MCFPaperDollTitlesPane_Update();
 					</OnShow>
 				</Scripts>
-			</ScrollFrame>		
+			</ScrollFrame>	
+			<!-- NOT READY -->	
 			<ScrollFrame name="MCFPaperDollEquipmentManagerPane" inherits="HybridScrollFrameTemplate" hidden="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="MCFCharacterFrameInsetRight" x="4" y="-4"/>
@@ -1274,7 +1272,6 @@
 					<OnUpdate function="MCFPaperDollEquipmentManagerPane_OnUpdate"/> --> <!-- MCFFIX disabled atm -->
 				</Scripts>
 			</ScrollFrame>
-
 			<PlayerModel name="MCFCharacterModelFrame" inherits="ModelWithControlsTemplate">
                 <Size x="231" y="320"/>
                 <Anchors>
@@ -1382,7 +1379,6 @@
 					</OnReceiveDrag>
                 </Scripts>
             </PlayerModel>
-			
 			<Frame name="MCFPaperDollItemsFrame" setAllPoints="true">
 				<Frames>
 					<Button name="MCFCharacterHeadSlot" inherits="MCFPaperDollItemSlotButtonLeftTemplate">

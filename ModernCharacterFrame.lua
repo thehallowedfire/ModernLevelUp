@@ -6,9 +6,11 @@ ModernCharacterFrame3 = CreateFrame("Frame", "MCFPetPaperDollFrame", MCFCharacte
 ModernCharacterFrame3 = CreateFrame("Frame", "MCFReputationFrame", MCFCharacterFrame);
 ModernCharacterFrame3 = CreateFrame("Frame", "MCFTokenFrame", MCFCharacterFrame);
 
+--[[ MCFPaperDollFrame:Hide();
 MCFPetPaperDollFrame:Hide();
 MCFReputationFrame:Hide();
-MCFTokenFrame:Hide();
+MCFTokenFrame:Hide(); ]]
+--[[ _G["MCFCharacterFrame"].hidden = true; ]]
 
 if (_G["MCFCharacterFrame"] ~= nil) then
     print("MCFCharacterFrame exists!");

@@ -69,7 +69,7 @@ function MCFCharacterFrameTab_OnClick (self, button)
 	PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFCharacterFrame_OnLoad(self)
 	PortraitFrameTemplateMixin.OnLoad(self);
 
@@ -88,7 +88,7 @@ function MCFCharacterFrame_OnLoad(self)
 	SetTextStatusBarTextPrefix(PlayerFrameManaBar, MANA);
 	SetTextStatusBarTextPrefix(MainMenuExpBar, XP);
 	--TextStatusBar_UpdateTextString(MainMenuExpBar); --MCFFIX disabled function
-	ExpBar_UpdateTextString(); --MCFFIX added function
+	ExpBar_UpdateTextString(); --MCFFIX added function call
 
 	-- Tab Handling code
 	PanelTemplates_SetNumTabs(self, MCFNUM_CHARACTERFRAME_TABS);
@@ -117,7 +117,7 @@ function MCFCharacterFrame_OnEvent(self, event, ...)
 		return;
 	end
 	
-	--[[ local arg1 = ...;
+	local arg1 = ...;
 	if ( event == "UNIT_NAME_UPDATE" ) then
 		if ( arg1 == "player" and not MCFPetPaperDollFrame:IsShown()) then
 			MCFCharacterFrameTitleText:SetText(UnitPVPName("player"));
@@ -131,29 +131,13 @@ function MCFCharacterFrame_OnEvent(self, event, ...)
 				or event == "PLAYER_TALENT_UPDATE"
 				or event == "ACTIVE_TALENT_GROUP_CHANGED") then
 		MCFCharacterFrame_UpdatePortrait();
-	end ]] --MCFFIX replaced with modern code below
-
-	local arg1 = ...;
-	if ( event == "UNIT_PORTRAIT_UPDATE" ) then
-		if ( arg1 == "player" ) then
-			SetPortraitTexture(MCFCharacterFramePortrait, arg1);
-		end
-		return;
-	elseif ( event == "UNIT_NAME_UPDATE" ) then
-		if ( arg1 == "player" ) then
-			MCFCharacterFrameTitleText:SetText(UnitPVPName("player"));
-		end
-		return;
-	elseif ( event == "PLAYER_PVP_RANK_CHANGED" ) then
-		MCFCharacterFrameTitleText:SetText(UnitPVPName("player"));
 	end
 end
 
 --MCFFIX READY
 function MCFCharacterFrame_OnShow(self)
 	PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN);
-	--[[ MCFCharacterFrame_UpdatePortrait(); ]] --MCFFIX
-	SetPortraitTexture(MCFCharacterFramePortrait, "player"); --MCFFIX
+	MCFCharacterFrame_UpdatePortrait();
 	MCFUpdateMicroButtons();
 	PlayerFrameHealthBar.showNumeric = true;
 	PlayerFrameManaBar.showNumeric = true;
@@ -167,8 +151,8 @@ function MCFCharacterFrame_OnShow(self)
 	ShowTextStatusBarText(MainMenuExpBar);
 	ShowTextStatusBarText(PetFrameHealthBar);
 	ShowTextStatusBarText(PetFrameManaBar);
-	--MCFFIX
-	--Disabled function because makes error. Not sure what it does
+
+	--MCFFIX disabled function because makes error. Not sure what it does
 	--ShowWatchedReputationBarText();
 	MicroButtonPulseStop(CharacterMicroButton);	--Stop the button pulse
 end
