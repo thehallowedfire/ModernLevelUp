@@ -895,7 +895,7 @@ function MCFPaperDollFrame_SetResistance(statFrame, unit, resistanceIndex)
 	local base, resistance, positive, negative = UnitResistance(unit, resistanceIndex);
 	local resistanceNameShort = _G["DAMAGE_SCHOOL"..resistanceIndex];
 	local resistanceName = _G["RESISTANCE"..resistanceIndex.."_NAME"];
-	local resistanceIconCode = "|TInterface\\AddOns\\ModernCharacterFrame\\Textures\\PaperDollInfoFrame\\SpellSchoolIcon"..(resistanceIndex+1)..":0|t";
+	local resistanceIconCode = "|TInterface\\PaperDollInfoFrame\\SpellSchoolIcon"..(resistanceIndex+1)..":0|t";
 	_G[statFrame:GetName().."Label"]:SetText(resistanceIconCode.." "..format(STAT_FORMAT, resistanceNameShort));
 	local text = _G[statFrame:GetName().."StatText"];
 	MCFPaperDollFormatStat(resistanceName, base, positive, negative, statFrame, text);
