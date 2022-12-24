@@ -810,7 +810,7 @@ function MCFPaperDollFrame_SetStat(statFrame, unit, statIndex)
 			text:SetText(GREEN_FONT_COLOR_CODE..effectiveStat..FONT_COLOR_CODE_CLOSE);
 		end
 	end
-	statFrame.tooltip2 = _G["MCFDEFAULT_STAT"..statIndex.."_TOOLTIP"];
+	statFrame.tooltip2 = _G["MCF_DEFAULT_STAT"..statIndex.."_TOOLTIP"];
 	
 	if (unit == "player") then
 		local _, unitClass = UnitClass("player");
@@ -857,7 +857,7 @@ function MCFPaperDollFrame_SetStat(statFrame, unit, statIndex)
 			if ( UnitHasMana("player") ) then
 				local regen = GetUnitManaRegenRateFromSpirit("player");
 				regen = floor( regen * 5.0 );
-				statFrame.tooltip2 = format(MCFMANA_REGEN_FROM_SPIRIT, regen);
+				statFrame.tooltip2 = format(MCF_MANA_REGEN_FROM_SPIRIT, regen);
 			else
 				statFrame.tooltip2 = STAT_USELESS_TOOLTIP;
 			end
@@ -883,7 +883,7 @@ function MCFPaperDollFrame_SetStat(statFrame, unit, statIndex)
 		elseif ( statIndex == 5 ) then
 			statFrame.tooltip2 = "";
 			if ( UnitHasMana("pet") ) then
-				statFrame.tooltip2 = format(MCFMANA_REGEN_FROM_SPIRIT, GetUnitManaRegenRateFromSpirit("pet"));
+				statFrame.tooltip2 = format(MCF_MANA_REGEN_FROM_SPIRIT, GetUnitManaRegenRateFromSpirit("pet"));
 			end
 		end
 	end
@@ -912,7 +912,7 @@ function MCFPaperDollFrame_SetResistance(statFrame, unit, resistanceIndex)
 		statFrame.tooltip = statFrame.tooltip..FONT_COLOR_CODE_CLOSE.." )";
 	end
 	
-	statFrame.tooltip2 = format(MCFRESISTANCE_TOOLTIP_SUBTEXT, _G["SPELL_SCHOOL"..resistanceIndex.."_CAP"], ResistancePercent(resistance, UnitLevel(unit)));
+	statFrame.tooltip2 = format(MCF_RESISTANCE_TOOLTIP_SUBTEXT, _G["SPELL_SCHOOL"..resistanceIndex.."_CAP"], ResistancePercent(resistance, UnitLevel(unit)));
 	
 	-- TODO: Put this in the tooltip?
 	--local petBonus = ComputePetBonus( "PET_BONUS_RES", resistance );
@@ -962,7 +962,7 @@ function MCFPaperDollFrame_SetBlock(statFrame, unit)
 	local chance = GetBlockChance();
 	MCFPaperDollFrame_SetLabelAndText(statFrame, STAT_BLOCK, chance, 1);
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, BLOCK_CHANCE).." "..string.format("%.02f", chance).."%"..FONT_COLOR_CODE_CLOSE;
-	statFrame.tooltip2 = format(MCFCR_BLOCK_TOOLTIP, GetCombatRating(CR_BLOCK), GetCombatRatingBonus(CR_BLOCK), GetShieldBlock());
+	statFrame.tooltip2 = format(MCF_CR_BLOCK_TOOLTIP, GetCombatRating(CR_BLOCK), GetCombatRatingBonus(CR_BLOCK), GetShieldBlock());
 	statFrame:Show();
 end
 
@@ -1102,7 +1102,7 @@ end
 
 --MCFFIX READY
 function MCFPaperDollFrame_SetMeleeDPS(statFrame, unit)
-	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, MCFSTAT_DPS_SHORT));
+	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, MCF_STAT_DPS_SHORT));
 	local text = _G[statFrame:GetName().."StatText"];
 	local speed, offhandSpeed = UnitAttackSpeed(unit);
 	
@@ -1189,7 +1189,7 @@ function MCFPaperDollFrame_SetRangedDPS(statFrame, unit)
 		statFrame:Hide();
 		return;
 	end
-	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, MCFSTAT_DPS_SHORT));
+	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, MCF_STAT_DPS_SHORT));
 	local text = _G[statFrame:GetName().."StatText"];
 
 	-- If no ranged attack then set to n/a
@@ -1285,7 +1285,7 @@ function MCFPaperDollFrame_SetAttackSpeed(statFrame, unit)
 	else
 		text = speed;
 	end
-	MCFPaperDollFrame_SetLabelAndText(statFrame, MCFWEAPON_SPEED, text);
+	MCFPaperDollFrame_SetLabelAndText(statFrame, MCF_WEAPON_SPEED, text);
 
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, ATTACK_SPEED).." "..text..FONT_COLOR_CODE_CLOSE;
 	
@@ -1469,7 +1469,7 @@ function MCFPaperDollFrame_SetRangedAttackSpeed(statFrame, unit)
 		text = format("%.2F", text);
 		statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, ATTACK_SPEED).." "..text..FONT_COLOR_CODE_CLOSE;
 	end
-	MCFPaperDollFrame_SetLabelAndText(statFrame, MCFWEAPON_SPEED, text);
+	MCFPaperDollFrame_SetLabelAndText(statFrame, MCF_WEAPON_SPEED, text);
 	statFrame:Show();
 end
 
@@ -1615,7 +1615,7 @@ function MCFPaperDollFrame_SetMeleeCritChance(statFrame, unit)
 	critChance = format("%.2F%%", critChance);
 	text:SetText(critChance);
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, MELEE_CRIT_CHANCE).." "..critChance..FONT_COLOR_CODE_CLOSE;
-	statFrame.tooltip2 = format(MCFCR_CRIT_MELEE_TOOLTIP, GetCombatRating(CR_CRIT_MELEE), GetCombatRatingBonus(CR_CRIT_MELEE));
+	statFrame.tooltip2 = format(MCF_CR_CRIT_MELEE_TOOLTIP, GetCombatRating(CR_CRIT_MELEE), GetCombatRatingBonus(CR_CRIT_MELEE));
 end
 
 function MCFPaperDollFrame_SetRangedCritChance(statFrame, unit)
@@ -1630,7 +1630,7 @@ function MCFPaperDollFrame_SetRangedCritChance(statFrame, unit)
 	critChance = format("%.2F%%", critChance);
 	text:SetText(critChance);
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, RANGED_CRIT_CHANCE).." "..critChance..FONT_COLOR_CODE_CLOSE;
-	statFrame.tooltip2 = format(MCFCR_CRIT_RANGED_TOOLTIP, GetCombatRating(CR_CRIT_RANGED), GetCombatRatingBonus(CR_CRIT_RANGED));
+	statFrame.tooltip2 = format(MCF_CR_CRIT_RANGED_TOOLTIP, GetCombatRating(CR_CRIT_RANGED), GetCombatRatingBonus(CR_CRIT_RANGED));
 end
 
 --MCFFIX ready
@@ -1880,7 +1880,7 @@ function MCFPaperDollFrame_SetMeleeHaste(statFrame, unit)
 	if (not statFrame.tooltip2) then
 		statFrame.tooltip2 = STAT_HASTE_MELEE_TOOLTIP;
 	end
-	statFrame.tooltip2 = statFrame.tooltip2 .. format(MCFSTAT_HASTE_BASE_TOOLTIP, GetCombatRating(CR_HASTE_MELEE), GetCombatRatingBonus(CR_HASTE_MELEE));
+	statFrame.tooltip2 = statFrame.tooltip2 .. format(MCF_STAT_HASTE_BASE_TOOLTIP, GetCombatRating(CR_HASTE_MELEE), GetCombatRatingBonus(CR_HASTE_MELEE));
 	
 	statFrame:Show();
 end
@@ -1909,7 +1909,7 @@ function MCFPaperDollFrame_SetRangedHaste(statFrame, unit)
 	if (not statFrame.tooltip2) then
 		statFrame.tooltip2 = STAT_HASTE_RANGED_TOOLTIP;
 	end
-	statFrame.tooltip2 = statFrame.tooltip2 .. format(MCFSTAT_HASTE_BASE_TOOLTIP, GetCombatRating(CR_HASTE_RANGED), GetCombatRatingBonus(CR_HASTE_RANGED));
+	statFrame.tooltip2 = statFrame.tooltip2 .. format(MCF_STAT_HASTE_BASE_TOOLTIP, GetCombatRating(CR_HASTE_RANGED), GetCombatRatingBonus(CR_HASTE_RANGED));
 
 	statFrame:Show();
 end
@@ -1953,7 +1953,7 @@ function MCFPaperDollFrame_SetSpellHaste(statFrame, unit)
 	if (not statFrame.tooltip2) then
 		statFrame.tooltip2 = STAT_HASTE_SPELL_TOOLTIP;
 	end
-	statFrame.tooltip2 = statFrame.tooltip2 .. format(MCFSTAT_HASTE_BASE_TOOLTIP, GetCombatRating(CR_HASTE_SPELL), GetCombatRatingBonus(CR_HASTE_SPELL));
+	statFrame.tooltip2 = statFrame.tooltip2 .. format(MCF_STAT_HASTE_BASE_TOOLTIP, GetCombatRating(CR_HASTE_SPELL), GetCombatRatingBonus(CR_HASTE_SPELL));
 
 	statFrame:Show();
 end
@@ -2296,7 +2296,7 @@ function MCFCharacterSpellCritChance_OnEnter (self)
 			GameTooltip:AddTexture("Interface\\AddOns\\ModernCharacterFrame\\Textures\\PaperDollInfoFrame\\SpellSchoolIcon"..i);
 		end
 	end
-	GameTooltip:AddLine(format(MCFCR_CRIT_SPELL_TOOLTIP, GetCombatRating(CR_CRIT_SPELL), GetCombatRatingBonus(CR_CRIT_SPELL)));
+	GameTooltip:AddLine(format(MCF_CR_CRIT_SPELL_TOOLTIP, GetCombatRating(CR_CRIT_SPELL), GetCombatRatingBonus(CR_CRIT_SPELL)));
 	GameTooltip:Show();
 end
 
@@ -2318,8 +2318,8 @@ function MCFPaperDollFrame_OnShow (self)
 		MCFCharacterFrame_Expand();
 	end
 	MCFCharacterFrameExpandButton:Show();
-	MCFCharacterFrameExpandButton.collapseTooltip = MCFSTATS_COLLAPSE_TOOLTIP;
-	MCFCharacterFrameExpandButton.expandTooltip = MCFSTATS_EXPAND_TOOLTIP;
+	MCFCharacterFrameExpandButton.collapseTooltip = MCF_STATS_COLLAPSE_TOOLTIP;
+	MCFCharacterFrameExpandButton.expandTooltip = MCF_STATS_EXPAND_TOOLTIP;
 	
 	MCFSetPaperDollBackground(MCFCharacterModelFrame, "player");
 	MCFPaperDollBgDesaturate(1);

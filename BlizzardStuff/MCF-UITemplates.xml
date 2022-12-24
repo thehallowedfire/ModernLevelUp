@@ -1,171 +1,171 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
 
-    <Include file="MCFCharacterFrame.lua"/>
-    <Include file="MCFPaperDollFrame.lua"/>
+    <Include file="MCF-CharacterFrame.lua"/>
+    <Include file="MCF-PaperDollFrame.lua"/>
 
     <!-- TEXTURE TEMPLATES -->
     <!-- Texture templates for frame border pieces -->
-	<Texture name="MCFUI-Frame-Portrait" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
+	<Texture name="MCF-UI-Frame-Portrait" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
 		<Size x="78" y="78"/>	
 		<TexCoords left="0.00781250" right="0.61718750" top="0.00781250" bottom="0.61718750"/>	
 	</Texture>
-    <Texture name="MCFUI-Frame-TopCornerRight" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
+    <Texture name="MCF-UI-Frame-TopCornerRight" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
 		<Size x="33" y="33"/>	
 		<TexCoords left="0.63281250" right="0.89062500" top="0.00781250" bottom="0.26562500"/>	
 	</Texture>
-    <Texture name="MCFUI-Frame-TopLeftCorner" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
+    <Texture name="MCF-UI-Frame-TopLeftCorner" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
 		<Size x="32" y="32"/>	
 		<TexCoords left="0.63281250" right="0.88281250" top="0.28125000" bottom="0.53125000"/>	
 	</Texture>
-    <Texture name="MCFUI-Frame-InnerTopLeft" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
+    <Texture name="MCF-UI-Frame-InnerTopLeft" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
 		<Size x="6" y="6"/>	
 		<TexCoords left="0.63281250" right="0.67968750" top="0.54687500" bottom="0.59375000"/>	
 	</Texture>
-	<Texture name="MCFUI-Frame-InnerTopRight" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
+	<Texture name="MCF-UI-Frame-InnerTopRight" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
 		<Size x="6" y="6"/>	
 		<TexCoords left="0.90625000" right="0.95312500" top="0.21875000" bottom="0.26562500"/>	
 	</Texture>
-	<Texture name="MCFUI-Frame-InnerBotLeftCorner" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
+	<Texture name="MCF-UI-Frame-InnerBotLeftCorner" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
 		<Size x="6" y="6"/>	
 		<TexCoords left="0.69531250" right="0.74218750" top="0.54687500" bottom="0.59375000"/>	
 	</Texture>
-	<Texture name="MCFUI-Frame-InnerBotRight" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
+	<Texture name="MCF-UI-Frame-InnerBotRight" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
 		<Size x="6" y="6"/>	
 		<TexCoords left="0.75781250" right="0.80468750" top="0.54687500" bottom="0.59375000"/>	
 	</Texture>
-	<Texture name="MCFUI-Frame-BtnCornerLeft" file="Interface\AddOns\ModerCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
+	<Texture name="MCF-UI-Frame-BtnCornerLeft" file="Interface\AddOns\ModerCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
 		<Size x="12" y="32"/>	
 		<TexCoords left="0.89843750" right="0.99218750" top="0.28125000" bottom="0.53125000"/>	
 	</Texture>
-	<Texture name="MCFUI-Frame-BtnCornerRight" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
+	<Texture name="MCF-UI-Frame-BtnCornerRight" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
 		<Size x="12" y="32"/>	
 		<TexCoords left="0.13281250" right="0.22656250" top="0.63281250" bottom="0.88281250"/>	
 	</Texture>
-    <Texture name="MCFUI-Frame-BotCornerLeft" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
+    <Texture name="MCF-UI-Frame-BotCornerLeft" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
 		<Size x="14" y="14"/>	
 		<TexCoords left="0.00781250" right="0.11718750" top="0.63281250" bottom="0.74218750"/>	
 	</Texture>
-    <Texture name="MCFUI-Frame-BotCornerRight" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
+    <Texture name="MCF-UI-Frame-BotCornerRight" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\UI-Frame" virtual="true">
 		<Size x="11" y="11"/>	
 		<TexCoords left="0.13281250" right="0.21875000" top="0.89843750" bottom="0.98437500"/>	
 	</Texture>
     <!-- Vertically tiling pieces -->
-	<Texture name="MCF!UI-Frame-InnerRightTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\!UI-Frame" virtual="true" vertTile="true" >
+	<Texture name="!MCF-UI-Frame-InnerRightTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\!UI-Frame" virtual="true" vertTile="true" >
 		<Size x="3" y="256"/>	
 		<TexCoords left="0.01562500" right="0.06250000" top="0.00000000" bottom="1.00000000"/>	
 	</Texture>
-	<Texture name="MCF!UI-Frame-InnerLeftTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\!UI-Frame" virtual="true" vertTile="true" >
+	<Texture name="!MCF-UI-Frame-InnerLeftTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\!UI-Frame" virtual="true" vertTile="true" >
 		<Size x="3" y="256"/>	
 		<TexCoords left="0.09375000" right="0.14062500" top="0.00000000" bottom="1.00000000"/>	
 	</Texture>
-    <Texture name="MCF!UI-Frame-RightTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\!UI-Frame" virtual="true" vertTile="true" >
+    <Texture name="!MCF-UI-Frame-RightTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\!UI-Frame" virtual="true" vertTile="true" >
 		<Size x="10" y="256"/>	
 		<TexCoords left="0.17187500" right="0.32812500" top="0.00000000" bottom="1.00000000"/>	
 	</Texture>
-    <Texture name="MCF!UI-Frame-LeftTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\!UI-Frame" virtual="true" vertTile="true" >
+    <Texture name="!MCF-UI-Frame-LeftTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\!UI-Frame" virtual="true" vertTile="true" >
 		<Size x="16" y="256"/>	
 		<TexCoords left="0.35937500" right="0.60937500" top="0.00000000" bottom="1.00000000"/>	
 	</Texture>
     <!-- Horizontally tiling pieces -->
-	<Texture name="MCF_UI-Frame-InnerBotTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
+	<Texture name="_MCF-UI-Frame-InnerBotTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
 		<Size x="256" y="3"/>	
 		<TexCoords left="0.00000000" right="1.00000000" top="0.00781250" bottom="0.03125000"/>	
 	</Texture>
-	<Texture name="MCF_UI-Frame-BtnBotTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
+	<Texture name="_MCF-UI-Frame-BtnBotTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
 		<Size x="256" y="3"/>	
 		<TexCoords left="0.00000000" right="1.00000000" top="0.04687500" bottom="0.07031250"/>	
 	</Texture>
-    <Texture name="MCF_UI-Frame-InnerTopTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
+    <Texture name="_MCF-UI-Frame-InnerTopTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
 		<Size x="256" y="3"/>	
 		<TexCoords left="0.00000000" right="1.00000000" top="0.08593750" bottom="0.10937500"/>	
 	</Texture>
-    <Texture name="MCF_UI-Frame-Bot" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
+    <Texture name="_MCF-UI-Frame-Bot" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
 		<Size x="256" y="9"/>	
 		<TexCoords left="0.00000000" right="1.00000000" top="0.20312500" bottom="0.27343750"/>	
 	</Texture>
-	<Texture name="MCF_UI-Frame-TitleTileBg" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
+	<Texture name="_MCF-UI-Frame-TitleTileBg" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
 		<Size x="256" y="17"/>	
 		<TexCoords left="0.00000000" right="1.00000000" top="0.28906250" bottom="0.42187500"/>	
 	</Texture>
-    <Texture name="MCF_UI-Frame-TitleTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
+    <Texture name="_MCF-UI-Frame-TitleTile" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
 		<Size x="256" y="28"/>	
 		<TexCoords left="0.00000000" right="1.00000000" top="0.43750000" bottom="0.65625000"/>	
 	</Texture>
-    <Texture name="MCF_UI-Frame-TopTileStreaks" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
+    <Texture name="_MCF-UI-Frame-TopTileStreaks" file="Interface\AddOns\ModernCharacterFrame\Textures\FrameGeneral\_UI-Frame" virtual="true" horizTile="true" >
 		<Size x="256" y="37"/>	
 		<TexCoords left="0.00000000" right="1.00000000" top="0.67187500" bottom="0.96093750"/>	
 	</Texture>
     <!-- Textures for Character Frame -->
-	<Texture name="MCFChar-Stat-Bottom" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-Stat-Bottom" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="169" y="46"/>	
 		<TexCoords left="0.00390625" right="0.66406250" top="0.00781250" bottom="0.36718750"/>	
 	</Texture>
-	<Texture name="MCFChar-Stat-Minimized" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-Stat-Minimized" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="169" y="14"/>	
 		<TexCoords left="0.00390625" right="0.66406250" top="0.38281250" bottom="0.49218750"/>	
 	</Texture>
-	<Texture name="MCFChar-Stat-Top" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-Stat-Top" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="169" y="9"/>	
 		<TexCoords left="0.00390625" right="0.66406250" top="0.50781250" bottom="0.57812500"/>	
 	</Texture>
-	<Texture name="MCFChar-RightSlot" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-RightSlot" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="50" y="44"/>	
 		<TexCoords left="0.00390625" right="0.19921875" top="0.59375000" bottom="0.93750000"/>	
 	</Texture>
-	<Texture name="MCFChar-Stat-Minus" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-Stat-Minus" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="7" y="3"/>	
 		<TexCoords left="0.00390625" right="0.03125000" top="0.95312500" bottom="0.97656250"/>	
 	</Texture>
-	<Texture name="MCFChar-LeftSlot" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-LeftSlot" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="49" y="44"/>	
 		<TexCoords left="0.20703125" right="0.39843750" top="0.59375000" bottom="0.93750000"/>	
 	</Texture>
-	<Texture name="MCFChar-Corner-LowerRight" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-Corner-LowerRight" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="7" y="7"/>	
 		<TexCoords left="0.40625000" right="0.43359375" top="0.59375000" bottom="0.64843750"/>	
 	</Texture>
-	<Texture name="MCFChar-Corner-LowerLeft" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-Corner-LowerLeft" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="7" y="7"/>	
 		<TexCoords left="0.40625000" right="0.43359375" top="0.66406250" bottom="0.71875000"/>	
 	</Texture>
-	<Texture name="MCFChar-Corner-UpperRight" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-Corner-UpperRight" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="7" y="7"/>	
 		<TexCoords left="0.40625000" right="0.43359375" top="0.73437500" bottom="0.78906250"/>	
 	</Texture>
-	<Texture name="MCFChar-Corner-UpperLeft" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-Corner-UpperLeft" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="7" y="7"/>	
 		<TexCoords left="0.40625000" right="0.43359375" top="0.80468750" bottom="0.85937500"/>	
 	</Texture>
-	<Texture name="MCFChar-Stat-Plus" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-Stat-Plus" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="7" y="7"/>	
 		<TexCoords left="0.40625000" right="0.43359375" top="0.87500000" bottom="0.92968750"/>	
 	</Texture>
-	<Texture name="MCFChar-BottomSlot" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-BottomSlot" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="42" y="53"/>	
 		<TexCoords left="0.67187500" right="0.83593750" top="0.00781250" bottom="0.42187500"/>	
 	</Texture>
-	<Texture name="MCFChar-Slot-Bottom-Right" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-Slot-Bottom-Right" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="7" y="54"/>	
 		<TexCoords left="0.67187500" right="0.69921875" top="0.43750000" bottom="0.85937500"/>	
 	</Texture>
-	<Texture name="MCFChar-Slot-Bottom-Left" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
+	<Texture name="MCF-Char-Slot-Bottom-Left" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Parts" virtual="true" >
 		<Size x="6" y="54"/>	
 		<TexCoords left="0.70703125" right="0.73046875" top="0.43750000" bottom="0.85937500"/>	
 	</Texture>
-	<Texture name="MCFChar-Inner-Bottom" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Horizontal" horizTile="true" virtual="true">
+	<Texture name="MCF-Char-Inner-Bottom" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Horizontal" horizTile="true" virtual="true">
 		<Size x="32" y="5"/>	
 		<TexCoords left="0.00000000" right="1.00000000" top="0.06250000" bottom="0.37500000"/>	
 	</Texture>
-	<Texture name="MCFChar-Inner-Top" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Horizontal" horizTile="true" virtual="true">
+	<Texture name="MCF-Char-Inner-Top" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Horizontal" horizTile="true" virtual="true">
 		<Size x="32" y="5"/>	
 		<TexCoords left="0.00000000" right="1.00000000" top="0.50000000" bottom="0.81250000"/>	
 	</Texture>
-	<Texture name="MCFChar-Inner-Left" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Vertical" vertTile="true" virtual="true">
+	<Texture name="MCF-Char-Inner-Left" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Vertical" vertTile="true" virtual="true">
 		<Size x="5" y="32"/>	
 		<TexCoords left="0.06250000" right="0.37500000" top="0.00000000" bottom="1.00000000"/>	
 	</Texture>
-	<Texture name="MCFChar-Inner-Right" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Vertical" vertTile="true" virtual="true">
+	<Texture name="MCF-Char-Inner-Right" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Paperdoll-Vertical" vertTile="true" virtual="true">
 		<Size x="5" y="32"/>	
 		<TexCoords left="0.50000000" right="0.81250000" top="0.00000000" bottom="1.00000000"/>	
 	</Texture>
@@ -426,7 +426,7 @@
 	<Button name="MCFPaperDollItemSlotButtonLeftTemplate" inherits="MCFPaperDollItemSlotButtonTemplate" virtual="true">
 		<Layers>
 			<Layer level="BACKGROUND" textureSubLevel="-1">
-				<Texture name="$parentFrame" inherits="MCFChar-LeftSlot">	
+				<Texture name="$parentFrame" inherits="MCF-Char-LeftSlot">	
 					<Anchors>
 						<Anchor point="TOPLEFT" x="-4"/>
 					</Anchors>
@@ -437,7 +437,7 @@
 	<Button name="MCFPaperDollItemSlotButtonRightTemplate" inherits="MCFPaperDollItemSlotButtonTemplate" virtual="true">
 		<Layers>
 			<Layer level="BACKGROUND" textureSubLevel="-1">
-				<Texture name="$parentFrame" inherits="MCFChar-RightSlot">	
+				<Texture name="$parentFrame" inherits="MCF-Char-RightSlot">	
 					<Anchors>
 						<Anchor point="TOPRIGHT" x="4"/>
 					</Anchors>
@@ -448,7 +448,7 @@
 	<Button name="MCFPaperDollItemSlotButtonBottomTemplate" inherits="MCFPaperDollItemSlotButtonTemplate" virtual="true">
 		<Layers>
 			<Layer level="BACKGROUND" textureSubLevel="-1">
-				<Texture name="$parentFrame" inherits="MCFChar-BottomSlot">	
+				<Texture name="$parentFrame" inherits="MCF-Char-BottomSlot">	
 					<Anchors>
 						<Anchor point="TOPLEFT" x="-4" y="8"/>
 					</Anchors>
@@ -465,12 +465,12 @@
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentBgTop" inherits="MCFChar-Stat-Top" parentKey="BgTop">
+				<Texture name="$parentBgTop" inherits="MCF-Char-Stat-Top" parentKey="BgTop">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="0" y="1"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentBgBottom" inherits="MCFChar-Stat-Top" parentKey="BgBottom">
+				<Texture name="$parentBgBottom" inherits="MCF-Char-Stat-Top" parentKey="BgBottom">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="0" y="-4"/>
 					</Anchors>
@@ -536,45 +536,45 @@
 				</Texture>
 			</Layer>
 			<Layer level="BORDER" textureSubLevel="-5">
-				<Texture name="$parentInsetTopLeftCorner" inherits="MCFUI-Frame-InnerTopLeft" parentKey="InsetBorderTopLeft">
+				<Texture name="$parentInsetTopLeftCorner" inherits="MCF-UI-Frame-InnerTopLeft" parentKey="InsetBorderTopLeft">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentBg"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentInsetTopRightCorner" inherits="MCFUI-Frame-InnerTopRight" parentKey="InsetBorderTopRight">
+				<Texture name="$parentInsetTopRightCorner" inherits="MCF-UI-Frame-InnerTopRight" parentKey="InsetBorderTopRight">
 					<Anchors>
 						<Anchor point="TOPRIGHT" relativeTo="$parentBg"/>
 					</Anchors>
 				</Texture>				
-				<Texture name="$parentInsetBotLeftCorner" inherits="MCFUI-Frame-InnerBotLeftCorner" parentKey="InsetBorderBottomLeft">
+				<Texture name="$parentInsetBotLeftCorner" inherits="MCF-UI-Frame-InnerBotLeftCorner" parentKey="InsetBorderBottomLeft">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativeTo="$parentBg" y="-1"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentInsetBotRightCorner" inherits="MCFUI-Frame-InnerBotRight" parentKey="InsetBorderBottomRight">
+				<Texture name="$parentInsetBotRightCorner" inherits="MCF-UI-Frame-InnerBotRight" parentKey="InsetBorderBottomRight">
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBg" y="-1"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentInsetTopBorder" inherits="MCF_UI-Frame-InnerTopTile" parentKey="InsetBorderTop">
+				<Texture name="$parentInsetTopBorder" inherits="_MCF-UI-Frame-InnerTopTile" parentKey="InsetBorderTop">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentInsetTopLeftCorner" relativePoint="TOPRIGHT"/>
 						<Anchor point="TOPRIGHT" relativeTo="$parentInsetTopRightCorner" relativePoint="TOPLEFT"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentInsetBottomBorder" inherits="MCF_UI-Frame-InnerBotTile" parentKey="InsetBorderBottom">
+				<Texture name="$parentInsetBottomBorder" inherits="_MCF-UI-Frame-InnerBotTile" parentKey="InsetBorderBottom">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativeTo="$parentInsetBotLeftCorner" relativePoint="BOTTOMRIGHT"/>
 						<Anchor point="BOTTOMRIGHT" relativeTo="$parentInsetBotRightCorner" relativePoint="BOTTOMLEFT"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentInsetLeftBorder" inherits="MCF!UI-Frame-InnerLeftTile" parentKey="InsetBorderLeft">
+				<Texture name="$parentInsetLeftBorder" inherits="!MCF-UI-Frame-InnerLeftTile" parentKey="InsetBorderLeft">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentInsetTopLeftCorner" relativePoint="BOTTOMLEFT" x="0" y="0" />
 						<Anchor point="BOTTOMLEFT" relativeTo="$parentInsetBotLeftCorner" relativePoint="TOPLEFT"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentInsetRightBorder" inherits="MCF!UI-Frame-InnerRightTile" parentKey="InsetBorderRight">
+				<Texture name="$parentInsetRightBorder" inherits="!MCF-UI-Frame-InnerRightTile" parentKey="InsetBorderRight">
 					<Anchors>
 						<Anchor point="TOPRIGHT" relativeTo="$parentInsetTopRightCorner" relativePoint="BOTTOMRIGHT"/>
 						<Anchor point="BOTTOMRIGHT" relativeTo="$parentInsetBotRightCorner" relativePoint="TOPRIGHT"/>
@@ -614,12 +614,12 @@
 		<Size x="169" y="0"/>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentBgTop" inherits="MCFChar-Stat-Top" parentKey="BgTop">
+				<Texture name="$parentBgTop" inherits="MCF-Char-Stat-Top" parentKey="BgTop">
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentBgBottom" inherits="MCFChar-Stat-Bottom" parentKey="BgBottom">
+				<Texture name="$parentBgBottom" inherits="MCF-Char-Stat-Bottom" parentKey="BgBottom">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT"/>
 					</Anchors>
@@ -632,7 +632,7 @@
 					</Anchors>
 					<TexCoords left="0.00390625" right="0.66406250" top="0.00000000" bottom="1.00000000"/>
 				</Texture>
-				<Texture name="$parentBgMinimized" inherits="MCFChar-Stat-Minimized" parentKey="BgMinimized" hidden="true">
+				<Texture name="$parentBgMinimized" inherits="MCF-Char-Stat-Minimized" parentKey="BgMinimized" hidden="true">
 					<Size x="169" y="18"/>
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
@@ -645,12 +645,12 @@
 				</FontString>
 			</Layer>
 			<Layer level="ARTWORK">
-				<Texture name="$parentCollapsedIcon" parentKey="CollapsedIcon" inherits="MCFChar-Stat-Plus" hidden="true">
+				<Texture name="$parentCollapsedIcon" parentKey="CollapsedIcon" inherits="MCF-Char-Stat-Plus" hidden="true">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="5" y="-5"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentExpandedIcon" parentKey="ExpandedIcon" inherits="MCFChar-Stat-Minus">
+				<Texture name="$parentExpandedIcon" parentKey="ExpandedIcon" inherits="MCF-Char-Stat-Minus">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="5" y="-7"/>
 					</Anchors>
@@ -797,7 +797,7 @@
 						<Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentTitleBg" inherits="MCF_UI-Frame-TitleTileBG">
+				<Texture name="$parentTitleBg" inherits="_MCF-UI-Frame-TitleTileBG">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="2" y="-3"/>
 						<Anchor point="TOPRIGHT" x="-25" y="-3"/>
@@ -813,22 +813,22 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<Texture name="$parentPortraitFrame" inherits="MCFUI-Frame-Portrait" parentKey="portraitFrame">
+				<Texture name="$parentPortraitFrame" inherits="MCF-UI-Frame-Portrait" parentKey="portraitFrame">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="-14" y="11"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentTopRightCorner" inherits="MCFUI-Frame-TopCornerRight">
+				<Texture name="$parentTopRightCorner" inherits="MCF-UI-Frame-TopCornerRight">
 					<Anchors>
 						<Anchor point="TOPRIGHT" x="0" y="1"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentTopLeftCorner" inherits="MCFUI-Frame-TopLeftCorner" hidden="true" parentKey="topLeftCorner">
+				<Texture name="$parentTopLeftCorner" inherits="MCF-UI-Frame-TopLeftCorner" hidden="true" parentKey="topLeftCorner">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="-6" y="1"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentTopBorder" inherits="MCF_UI-Frame-TitleTile" parentKey="topBorderBar">
+				<Texture name="$parentTopBorder" inherits="_MCF-UI-Frame-TitleTile" parentKey="topBorderBar">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentPortraitFrame" relativePoint="TOPRIGHT" x="0" y="-10" />
 						<Anchor point="TOPRIGHT" relativeTo="$parentTopRightCorner" relativePoint="TOPLEFT"/>
@@ -843,35 +843,35 @@
 				</FontString>
 			</Layer>
 			<Layer level="BORDER">
-				<Texture name="$parentTopTileStreaks" inherits="MCF_UI-Frame-TopTileStreaks" parentKey="TopTileStreaks">
+				<Texture name="$parentTopTileStreaks" inherits="_MCF-UI-Frame-TopTileStreaks" parentKey="TopTileStreaks">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="0" y="-21"/>
 						<Anchor point="TOPRIGHT" x="-2" y="-21"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentBotLeftCorner" inherits="MCFUI-Frame-BotCornerLeft">
+				<Texture name="$parentBotLeftCorner" inherits="MCF-UI-Frame-BotCornerLeft">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="-6" y="-5"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentBotRightCorner" inherits="MCFUI-Frame-BotCornerRight">
+				<Texture name="$parentBotRightCorner" inherits="MCF-UI-Frame-BotCornerRight">
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" x="0" y="-5"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentBottomBorder" inherits="MCF_UI-Frame-Bot">
+				<Texture name="$parentBottomBorder" inherits="_MCF-UI-Frame-Bot">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativeTo="$parentBotLeftCorner" relativePoint="BOTTOMRIGHT" y="0"/>
 						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBotRightCorner" relativePoint="BOTTOMLEFT" y="0"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentLeftBorder" inherits="MCF!UI-Frame-LeftTile" parentKey="leftBorderBar">
+				<Texture name="$parentLeftBorder" inherits="!MCF-UI-Frame-LeftTile" parentKey="leftBorderBar">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentPortraitFrame" relativePoint="BOTTOMLEFT" x="8" y="0" />
 						<Anchor point="BOTTOMLEFT" relativeTo="$parentBotLeftCorner" relativePoint="TOPLEFT"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentRightBorder" inherits="MCF!UI-Frame-RightTile">
+				<Texture name="$parentRightBorder" inherits="!MCF-UI-Frame-RightTile">
 					<Anchors>
 						<Anchor point="TOPRIGHT" relativeTo="$parentTopRightCorner" relativePoint="BOTTOMRIGHT" x="1"/>
 						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBotRightCorner" relativePoint="TOPRIGHT"/>
@@ -895,17 +895,17 @@
 	<Frame name="MCFButtonFrameTemplate" inherits="MCFPortraitFrameTemplate" virtual="true">
 		<Layers>
 			<Layer level="BORDER" textureSubLevel="1">
-				<Texture name="$parentBtnCornerLeft" inherits="MCFUI-Frame-BtnCornerLeft">
+				<Texture name="$parentBtnCornerLeft" inherits="MCF-UI-Frame-BtnCornerLeft">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="-2" y="-1"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentBtnCornerRight" inherits="MCFUI-Frame-BtnCornerRight">
+				<Texture name="$parentBtnCornerRight" inherits="MCF-UI-Frame-BtnCornerRight">
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" x="0" y="-1"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentButtonBottomBorder" inherits="MCF_UI-Frame-BtnBotTile">
+				<Texture name="$parentButtonBottomBorder" inherits="_MCF-UI-Frame-BtnBotTile">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativeTo="$parentBtnCornerLeft" relativePoint="BOTTOMRIGHT" y="3"/>
 						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBtnCornerRight" relativePoint="BOTTOMLEFT"/>
@@ -1321,51 +1321,51 @@
 						</Texture>
 					</Layer>
 					<Layer level="OVERLAY">
-						<Texture name="MCFPaperDollInnerBorderTopLeft" inherits="MCFChar-Corner-UpperLeft">
+						<Texture name="MCFPaperDollInnerBorderTopLeft" inherits="MCF-Char-Corner-UpperLeft">
 							<Anchors>
 								<Anchor point="TOPLEFT" relativeTo="MCFCharacterFrameInset" x="46" y="-4"/>
 							</Anchors>
 						</Texture>
-						<Texture name="MCFPaperDollInnerBorderTopRight" inherits="MCFChar-Corner-UpperRight">
+						<Texture name="MCFPaperDollInnerBorderTopRight" inherits="MCF-Char-Corner-UpperRight">
 							<Anchors>
 								<Anchor point="TOPRIGHT" relativeTo="MCFCharacterFrameInset" x="-47" y="-4"/>
 							</Anchors>
 						</Texture>
-						<Texture name="MCFPaperDollInnerBorderBottomLeft" inherits="MCFChar-Corner-LowerLeft">
+						<Texture name="MCFPaperDollInnerBorderBottomLeft" inherits="MCF-Char-Corner-LowerLeft">
 							<Anchors>
 								<Anchor point="BOTTOMLEFT" relativeTo="MCFCharacterFrameInset" x="46" y="31"/>
 							</Anchors>
 						</Texture>
-						<Texture name="MCFPaperDollInnerBorderBottomRight" inherits="MCFChar-Corner-LowerRight">
+						<Texture name="MCFPaperDollInnerBorderBottomRight" inherits="MCF-Char-Corner-LowerRight">
 							<Anchors>
 								<Anchor point="BOTTOMRIGHT" relativeTo="MCFCharacterFrameInset" x="-47" y="31"/>
 							</Anchors>
 						</Texture>
-						<Texture name="MCFPaperDollInnerBorderLeft" inherits="MCFChar-Inner-Left">
+						<Texture name="MCFPaperDollInnerBorderLeft" inherits="MCF-Char-Inner-Left">
 							<Anchors>
 								<Anchor point="TOPLEFT" relativeTo="MCFPaperDollInnerBorderTopLeft" relativePoint="BOTTOMLEFT" x="-1"/>
 								<Anchor point="BOTTOMLEFT" relativeTo="MCFPaperDollInnerBorderBottomLeft" relativePoint="TOPLEFT" x="-1"/>
 							</Anchors>
 						</Texture>
-						<Texture name="PaperDollInnerBorderRight" inherits="MCFChar-Inner-Right">
+						<Texture name="PaperDollInnerBorderRight" inherits="MCF-Char-Inner-Right">
 							<Anchors>
 								<Anchor point="TOPRIGHT" relativeTo="MCFPaperDollInnerBorderTopRight" relativePoint="BOTTOMRIGHT" x="1"/>
 								<Anchor point="BOTTOMRIGHT" relativeTo="MCFPaperDollInnerBorderBottomRight" relativePoint="TOPRIGHT" x="1"/>
 							</Anchors>
 						</Texture>
-						<Texture name="MCFPaperDollInnerBorderTop" inherits="MCFChar-Inner-Top">
+						<Texture name="MCFPaperDollInnerBorderTop" inherits="MCF-Char-Inner-Top">
 							<Anchors>
 								<Anchor point="TOPLEFT" relativeTo="MCFPaperDollInnerBorderTopLeft" relativePoint="TOPRIGHT" y="1"/>
 								<Anchor point="TOPRIGHT" relativeTo="MCFPaperDollInnerBorderTopRight" relativePoint="TOPLEFT" y="1"/>
 							</Anchors>
 						</Texture>
-						<Texture name="MCFPaperDollInnerBorderBottom" inherits="MCFChar-Inner-Bottom">
+						<Texture name="MCFPaperDollInnerBorderBottom" inherits="MCF-Char-Inner-Bottom">
 							<Anchors>
 								<Anchor point="BOTTOMLEFT" relativeTo="MCFPaperDollInnerBorderBottomLeft" relativePoint="BOTTOMRIGHT" y="-1"/>
 								<Anchor point="BOTTOMRIGHT" relativeTo="MCFPaperDollInnerBorderBottomRight" relativePoint="BOTTOMLEFT" y="-1"/>
 							</Anchors>
 						</Texture>
-						<Texture name="MCFPaperDollInnerBorderBottom2" inherits="MCFChar-Inner-Bottom">
+						<Texture name="MCFPaperDollInnerBorderBottom2" inherits="MCF-Char-Inner-Bottom">
 							<Anchors>
 								<Anchor point="BOTTOMLEFT" relativeTo="MCFCharacterFrameInset" y="27"/>
 								<Anchor point="BOTTOMRIGHT" relativeTo="MCFCharacterFrameInset" y="27"/>
@@ -1471,7 +1471,7 @@
 						</Anchors>
 						<Layers>
 							<Layer level="BACKGROUND">
-								<Texture inherits="MCFChar-Slot-Bottom-Left">
+								<Texture inherits="MCF-Char-Slot-Bottom-Left">
 									<Anchors>
 										<Anchor point="TOPRIGHT" relativeTo="$parentFrame" relativePoint="TOPLEFT"/>
 									</Anchors>
@@ -1490,7 +1490,7 @@
 						</Anchors>
 						<Layers>
 							<Layer level="BACKGROUND">
-								<Texture inherits="MCFChar-Slot-Bottom-Right">
+								<Texture inherits="MCF-Char-Slot-Bottom-Right">
 									<Anchors>
 										<Anchor point="TOPLEFT" relativeTo="$parentFrame" relativePoint="TOPRIGHT"/>
 									</Anchors>

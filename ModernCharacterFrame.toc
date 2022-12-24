@@ -4,10 +4,10 @@
 ## Author: Vladislav Kondrashov
 ## Version: 0.1.0
 
-MCFDB.lua
+MCF-DB.lua
 
-BlizzardStuff\MCFCharacterFrame.lua
-BlizzardStuff\MCFPaperDollFrame.lua
-BlizzardStuff\MCFUITemplates.xml
+BlizzardStuff\MCF-CharacterFrame.lua
+BlizzardStuff\MCF-PaperDollFrame.lua
+BlizzardStuff\MCF-UITemplates.xml
 
 ModernCharacterFrame.lua
