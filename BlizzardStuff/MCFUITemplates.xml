@@ -686,15 +686,15 @@
 							MCFPaperDollFrame_ExpandStatCategory(self:GetParent());
 							local categoryInfo = MCFPAPERDOLL_STATCATEGORIES[self:GetParent().Category];
 							if (categoryInfo and MCFCharacterStatsPane.collapsedCVarName) then
-								print("trying to use SetCVarBitfield(MCFCharacterStatsPane.collapsedCVarName, categoryInfo.id, false)");
-								<!-- SetCVarBitfield(CharacterStatsPane.collapsedCVarName, categoryInfo.id, false); -->
+								<!-- MCFFIX replaced SetCVarBitfield() with own MCF_SetSettings() and swaped last 2 args between each other -->
+								MCF_SetSettings(MCFCharacterStatsPane.collapsedCVarName, false, categoryInfo.id);
 							end
 						else
 							MCFPaperDollFrame_CollapseStatCategory(self:GetParent());
 							local categoryInfo = MCFPAPERDOLL_STATCATEGORIES[self:GetParent().Category];
 							if (categoryInfo and MCFCharacterStatsPane.collapsedCVarName) then
-								print("trying to use SetCVarBitfield(CharacterStatsPane.collapsedCVarName, categoryInfo.id, true)");
-								<!-- SetCVarBitfield(CharacterStatsPane.collapsedCVarName, categoryInfo.id, true); -->
+								<!-- MCFFIX replaced SetCVarBitfield() with own MCF_SetSettings() and swaped last 2 args between each other -->
+								MCF_SetSettings(MCFCharacterStatsPane.collapsedCVarName, true, categoryInfo.id);
 							end
 						end
 					</OnClick>
@@ -741,8 +741,7 @@
 								end
 							</OnLeave>
 							<OnClick>
-								<!-- PaperDoll_MoveCategoryUp(self:GetParent():GetParent()); --> <!-- MCFFIX -->
-                                print("MCFUITemplates.xml > MCFStatGroupTemplate > Button $parentSortUpArrow > OnClick script");
+								MCFPaperDoll_MoveCategoryUp(self:GetParent():GetParent());
 							</OnClick>
 						</Scripts>
 					</Button>
@@ -772,8 +771,7 @@
 								end
 							</OnLeave>
 							<OnClick>
-								<!-- PaperDoll_MoveCategoryDown(self:GetParent():GetParent()); --> <!-- MCFFIX -->
-								print("MCFUITemplates.xml > MCFStatGroupTemplate > Button $parentSortDownArrow > OnClick script");
+								MCFPaperDoll_MoveCategoryDown(self:GetParent():GetParent());
 							</OnClick>
 						</Scripts>
 					</Button>

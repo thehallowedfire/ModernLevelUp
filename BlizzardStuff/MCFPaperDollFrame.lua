@@ -3,40 +3,28 @@ MCFVERTICAL_FLYOUTS = { [16] = true, [17] = true, [18] = true }
 MCF_SETTINGS = {
 	["characterFrameCollapsed"] = "0",
 
-	["statCategoryOrder"] = {1, 2, 3, 4, 5, 6, 7},
-	["statCategoryOrder_2"] = {1, 2, 3, 4, 5, 6, 7},
+	["statCategoryOrder"] = "", --"1,2,3,4,5,6,7",
+	["statCategoryOrder_2"] = "", --"1,2,3,4,5,6,7",
 
 	["statCategoriesCollapsed"] = {false, false, false, false, false, false, false},
 	["statCategoriesCollapsed_2"] = {false, false, false, false, false, false, false},
 }
 
-function MCF_GetSettings(query)
-	if ( query == ("statCategoryOrder" or "statCategoryOrder_2") ) then
-		local answer = "";
-		for i, v in pairs(MCF_SETTINGS[query]) do
-			if (answer == "") then
-				answer = answer .. i;
-			else
-				answer = answer .. "," .. i;
-			end
-		end
-		return answer;
+function MCF_GetSettings(query, id)
+	if (id) then
+		return MCF_SETTINGS[query][id];
 	else
 		return MCF_SETTINGS[query];
 	end
 end
 
-function MCF_SetSettings(setting, value)
-	if ( setting == ("statCategoryOrder" or "statCategoryOrder_2") ) then
-		print("MCF_SetSettings 1st condition");
+function MCF_SetSettings(setting, value, id)
+	if (id) then
+		MCF_SETTINGS[setting][id] = value;
 	else
-		print("MCF_SetSettings 2nd condition");
+		MCF_SETTINGS[setting] = value;
 	end
 end
-
-
-
-
 
 --MCFFIX these constants are already in the game with same values
 --[[
@@ -183,7 +171,7 @@ MCFPAPERDOLL_STATINFO = {
 	},
 	--[[ ["MASTERY"] = {
 		updateFunc = function(statFrame, unit) MCFPaperDollFrame_SetMastery(statFrame, unit); end
-	}, ]]
+	}, ]] --MCFFIX disabled Mastery because it doesn't exist in WotLK Classic
 	["ITEMLEVEL"] = {
 		updateFunc = function(statFrame, unit) MCFPaperDollFrame_SetItemLevel(statFrame, unit); end
 	},
@@ -368,7 +356,7 @@ MCFPAPERDOLL_STATCATEGORIES = {
 				"HITCHANCE", 
 				"CRITCHANCE", 
 				"EXPERTISE", 
-				--[[ "MASTERY", ]]
+				--[[ "MASTERY", ]] --MCFFIX disabled Mastery because it doesn't exist in WotLK Classic
 			}
 	},
 				
@@ -383,7 +371,7 @@ MCFPAPERDOLL_STATCATEGORIES = {
 				"FOCUS_REGEN",
 				"RANGED_HITCHANCE",
 				"RANGED_CRITCHANCE", 
-				--[[ "MASTERY", ]]
+				--[[ "MASTERY", ]] --MCFFIX disabled Mastery because it doesn't exist in WotLK Classic
 			}
 	},
 				
@@ -398,7 +386,7 @@ MCFPAPERDOLL_STATCATEGORIES = {
 				"MANAREGEN",
 				"COMBATMANAREGEN",
 				"SPELLCRIT",
-				--[[ "MASTERY", ]]
+				--[[ "MASTERY", ]] --MCFFIX disabled Mastery because it doesn't exist in WotLK Classic
 			}
 	},
 			
@@ -567,7 +555,7 @@ function MCFPaperDollFrame_OnEvent (self, event, ...)
 	if ( event == "COMBAT_RATING_UPDATE" or event=="MASTERY_UPDATE" or event == "BAG_UPDATE" or event == "PLAYER_EQUIPMENT_CHANGED" or event == "PLAYER_BANKSLOTS_CHANGED" or event == "PLAYER_AVG_ITEM_LEVEL_READY" or event == "PLAYER_DAMAGE_DONE_MODS") then
 		self:SetScript("OnUpdate", MCFPaperDollFrame_QueuedUpdate);
 	elseif (event == "VARIABLES_LOADED") then
-		if (MCF_SETTINGS["characterFrameCollapsed"] ~= "0") then
+		if (MCF_GetSettings("characterFrameCollapsed") ~= "0") then
 			MCFCharacterFrame_Collapse();
 		else
 			MCFCharacterFrame_Expand();
@@ -2324,7 +2312,7 @@ function MCFPaperDollFrame_OnShow (self)
 	else
 		MCFPaperDoll_InitStatCategories(MCFPAPERDOLL_STATCATEGORY_DEFAULTORDER, "statCategoryOrder_2", "statCategoriesCollapsed_2", "player");
 	end
-	if (MCF_SETTINGS["characterFrameCollapsed"] ~= "0") then
+	if ((MCF_GetSettings"characterFrameCollapsed") ~= "0") then
 		MCFCharacterFrame_Collapse();
 	else
 		MCFCharacterFrame_Expand();
@@ -2962,7 +2950,7 @@ function MCFComputePetBonus(stat, value)
 	return 0;
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDoll_FindCategoryById(id)
 	for categoryName, category in pairs(MCFPAPERDOLL_STATCATEGORIES) do
 		if (category.id == id) then
@@ -2972,26 +2960,14 @@ function MCFPaperDoll_FindCategoryById(id)
 	return nil;
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDoll_InitStatCategories(defaultOrder, orderCVarName, collapsedCVarName, unit)
 	local category;
 	local order = defaultOrder;
-	
+
 	-- Load order from cvar
 	if (orderCVarName) then
-		--local orderString = GetCVar(orderCVarName); --MCFFIX don't need this line because of trick below
-		--MCFFIX added a few lines below to trick CVar function
-		local orderString = "";
-
-		for k, v in pairs(MCF_SETTINGS["statCategoryOrder"]) do
-			if orderString == "" then
-				orderString = orderString .. k;
-			else
-				orderString = orderString .. "," .. k;
-			end
-		end
-		--MCFFIX added a few lines above to trick CVar function
-
+		local orderString = MCF_GetSettings(orderCVarName); --MCFFIX replased GetCVar() with own MCF_GetSettings()
 		local savedOrder = {};
 		if (orderString and orderString ~= "") then
 			for i in gmatch(orderString, "%d+,?") do
@@ -3028,12 +3004,11 @@ function MCFPaperDoll_InitStatCategories(defaultOrder, orderCVarName, collapsedC
 			if (valid) then
 				order = savedOrder;
 			else
-				print("Function MCFPaperDoll_InitStatCategories() just tried to use SetCVar() which isn't available. Just passing now.")
-				--SetCVar(orderCVarName, ""); --MCFFIX disabled saving CVar. Needs fixing later (changing to SavedVariables system)
+				MCF_SetSettings(orderCVarName, ""); --MCFFIX replaced SetCVar with own function MCF_SetSettings()
 			end
 		end
 	end
-	
+
 	-- Initialize stat frames
 	table.wipe(StatCategoryFrames);
 	for index=1, #order do
@@ -3044,8 +3019,8 @@ function MCFPaperDoll_InitStatCategories(defaultOrder, orderCVarName, collapsedC
 		frame:Show();
 		
 		-- Expand or collapse
-		local categoryInfo = MCFPAPERDOLL_STATCATEGORIES[frame.Category];
-		if (categoryInfo and collapsedCVarName and MCF_SETTINGS[collapsedCVarName][categoryInfo.id]) then --GetCVarBitfield(collapsedCVarName, categoryInfo.id)) then --MCFFIX disabled calling GetCVar
+		local categoryInfo = MCFPAPERDOLL_STATCATEGORIES[frame.Category]; -- categoryInfo = for example "GENERAL"
+		if (categoryInfo and collapsedCVarName and MCF_GetSettings(collapsedCVarName, categoryInfo.id)) then -- MCFFIX replaced GetCVarBitfield() with own function MCF_GetSettings()
 			MCFPaperDollFrame_CollapseStatCategory(frame);
 		else
 			MCFPaperDollFrame_ExpandStatCategory(frame);
@@ -3071,7 +3046,7 @@ function MCFPaperDoll_InitStatCategories(defaultOrder, orderCVarName, collapsedC
 	MCFPaperDollFrame_UpdateStats();
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDoll_SaveStatCategoryOrder()
 
 	if (not MCFCharacterStatsPane.orderCVarName) then
@@ -3088,9 +3063,7 @@ function MCFPaperDoll_SaveStatCategoryOrder()
 			end
 		end
 		if (same) then
-			-- The same, set cvar to nothing
-			print("Function MCFPaperDoll_SaveStatCategoryOrder() just tried to use SetCVar() to set it to empty stroke.");
-			--SetCVar(MCFCharacterStatsPane.orderCVarName, ""); --MCFFIX another attempt to set CVar. Needs changing to SavedVariables system
+			MCF_SetSettings(MCFCharacterStatsPane.orderCVarName, ""); --MCFFIX SetCVar() replaced with own function MCF_SetSettings()
 			return;
 		end
 	end
@@ -3103,11 +3076,10 @@ function MCFPaperDoll_SaveStatCategoryOrder()
 			cvarString = cvarString..MCFPAPERDOLL_STATCATEGORIES[StatCategoryFrames[index].Category].id;
 		end
 	end
-	print("Function MCFPaperDoll_SaveStatCategoryOrder() just tried to use SetCVar() (end of function).");
-	--SetCVar(MCFCharacterStatsPane.orderCVarName, cvarString); --MCFFIX needs changing to SavedVariables system
+	MCF_SetSettings(MCFCharacterStatsPane.orderCVarName, cvarString); --MCFFIX SetCVar() replaced with own function MCF_SetSettings()
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDoll_UpdateCategoryPositions()
 	local prevFrame = nil;
 	for index = 1, #StatCategoryFrames do
