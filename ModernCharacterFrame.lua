@@ -1,18 +1,10 @@
-print("Hello! Initializing ModernCharacterFrame.lua!");
+print("Hello! Thank you for using Modern Character Frame! Don't forget to bind a key in settings.");
 
-ModernCharacterFrame1 = CreateFrame("Frame", "MCFCharacterFrame", UIParent, "MCFCharacterFrame");
-ModernCharacterFrame2 = CreateFrame("Frame", "MCFPaperDollFrame", MCFCharacterFrame, "MCFPaperDollFrame");
 ModernCharacterFrame3 = CreateFrame("Frame", "MCFPetPaperDollFrame", MCFCharacterFrame);
-ModernCharacterFrame3 = CreateFrame("Frame", "MCFReputationFrame", MCFCharacterFrame);
-ModernCharacterFrame3 = CreateFrame("Frame", "MCFTokenFrame", MCFCharacterFrame);
+ModernCharacterFrame4 = CreateFrame("Frame", "MCFReputationFrame", MCFCharacterFrame);
+ModernCharacterFrame5 = CreateFrame("Frame", "MCFTokenFrame", MCFCharacterFrame);
 
---[[ MCFPaperDollFrame:Hide();
-MCFPetPaperDollFrame:Hide();
-MCFReputationFrame:Hide();
-MCFTokenFrame:Hide(); ]]
---[[ _G["MCFCharacterFrame"].hidden = true; ]]
-
-if (_G["MCFCharacterFrame"] ~= nil) then
+--[[ if (_G["MCFCharacterFrame"] ~= nil) then
     print("MCFCharacterFrame exists!");
 else
     print("MCFCharacterFrame doesn't exist!");
@@ -22,4 +14,4 @@ if (_G["MCFPaperDollFrame"] ~= nil) then
     print("MCFPaperDollFrame exists!");
 else
     print("MCFPaperDollFrame doesn't exist!");
-end;
+end; ]]
