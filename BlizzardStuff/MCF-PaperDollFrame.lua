@@ -497,6 +497,7 @@ function MCFPaperDollFrame_OnLoad (self)
 		verticalAnchorX = 0,
 		verticalAnchorY = 0,
 	};
+	MCFPaperDollFrame_UpdateStats(); -- MCFFIX added this force update because for some reason stats don't get updated at first open
 end
 
 --MCFFIX READY
