@@ -3,6 +3,7 @@
 ## Notes: Re-creates modern Character Frame
 ## Author: Vladislav Kondrashov
 ## Version: 0.1.3
+## SavedVariablesPerCharacter: MCF_SETTINGS
 
 MCF-DB.lua
 
