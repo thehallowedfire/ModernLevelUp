@@ -1,9 +1,32 @@
-MCFCHARACTERFRAME_SUBFRAMES = { "MCFPaperDollFrame", "MCFPetPaperDollFrame", "MCFReputationFrame", "MCFTokenFrame" };
-MCFCHARACTERFRAME_EXPANDED_WIDTH = 540;
+---------------------------------------------------------------------------------------------------------
+-- MCFFIX added these lines
+---------------------------------------------------------------------------------------------------------
+MCF_DEFAULT_SETTINGS = {
+	["characterFrameCollapsed"] = "0",
 
-local MCFNUM_CHARACTERFRAME_TABS = 4;
+	["statCategoryOrder"] = "", --"1,2,3,4,5,6,7",
+	["statCategoryOrder_2"] = "", --"1,2,3,4,5,6,7",
 
---MCFFIX
+	["statCategoriesCollapsed"] = {false, false, false, false, false, false, false},
+	["statCategoriesCollapsed_2"] = {false, false, false, false, false, false, false},
+}
+
+function MCF_GetSettings(query, id)
+	if (id) then
+		return MCF_SETTINGS[query][id];
+	else
+		return MCF_SETTINGS[query];
+	end
+end
+
+function MCF_SetSettings(setting, value, id)
+	if (id) then
+		MCF_SETTINGS[setting][id] = value;
+	else
+		MCF_SETTINGS[setting] = value;
+	end
+end
+
 --Added this function because built-in is calling CharacterFrame
 function MCFUpdateMicroButtons()
 	if ( MCFCharacterFrame and MCFCharacterFrame:IsShown() ) then
@@ -14,6 +37,12 @@ function MCFUpdateMicroButtons()
 		CharacterMicroButton_SetNormal();
 	end
 end
+---------------------------------------------------------------------------------------------------------
+
+MCFCHARACTERFRAME_SUBFRAMES = { "MCFPaperDollFrame", "MCFPetPaperDollFrame", "MCFReputationFrame", "MCFTokenFrame" };
+MCFCHARACTERFRAME_EXPANDED_WIDTH = 540;
+
+local MCFNUM_CHARACTERFRAME_TABS = 4;
 
 --MCFFIX READY
 function MCFToggleCharacter (tab)
@@ -72,8 +101,9 @@ end
 function MCFCharacterFrame_OnLoad(self)
 	PortraitFrameTemplateMixin.OnLoad(self);
 
-	self:RegisterEvent("UNIT_NAME_UPDATE");
+	self:RegisterEvent("ADDON_LOADED"); --MCFFIX added this line for SavedVariables system
 	self:RegisterEvent("UNIT_PORTRAIT_UPDATE"); --MCFFIX added event
+	self:RegisterEvent("UNIT_NAME_UPDATE");
 	self:RegisterEvent("PLAYER_PVP_RANK_CHANGED");
 	self:RegisterEvent("PREVIEW_TALENT_POINTS_CHANGED");
 	self:RegisterEvent("PLAYER_TALENT_UPDATE");
@@ -110,11 +140,17 @@ function MCFCharacterFrame_UpdatePortrait()
 end
 
 --MCFFIX READY
-function MCFCharacterFrame_OnEvent(self, event, ...)		
+function MCFCharacterFrame_OnEvent(self, event, ...)
+	if ( event == "ADDON_LOADED" and ... == "ModernCharacterFrame") then
+		if MCF_SETTINGS == nil then
+			MCF_SETTINGS = MCF_DEFAULT_SETTINGS;
+		end
+	end
+
 	if ( not self:IsShown() ) then
 		return;
 	end
-	
+
 	local arg1 = ...;
 	if ( event == "UNIT_NAME_UPDATE" ) then
 		if ( arg1 == "player" and not MCFPetPaperDollFrame:IsShown()) then
@@ -190,6 +226,7 @@ function MCFCharacterFrame_Collapse()
 	MCFCharacterFrameInsetRight:Hide();
 	UpdateUIPanelPositions(MCFCharacterFrame);
 	MCFPaperDollFrame_SetLevel();
+
 	--MCFFIX disabled trial related thing
 	--CharacterTrialLevelErrorText:SetPoint("TOP", CharacterLevelText, "BOTTOM", 0, -3);
 end
