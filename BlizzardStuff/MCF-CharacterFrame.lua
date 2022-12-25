@@ -21,8 +21,7 @@ function MCFToggleCharacter (tab)
 	if ( subFrame ) then
 		if (not subFrame.hidden) then
 			print("debug", MCFCharacterFrame.selectedTab);
-			print("debug using PanelTemplates_SetTab");
-			--[[ PanelTemplates_SetTab(MCFCharacterFrame, subFrame:GetID()); ]]
+			PanelTemplates_SetTab(MCFCharacterFrame, subFrame:GetID());
 			print("debug", MCFCharacterFrame.selectedTab);
 			if ( MCFCharacterFrame:IsShown() ) then
 				if ( subFrame:IsShown() ) then
@@ -76,9 +75,9 @@ function MCFCharacterFrame_OnLoad(self)
 	self:RegisterEvent("UNIT_NAME_UPDATE");
 	self:RegisterEvent("UNIT_PORTRAIT_UPDATE"); --MCFFIX added event
 	self:RegisterEvent("PLAYER_PVP_RANK_CHANGED");
-	--[[ self:RegisterEvent("PREVIEW_TALENT_POINTS_CHANGED");
+	self:RegisterEvent("PREVIEW_TALENT_POINTS_CHANGED");
 	self:RegisterEvent("PLAYER_TALENT_UPDATE");
-	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED"); ]] --MCFFIX disabled a few events
+	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED");
 
 	ButtonFrameTemplate_HideButtonBar(self);
 	self.Inset:SetPoint("BOTTOMRIGHT", self, "BOTTOMLEFT", PANEL_DEFAULT_WIDTH + PANEL_INSET_RIGHT_OFFSET, PANEL_INSET_BOTTOM_OFFSET);
@@ -95,19 +94,18 @@ function MCFCharacterFrame_OnLoad(self)
 	PanelTemplates_SetTab(self, 1);
 end
 
---MCFFIX ready
---Temporary fixed by locking portrait to class icon
---Probably can count talent points and deside what spec is used
+--MCFFIX READY
 function MCFCharacterFrame_UpdatePortrait()
-	local masteryIndex = nil --GetPrimaryTalentTree();
-	if (masteryIndex == nil) then
+	local masteryIndex = MCF_GetPrimaryTalentTree();
+	if (masteryIndex == 0) then
 		local _, class = UnitClass("player");
 		MCFCharacterFramePortrait:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles");
 		MCFCharacterFramePortrait:SetTexCoord(unpack(CLASS_ICON_TCOORDS[class]));
 	else
-		local _, _, _, icon = GetTalentTabInfo(masteryIndex);
+		local _, icon, _, iconName = GetTalentTabInfo(masteryIndex);
+
 		MCFCharacterFramePortrait:SetTexCoord(0, 1, 0, 1);
-		SetPortraitToTexture(MCFCharacterFramePortrait, icon);	
+		SetPortraitToTexture(MCFCharacterFramePortrait, icon);
 	end
 end
 
@@ -164,7 +162,7 @@ function MCFCharacterFrame_OnHide(self)
 	PlayerFrameHealthBar.showNumeric = nil;
 	PlayerFrameManaBar.showNumeric = nil;
 	PlayerFrameAlternateManaBar.showNumeric = nil;
-	MainMenuExpBar.showNumeric =nil;
+	MainMenuExpBar.showNumeric = nil;
 	PetFrameHealthBar.showNumeric = nil;
 	PetFrameManaBar.showNumeric = nil;
 	HideTextStatusBarText(PlayerFrameHealthBar);

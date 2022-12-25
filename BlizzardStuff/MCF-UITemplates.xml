@@ -353,7 +353,6 @@
 			</OnLeave>
 		</Scripts>
 	</Button>
-	<!-- NOT READY -->
 	<!-- ItemButtonTemplate is a little bit different in modern client so needs testing (it has IconBorder and IconOverlay textures on OVERLAY) -->
 	<Button name="MCFPaperDollItemSlotButtonTemplate" inherits="ItemButtonTemplate" virtual="true">
 		<Layers>
@@ -389,7 +388,7 @@
 				<HighlightTexture file="Interface\PaperDollInfoFrame\UI-GearManager-FlyoutButton"/>
 			</Button>
 		</Frames>
-        <!-- <Scripts>
+        <Scripts>
             <OnLoad>
 				MCFPaperDollItemSlotButton_OnLoad(self);
 			</OnLoad>
@@ -421,7 +420,7 @@
             <OnLeave>
 				MCFPaperDollItemSlotButton_OnLeave(self, motion);
 			</OnLeave>
-        </Scripts> -->
+        </Scripts>
     </Button>
 	<Button name="MCFPaperDollItemSlotButtonLeftTemplate" inherits="MCFPaperDollItemSlotButtonTemplate" virtual="true">
 		<Layers>
@@ -521,6 +520,221 @@
 		</ButtonText>
 		<HighlightTexture file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar-Blue" alphaMode="ADD"/>	
 	</Button>
+	<!-- NOT READY -->
+	<Button name="MCFGearSetButtonTemplate" virtual="true">
+		<Size x="169" y="44"/>
+		<Anchors>
+			<Anchor point="LEFT" x="2" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBgTop" inherits="MCF-Char-Stat-Top" parentKey="BgTop">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="1"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentBgBottom" inherits="MCF-Char-Stat-Top" parentKey="BgBottom">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="0" y="-4"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentBgMiddle" file="Interface\AddOns\ModernCharacterFrame\Textures\CharacterFrame\Char-Stat-Middle" parentKey="BgMiddle" vertTile="true">
+					<Size x="169" y="8"/>
+					<Anchors>
+						<Anchor point="LEFT" x="1"/>
+					</Anchors>
+					<TexCoords left="0.00390625" right="0.66406250" top="0.00000000" bottom="1.00000000"/>
+				</Texture>
+			</Layer>
+			<Layer level="BACKGROUND" textureSubLevel="1">
+				<Texture name="$parentStripe" parentKey="Stripe">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="1" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture name="$parentCheck" file="Interface\Buttons\UI-CheckBox-Check" parentKey="Check" hidden="true">
+					<Size x="16" y="16"/>
+					<Anchors>
+						<Anchor point="RIGHT">
+							<Offset x="-8" y="0"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontNormalLeft" parentKey="text">
+					<Size x="98" y="38"/>
+					<Anchors>
+						<Anchor point="LEFT" x="44"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY" textureSubLevel="-1">
+				<Texture name="$parentHighlightBar" parentKey="HighlightBar" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar-Blue" alpha="0.4" alphaMode="ADD" hidden="true">
+					<TexCoords left="0.2" right="0.8" top="0" bottom="1"/>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture name="$parentSelectedBar" parentKey="SelectedBar" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar" alpha="0.4" alphaMode="ADD" hidden="true">
+					<TexCoords left="0.2" right="0.8" top="0" bottom="1"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		
+		<Frames>
+			<Button name="$parentDeleteButton" parentKey="DeleteButton" hidden="true">
+				<Size>
+					<AbsDimension x="14" y="14"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture file="Interface\Buttons\UI-GroupLoot-Pass-Up" alpha="0.5" parentKey="texture"/>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnEnter>
+						self.texture:SetAlpha(1.0);
+						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+						GameTooltip:SetText(DELETE);
+					</OnEnter>
+					<OnLeave>
+						self.texture:SetAlpha(0.5);
+						GameTooltip_Hide();
+					</OnLeave>
+					<OnMouseDown>
+						self.texture:SetPoint("TOPLEFT", 1, -1);
+					</OnMouseDown>
+					<OnMouseUp>
+						self.texture:SetPoint("TOPLEFT", 0, 0);
+					</OnMouseUp>
+					<OnClick>
+						local dialog = StaticPopup_Show("CONFIRM_DELETE_EQUIPMENT_SET", self:GetParent().name);
+						if ( dialog ) then
+							dialog.data = self:GetParent().name;
+						else
+							UIErrorsFrame:AddMessage(ERR_CLIENT_LOCKED_OUT, 1.0, 0.1, 0.1, 1.0);
+						end
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentEditButton" parentKey="EditButton" hidden="true">
+				<Size>
+					<AbsDimension x="16" y="16"/>
+				</Size>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentDeleteButton" relativePoint="LEFT" x="-1"/>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture file="Interface\WorldMap\GEAR_64GREY" alpha="0.5" parentKey="texture"/>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnEnter>
+						self.texture:SetAlpha(1.0);
+						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+						GameTooltip:SetText(EQUIPMENT_SET_EDIT);
+					</OnEnter>
+					<OnLeave>
+						self.texture:SetAlpha(0.5);
+						GameTooltip_Hide();
+					</OnLeave>
+					<OnMouseDown>
+						self.texture:SetPoint("TOPLEFT", 1, -1);
+					</OnMouseDown>
+					<OnMouseUp>
+						self.texture:SetPoint("TOPLEFT", 0, 0);
+					</OnMouseUp>
+					<OnClick>
+						MCFGearSetButton_OnClick(self:GetParent());
+						MCFGearManagerDialogPopup:Show();
+						MCFGearManagerDialogPopup.isEdit = true;
+						MCFGearManagerDialogPopup.origName = self:GetParent().name;
+						MCFRecalculateGearManagerDialogPopup(self:GetParent().name, self:GetParent().icon:GetTexture());
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<!-- NOT READY -->
+		<Scripts>
+			<OnLoad>
+				self:RegisterForDrag("LeftButton");
+				SetClampedTextureRotation(self.BgBottom, 180);
+			</OnLoad>
+			<OnClick>
+				MCFGearSetButton_OnClick(self, button, down);
+			</OnClick>
+			<!-- NOT READY -->
+			<OnDoubleClick>
+				local name = self.name;
+				if ( name and name ~= "" ) then
+					PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
+					<!-- MCFEquipmentManager_EquipSet(name); --> <!-- MCFFIX temporary disabled and added debug msg -->
+					print("Just tried to use OnDoubleClick script in MCFGearSetButtonTemplate");
+				end
+			</OnDoubleClick>
+			<OnEnter>
+				MCFGearSetButton_OnEnter(self);
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+			<OnDragStart>
+				<!-- if ( self.name and self.name ~= "" ) then
+					PickupEquipmentSetByName(self.name);
+				end --> <!-- MCFFIX temporary replaced with modern version -->
+				if ( self.name and self.name ~= "" ) then
+					C_EquipmentSet.PickupEquipmentSet(self.id);
+					print("Just used function C_EquipmentSet.PickupEquipmentSet()");
+				end
+			</OnDragStart>
+		</Scripts>
+		<NormalTexture name="$parentIcon" parentKey="icon">
+			<Size>
+				<AbsDimension x="36" y="36"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="4" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</NormalTexture>
+	</Button>
+	
+	<CheckButton name="MCFGearSetPopupButtonTemplate" inherits="SimplePopupButtonTemplate" virtual="true">
+		<Scripts>
+			<OnLoad>
+				local name = self:GetName();
+				self.icon = _G[name .. "Icon"];
+				self.name = _G[name .. "Name"];
+			</OnLoad>
+			<OnClick>
+				MCFGearSetPopupButton_OnClick(self, button, down);
+			</OnClick>
+		</Scripts>
+		<NormalTexture name="$parentIcon" nonBlocking="true">
+			<Size>
+				<AbsDimension x="36" y="36"/>
+			</Size>
+			<Anchors>
+				<Anchor point="CENTER">
+					<Offset>
+						<AbsDimension x="0" y="-1"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</NormalTexture>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+		<CheckedTexture alphaMode="ADD" file="Interface\Buttons\CheckButtonHilight"/>
+	</CheckButton>	
 
     <!-- FRAME TEMPLATES -->
     <!-- InsetFrameTemplate. This is the inner frame used by ButtonFrameTemplate -->
@@ -583,7 +797,6 @@
 			</Layer>
 		</Layers>
 	</Frame>
-
 	<Frame name="MCFStatFrameTemplate" virtual="true">
 		<Size x="104" y="13"/>
 		<Layers>
@@ -609,7 +822,6 @@
 			</OnLeave>
 		</Scripts>
 	</Frame>
-	
 	<Frame name="MCFStatGroupTemplate" virtual="true">
 		<Size x="169" y="0"/>
 		<Layers>
@@ -785,7 +997,6 @@
 			</Frame>
 		</Frames>
 	</Frame>
-
     <!-- PortraitFrameTemplate. This is an empty frame with space for a portrait/icon in the top left corner. -->
 	<Frame name="MCFPortraitFrameTemplate" virtual="true">
 		<Size x="338" y="424"/>
@@ -889,7 +1100,6 @@
 			</Button>
 		</Frames>
 	</Frame>
-
     <!-- ButtonFrameTemplate. This is a Portrait Frame that also has space for buttons along the bottom edge, and includes an inset content area.
     Show/hide the Button bar using: ButtonFrameTemplate_ShowButtonBar(self) or ButtonFrameTemplate_HideButtonBar(self) -->
 	<Frame name="MCFButtonFrameTemplate" inherits="MCFPortraitFrameTemplate" virtual="true">
@@ -922,10 +1132,9 @@
 			</Frame>
 		</Frames>
 	</Frame>
-
 	<!-- NOT READY -->
     <!-- CharacterFrame MAIN template -->
-    <Frame name="MCFCharacterFrame" toplevel="true" movable="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" hidden="true" inherits="MCFButtonFrameTemplate" virtual="true">
+    <Frame name="MCFCharacterFrame" toplevel="true" movable="true" parent="UIParent" hidden="true" inherits="MCFButtonFrameTemplate">
 		<Anchors>
 			<Anchor point="TOPLEFT" x="16" y="-116">
 			</Anchor>
@@ -1080,10 +1289,9 @@
 			<OnHide function="MCFCharacterFrame_OnHide"/>
         </Scripts>
     </Frame>
-	
 	<!-- NOT READY -->
 	<!-- PaperDollFrame MAIN template -->
-	<Frame name="MCFPaperDollFrame" setAllPoints="true" enableMouse="true" parent="MCFCharacterFrame" useParentLevel="true" id="1" virtual="true">
+	<Frame name="MCFPaperDollFrame" setAllPoints="true" enableMouse="true" parent="MCFCharacterFrame" useParentLevel="true" id="1">
 		<Layers>
             <Layer level="ARTWORK">
                 <FontString name="MCFCharacterLevelText" inherits="GameFontNormalSmall" text="Level level race class">
@@ -1216,11 +1424,7 @@
 							<Anchor point="TOPLEFT" x="0" y="0"/>
 						</Anchors>
 						<Scripts>
-							<!-- <OnClick function="MCFPaperDollEquipmentManagerPaneEquipSet_OnClick"/> --> <!-- MCFFIX temp replaced with lines below -->
-							<OnClick>
-								print("MCFPaperDollEquipmentManagerPane's button $parentEquipSet just tried to use MCFPaperDollEquipmentManagerPaneEquipSet_OnClick()");
-								<!-- MCFPaperDollEquipmentManagerPaneEquipSet_OnClick(); -->
-							</OnClick>
+							<OnClick function="MCFPaperDollEquipmentManagerPaneEquipSet_OnClick"/>
 						</Scripts>
 						<Layers>
 							<Layer level="BACKGROUND">
@@ -1240,11 +1444,7 @@
 							<Anchor point="LEFT" relativeTo="$parentEquipSet" relativePoint="RIGHT"/>
 						</Anchors>
 						<Scripts>
-							<!-- <OnClick function="MCFPaperDollEquipmentManagerPaneSaveSet_OnClick"/> --> <!-- MCFFIX temp replaced with lines below -->
-							<OnClick>
-								print("MCFPaperDollEquipmentManagerPane's button $parentSaveSet just tried to use MCFPaperDollEquipmentManagerPaneSaveSet_OnClick()");
-								<!-- MCFPaperDollEquipmentManagerPaneSaveSet_OnClick(); -->
-							</OnClick>
+							<OnClick function="MCFPaperDollEquipmentManagerPaneSaveSet_OnClick"/>
 						</Scripts>
 					</Button>
 					<Slider name="$parentScrollBar" inherits="HybridScrollBarTemplate" parentKey="scrollBar">
@@ -1258,18 +1458,19 @@
 						</Anchors>
 					</Slider>
 				</Frames>
+				<!-- NOT READY -->
 				<Scripts>
 					<OnLoad>
 						self.scrollBar.doNotHide  = 1;
 						self:SetFrameLevel(MCFCharacterFrameInsetRight:GetFrameLevel()+1);
 						self.EquipSet:SetFrameLevel(self:GetFrameLevel()+3);
 						self.SaveSet:SetFrameLevel(self:GetFrameLevel()+3);
-						<!-- MCFPaperDollEquipmentManagerPane_OnLoad(self); --> <!-- MCFFIX disabled atm -->
+						MCFPaperDollEquipmentManagerPane_OnLoad(self);
 					</OnLoad>
-					<!-- <OnShow function="MCFPaperDollEquipmentManagerPane_OnShow"/>
+					<OnShow function="MCFPaperDollEquipmentManagerPane_OnShow"/>
 					<OnHide function="MCFPaperDollEquipmentManagerPane_OnHide"/>
 					<OnEvent function="MCFPaperDollEquipmentManagerPane_OnEvent"/>
-					<OnUpdate function="MCFPaperDollEquipmentManagerPane_OnUpdate"/> --> <!-- MCFFIX disabled atm -->
+					<!-- <OnUpdate function="MCFPaperDollEquipmentManagerPane_OnUpdate"/> -->
 				</Scripts>
 			</ScrollFrame>
 			<PlayerModel name="MCFCharacterModelFrame" inherits="ModelWithControlsTemplate">
@@ -1505,5 +1706,195 @@
 			<OnHide function="MCFPaperDollFrame_OnHide"/>
         </Scripts>
     </Frame>
+
+	<Frame name="MCFGearManagerDialogPopup" hidden="true" parent="MCFPaperDollFrame">
+		<Size x="297" y="254"/>
+		<Anchors>
+			<Anchor point="LEFT" relativePoint="RIGHT"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\MacroFrame\MacroPopup-TopLeft">
+					<Size x="256" y="212"/>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="0.828125"/>
+				</Texture>
+				<Texture file="Interface\MacroFrame\MacroPopup-TopRight">
+					<Size x="64" y="212"/>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="256" y="0"/>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="0.828125"/>
+				</Texture>
+				<Texture file="Interface\MacroFrame\MacroPopup-BotLeft">
+					<Size x="256" y="64"/>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="0" y="-212"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture file="Interface\MacroFrame\MacroPopup-BotRight">
+					<Size x="64" y="64"/>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="256" y="-212"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>	
+			<Layer level="ARTWORK">
+				<FontString inherits="GameFontHighlightSmall" text="GEARSETS_POPUP_TEXT" name="$parentNameText">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="24" y="-21"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString inherits="GameFontHighlightSmall" text="MACRO_POPUP_CHOOSE_ICON" name="$parentChooseIconText">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="24" y="-69"/>
+						</Anchor>
+					</Anchors>
+				</FontString>					
+			</Layer>
+		</Layers>
+		<Frames>
+			<ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate">
+				<Size>
+					<AbsDimension x="296" y="151"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-39" y="-67"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture file="Interface\ClassTrainerFrame\UI-ClassTrainer-ScrollBar">
+							<Size x="30" y="120"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+									<Offset x="-3" y="2"/>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.46875" top="0.0234375" bottom="0.9609375"/>
+						</Texture>
+						<Texture file="Interface\ClassTrainerFrame\UI-ClassTrainer-ScrollBar">
+							<Size x="30" y="79"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT">
+									<Offset x="-3" y="-2"/>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.53125" right="1.0" top="0.3828125" bottom="1.0"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnVerticalScroll>
+						FauxScrollFrame_OnVerticalScroll(self, offset, GEARSET_ICON_ROW_HEIGHT, MCFGearManagerDialogPopup_Update);
+					</OnVerticalScroll>
+				</Scripts>
+			</ScrollFrame>				
+			<EditBox name="$parentEditBox" letters="16" historyLines="0" autoFocus="true">
+				<Size x="182" y="20"/>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="29" y="-35"/>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentLeft" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
+							<Size x="12" y="29"/>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="-11" y="0"/>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.09375" top="0" bottom="1.0"/>
+						</Texture>
+						<Texture name="$parentMiddle" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
+							<Size x="175" y="29"/>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+							</Anchors>
+							<TexCoords left="0.09375" right="0.90625" top="0" bottom="1.0"/>
+						</Texture>
+						<Texture name="$parentRight" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
+							<Size x="12" y="29"/>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+							</Anchors>
+							<TexCoords left="0.90625" right="1.0" top="0" bottom="1.0"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnTextChanged>
+						local text = self:GetText();
+						if ( text ~= "" ) then
+							MCFGearManagerDialogPopup.name = text;
+						else
+							MCFGearManagerDialogPopup.name = nil;
+						end
+						
+						MCFGearManagerDialogPopupOkay_Update();
+					</OnTextChanged>
+					<OnEscapePressed function="MCFGearManagerDialogPopupCancel_OnClick"/>
+					<OnEnterPressed>
+						if ( MCFGearManagerDialogPopupOkay:IsEnabled() ) then
+							MCFGearManagerDialogPopupOkay:Click();
+						end
+					</OnEnterPressed>
+				</Scripts>
+				<FontString inherits="ChatFontNormal"/>
+			</EditBox>	
+			<Button name="$parentCancel" inherits="UIPanelButtonTemplate" text="CANCEL">
+				<Size x="78" y="22"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset x="-11" y="13"/>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MCFGearManagerDialogPopupCancel_OnClick(self, button, pushed);
+						PlaySound(SOUNDKIT.GS_TITLE_OPTION_OK);
+					</OnClick>
+				</Scripts>
+			</Button>					
+			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="OKAY">
+				<Size x="78" y="22"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" relativeTo="$parentCancel" relativePoint="BOTTOMLEFT">
+						<Offset x="-2" y="0"/>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MCFGearManagerDialogPopupOkay_OnClick(self, button, pushed);
+						PlaySound(SOUNDKIT.GS_TITLE_OPTION_OK);
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad function="MCFGearManagerDialogPopup_OnLoad"/>
+			<OnShow function="MCFGearManagerDialogPopup_OnShow"/>
+			<OnHide function="MCFGearManagerDialogPopup_OnHide"/>
+		</Scripts>				
+	</Frame>
+
+
+
 
 </Ui>

@@ -525,8 +525,7 @@ function MCFPaperDollFrame_QueuedUpdate(self)
 	self:SetScript("OnUpdate", nil);
 end
 
---MCFFIX READY (kinda)
---NEEDS WORK ON CALLS OF MCFPaperDoll_InitStatCategories BECAUSE THERE IS ANOTHER CVARS CALLS
+--MCFFIX READY need to replace old event handlers
 function MCFPaperDollFrame_OnEvent (self, event, ...)
 	local unit = ...;
 	if ( event == "PLAYER_ENTERING_WORLD" or
@@ -580,23 +579,32 @@ function MCFPaperDollFrame_OnEvent (self, event, ...)
 	end
 end
 
+function MCF_GetPrimaryTalentTree(tab)
+	local cache = {};
+	if (tab) then
+		TalentFrame_UpdateSpecInfoCache(cache, false, false, tab);
+	else
+		TalentFrame_UpdateSpecInfoCache(cache, false, false, GetActiveTalentGroup());
+	end
+	return cache.primaryTabIndex;
+end
+
 --MCFFIX READY
---GetPrimaryTalentTree() replaced with nil because function doesn't exist in WotLK. SetLevel function should just use class icon
 function MCFPaperDollFrame_SetLevel()
-	local primaryTalentTree = nil --GetPrimaryTalentTree();
+	local primaryTalentTree = MCF_GetPrimaryTalentTree();
 	local classDisplayName, class = UnitClass("player"); 
 	local classColor = RAID_CLASS_COLORS[class];
 	local classColorString = format("ff%.2x%.2x%.2x", classColor.r * 255, classColor.g * 255, classColor.b * 255);
 	local specName, _;
 	
 	if (primaryTalentTree) then
-		_, specName = GetTalentTabInfo(primaryTalentTree);
+		specName = GetTalentTabInfo(primaryTalentTree);
 	end
 	
 	if (specName and specName ~= "") then
-		MCFCharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), classColorString, specName, classDisplayName);
+		MCFCharacterLevelText:SetFormattedText(MCF_PLAYER_LEVEL, UnitLevel("player"), classColorString, specName, classDisplayName);
 	else
-		MCFCharacterLevelText:SetFormattedText(PLAYER_LEVEL_NO_SPEC, UnitLevel("player"), classColorString, classDisplayName);
+		MCFCharacterLevelText:SetFormattedText(MCF_PLAYER_LEVEL_NO_SPEC, UnitLevel("player"), classColorString, classDisplayName);
 	end
 	
 	-- Hack: if the string is very long, move it a bit so that it has more room (although it will no longer be centered)
@@ -2095,8 +2103,7 @@ function MCFPaperDollFrame_SetExpertise(statFrame, unit)
 	statFrame:Show();
 end
 
---MCFFIX ready
---Added "not" before MCFMOVING_STAT_CATEGORY (not nil) to disable function. Let's if it will be enough
+--MCFFIX READY disabled completely because mastery doesn't exist in WotLK
 --[[ function MCFMastery_OnEnter(statFrame)
 	if (not MCFMOVING_STAT_CATEGORY) then return; end
 	GameTooltip:SetOwner(statFrame, "ANCHOR_RIGHT");
@@ -2136,11 +2143,8 @@ end
 	GameTooltip:Show();
 end ]]
 
---MCFFIX ready
---Added new condition to disable function
+--MCFFIX READY disabled completely because mastery doesn't exist in WotLK
 --[[ function MCFPaperDollFrame_SetMastery(statFrame, unit)
-	if (true) then return; end --MCFFIX added this line to disable function
-
 	if ( unit ~= "player" ) then
 		statFrame:Hide();
 		return;
@@ -2300,8 +2304,7 @@ function MCFCharacterSpellCritChance_OnEnter (self)
 	GameTooltip:Show();
 end
 
---MCFFIX ready
---Needs rework where function MCFPaperDoll_InitStatCategories is being called because it wants CVars again
+--MCFFIX READY
 function MCFPaperDollFrame_OnShow (self)
 	MCFCharacterStatsPane.initialOffsetY = 0;
 	MCFCharacterFrameTitleText:SetText(UnitPVPName("player"));
@@ -2312,7 +2315,7 @@ function MCFPaperDollFrame_OnShow (self)
 	else
 		MCFPaperDoll_InitStatCategories(MCFPAPERDOLL_STATCATEGORY_DEFAULTORDER, "statCategoryOrder_2", "statCategoriesCollapsed_2", "player");
 	end
-	if ((MCF_GetSettings"characterFrameCollapsed") ~= "0") then
+	if (MCF_GetSettings("characterFrameCollapsed") ~= "0") then
 		MCFCharacterFrame_Collapse();
 	else
 		MCFCharacterFrame_Expand();
@@ -2326,7 +2329,7 @@ function MCFPaperDollFrame_OnShow (self)
 	MCFPaperDollSidebarTabs:Show();
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollFrame_OnHide (self)
 	MCFCharacterStatsPane.initialOffsetY = 0;
 	MCFCharacterFrame_Collapse();
@@ -2337,24 +2340,21 @@ function MCFPaperDollFrame_OnHide (self)
 	MCFPaperDollSidebarTabs:Hide();
 end
 
---MCFFIX ready
+--MCFFIXWORKINPROGRESS
 --Disabled atm with debug message
 function MCFPaperDollFrame_ClearIgnoredSlots ()
-	print("Function MCFPaperDollFrame_ClearIgnoredSlots just executed. It's disabled atm.");
-	--[[ EquipmentManagerClearIgnoredSlotsForSave();		
+	--[[ EquipmentManagerClearIgnoredSlotsForSave(); ]]
 	for k, button in next, itemSlotButtons do
 		if ( button.ignored ) then
 			button.ignored = nil;
 			MCFPaperDollItemSlotButton_Update(button);
 		end
-	end ]]
+	end
 end
 
---MCFFIX ready
---Disabled atm with debug message
+--MCFFIXWORKINPROGRESS disabled
 function MCFPaperDollFrame_IgnoreSlotsForSet (setName)
-	print("Function MCFPaperDollFrame_IgnoreSlotsForSet just executed. It's disabled atm.");
-	--[[ local set = GetEquipmentSetItemIDs(setName);
+	--[[ local set = C_EquipmentSet.GetEquipmentSetIDs(setName);
 	for slot, item in ipairs(set) do
 		if ( item == EQUIPMENT_SET_IGNORED_SLOT ) then
 			EquipmentManagerIgnoreSlotForSave(slot);
@@ -2364,16 +2364,14 @@ function MCFPaperDollFrame_IgnoreSlotsForSet (setName)
 	end ]]
 end
 
---MCFFIX ready
---Disabled atm with debug message
+--MCFFIXWORKINPROGRESS disabled
 function PaperDollFrame_IgnoreSlot(slot)
-	print("Function PaperDollFrame_IgnoreSlot just executed. It's disabled atm.");
-	--[[ EquipmentManagerIgnoreSlotForSave(slot);
+	--[[ EquipmentManagerIgnoreSlotForSave(slot); ]]
 	itemSlotButtons[slot].ignored = true;
-	MCFPaperDollItemSlotButton_Update(itemSlotButtons[slot]); ]]
+	MCFPaperDollItemSlotButton_Update(itemSlotButtons[slot]);
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollItemSlotButton_OnLoad (self)
 	self:RegisterForDrag("LeftButton");
 	self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
@@ -2410,7 +2408,7 @@ function MCFPaperDollItemSlotButton_OnLoad (self)
 	end
 end
 
---MCFFIX ready
+--MCFFIX READY probably need to replace SHOW_COMPARE_TOOLTIP with something modern
 function MCFPaperDollItemSlotButton_OnShow (self, isBag)
 	self:RegisterEvent("PLAYER_EQUIPMENT_CHANGED");
 	self:RegisterEvent("MERCHANT_UPDATE");
@@ -2425,7 +2423,7 @@ function MCFPaperDollItemSlotButton_OnShow (self, isBag)
 	MCFPaperDollItemSlotButton_Update(self);
 end
 
---MCFFIX ready
+--MCFFIX READY probably need to replace SHOW_COMPARE_TOOLTIP with something modern
 function MCFPaperDollItemSlotButton_OnHide (self)
 	self:UnregisterEvent("PLAYER_EQUIPMENT_CHANGED");
 	self:UnregisterEvent("MERCHANT_UPDATE");
@@ -2484,7 +2482,7 @@ function MCFPaperDollItemSlotButton_OnEvent (self, event, ...)
 	end
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollItemSlotButton_OnClick (self, button)
 	MerchantFrame_ResetRefundItem();
 	if ( button == "LeftButton" ) then
@@ -2502,7 +2500,7 @@ function MCFPaperDollItemSlotButton_OnClick (self, button)
 	end
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollItemSlotButton_OnModifiedClick (self, button)
 	if ( HandleModifiedItemClick(GetInventoryItemLink("player", self:GetID())) ) then
 		return;
@@ -2512,7 +2510,7 @@ function MCFPaperDollItemSlotButton_OnModifiedClick (self, button)
 	end
 end
 
---MCFFIX ready
+--MCFFIX ready - needs fix for call of Cooldown related function
 function MCFPaperDollItemSlotButton_Update (self)
 	local textureName = GetInventoryItemTexture("player", self:GetID());
 	local cooldown = _G[self:GetName().."Cooldown"];
@@ -2526,10 +2524,10 @@ function MCFPaperDollItemSlotButton_Update (self)
 			SetItemButtonTextureVertexColor(self, 1.0, 1.0, 1.0);
 			SetItemButtonNormalTextureVertexColor(self, 1.0, 1.0, 1.0);
 		end
-		if ( cooldown ) then
+		--[[ if ( cooldown ) then
 			local start, duration, enable = GetInventoryItemCooldown("player", self:GetID());
 			CooldownFrame_SetTimer(cooldown, start, duration, enable);
-		end
+		end ]] --MCFFIX temporary disabled, doesn't show cooldown texture
 		
 		self.hasItem = 1;
 	else
@@ -2541,9 +2539,9 @@ function MCFPaperDollItemSlotButton_Update (self)
 		SetItemButtonCount(self, 0);
 		SetItemButtonTextureVertexColor(self, 1.0, 1.0, 1.0);
 		SetItemButtonNormalTextureVertexColor(self, 1.0, 1.0, 1.0);
-		if ( cooldown ) then
+		--[[ if ( cooldown ) then
 			cooldown:Hide();
-		end
+		end ]] --MCFFIX temporary disabled, doesn't show cooldown texture
 		self.hasItem = nil;
 	end
 	
@@ -2564,7 +2562,7 @@ function MCFPaperDollItemSlotButton_Update (self)
 	MerchantFrame_UpdateCanRepairAll();
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollItemSlotButton_UpdateLock (self)
 	if ( IsInventoryItemLocked(self:GetID()) ) then
 		--this:SetNormalTexture("Interface\\Buttons\\UI-Quickslot");
@@ -2575,20 +2573,18 @@ function MCFPaperDollItemSlotButton_UpdateLock (self)
 	end
 end
 
---MCFFIX
---NEEDS REWORKING BECAUSE IS USING EquipmentFlyout_UpdateFlyout() and EquipmentFlyout_SetTooltipAnchor().
---Commented a few lines out and added print() instead to debug
+--MCFFIXWORKINPROGRESS
 function MCFPaperDollItemSlotButton_OnEnter (self)
 	self:RegisterEvent("MODIFIER_STATE_CHANGED");
-	print("Function MCFPaperDollItemSlotButton_OnEnter just has been called. Needs reworking");
-	--[[
-	EquipmentFlyout_UpdateFlyout(self);
+	--[[ EquipmentFlyout_UpdateFlyout(self);
 	if ( not EquipmentFlyout_SetTooltipAnchor(self) ) then
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-	end
+	end ]]
+	GameTooltip:SetOwner(self, "ANCHOR_RIGHT"); --MCFTEST added this line without if condition because EquipmentFlyout function doesn't exist
+
 	local hasItem, hasCooldown, repairCost = GameTooltip:SetInventoryItem("player", self:GetID());
 	if ( not hasItem ) then
-		local text = _G[strupper(strsub(self:GetName(), 10))];
+		local text = _G[strupper(strsub(self:GetName(), 13))];
 		if ( self.checkRelic and UnitHasRelicSlot("player") ) then
 			text = RELICSLOT;
 		end
@@ -2601,10 +2597,9 @@ function MCFPaperDollItemSlotButton_OnEnter (self)
 	else
 		CursorUpdate(self);
 	end
-	]]--
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollItemSlotButton_OnLeave (self)
 	self:UnregisterEvent("MODIFIER_STATE_CHANGED");
 	GameTooltip:Hide();
@@ -2625,7 +2620,7 @@ function MCFPaperDollStatTooltip (self)
 	GameTooltip:Show();
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFFormatPaperDollTooltipStat(name, base, posBuff, negBuff)
 	local effective = max(0,base + posBuff + negBuff);
 	local text = HIGHLIGHT_FONT_COLOR_CODE..name.." "..effective;
@@ -2648,7 +2643,7 @@ function MCFFormatPaperDollTooltipStat(name, base, posBuff, negBuff)
 	return text;
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFColorPaperDollStat(base, posBuff, negBuff)
 	local stat;
 	local effective = max(0,base + posBuff + negBuff);
@@ -2667,7 +2662,7 @@ function MCFColorPaperDollStat(base, posBuff, negBuff)
 	return stat;
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollFormatStat(name, base, posBuff, negBuff, frame, textString)
 	local effective = max(0,base + posBuff + negBuff);
 	local text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT,name).." "..effective;
@@ -2699,7 +2694,7 @@ function MCFPaperDollFormatStat(name, base, posBuff, negBuff, frame, textString)
 	frame.tooltip = text;
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFCharacterAttackFrame_OnEnter (self)
 	if (MCFMOVING_STAT_CATEGORY) then return; end
 	-- Main hand weapon
@@ -2717,7 +2712,7 @@ function MCFCharacterAttackFrame_OnEnter (self)
 	GameTooltip:Show();
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFCharacterDamageFrame_OnEnter (self)
 	if (MCFMOVING_STAT_CATEGORY) then return; end
 	-- Main hand weapon
@@ -2741,7 +2736,7 @@ function MCFCharacterDamageFrame_OnEnter (self)
 	GameTooltip:Show();
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFCharacterRangedDamageFrame_OnEnter (self)
 	if (MCFMOVING_STAT_CATEGORY) then return; end
 	if ( not self.damage ) then
@@ -2755,7 +2750,7 @@ function MCFCharacterRangedDamageFrame_OnEnter (self)
 	GameTooltip:Show();
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollFrame_GetArmorReduction(armor, attackerLevel)
 	local levelModifier = attackerLevel;
 	if ( levelModifier > 80 ) then
@@ -2777,7 +2772,7 @@ function MCFPaperDollFrame_GetArmorReduction(armor, attackerLevel)
 	return temp*100;
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollFrame_CollapseStatCategory(categoryFrame)
 	if (not categoryFrame.collapsed) then
 		categoryFrame.collapsed = true;
@@ -2797,7 +2792,7 @@ function MCFPaperDollFrame_CollapseStatCategory(categoryFrame)
 	end
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollFrame_ExpandStatCategory(categoryFrame)
 	if (categoryFrame.collapsed) then
 		categoryFrame.collapsed = false;
@@ -2897,7 +2892,7 @@ function MCFPaperDollFrame_UpdateStatCategory(categoryFrame)
 	categoryFrame:SetHeight(totalHeight);
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollFrame_UpdateStats()
 	local index = 1;
 	while(_G["MCFCharacterStatsPaneCategory"..index]) do
@@ -2907,7 +2902,7 @@ function MCFPaperDollFrame_UpdateStats()
 	MCFPaperDollFrame_UpdateStatScrollChildHeight();
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollFrame_UpdateStatScrollChildHeight()
 	local index = 1;
 	local totalHeight = 0;
@@ -2920,7 +2915,7 @@ function MCFPaperDollFrame_UpdateStatScrollChildHeight()
 	MCFCharacterStatsPaneScrollChild:SetHeight(totalHeight+10-(MCFCharacterStatsPane.initialOffsetY or 0));
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollFrame_SetLabelAndText(statFrame, label, text, isPercentage)
 	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, label));
 	if ( isPercentage ) then
@@ -2929,7 +2924,7 @@ function MCFPaperDollFrame_SetLabelAndText(statFrame, label, text, isPercentage)
 	_G[statFrame:GetName().."StatText"]:SetText(text);
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFComputePetBonus(stat, value)
 	local temp, unitClass = UnitClass("player");
 	unitClass = strupper(unitClass);
@@ -3019,7 +3014,7 @@ function MCFPaperDoll_InitStatCategories(defaultOrder, orderCVarName, collapsedC
 		frame:Show();
 		
 		-- Expand or collapse
-		local categoryInfo = MCFPAPERDOLL_STATCATEGORIES[frame.Category]; -- categoryInfo = for example "GENERAL"
+		local categoryInfo = MCFPAPERDOLL_STATCATEGORIES[frame.Category];
 		if (categoryInfo and collapsedCVarName and MCF_GetSettings(collapsedCVarName, categoryInfo.id)) then -- MCFFIX replaced GetCVarBitfield() with own function MCF_GetSettings()
 			MCFPaperDollFrame_CollapseStatCategory(frame);
 		else
@@ -3107,7 +3102,7 @@ function MCFPaperDoll_UpdateCategoryPositions()
 	end
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDoll_MoveCategoryUp(self)
 	for index = 2, #StatCategoryFrames do
 		if (StatCategoryFrames[index] == self) then
@@ -3121,7 +3116,7 @@ function MCFPaperDoll_MoveCategoryUp(self)
 	MCFPaperDoll_SaveStatCategoryOrder();
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDoll_MoveCategoryDown(self)
 	for index = 1, #StatCategoryFrames-1 do
 		if (StatCategoryFrames[index] == self) then
@@ -3134,7 +3129,7 @@ function MCFPaperDoll_MoveCategoryDown(self)
 	MCFPaperDoll_SaveStatCategoryOrder();
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollStatCategory_OnDragUpdate(self)
 	local _, cursorY = GetCursorPosition();
 	cursorY = cursorY*GetScreenHeightScale();
@@ -3177,7 +3172,7 @@ function MCFPaperDollStatCategory_OnDragUpdate(self)
 	end
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollStatCategory_OnDragStart(self)
 	MCFMOVING_STAT_CATEGORY = self;
 	MCFPaperDoll_UpdateCategoryPositions();
@@ -3192,7 +3187,7 @@ function MCFPaperDollStatCategory_OnDragStart(self)
 	end
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollStatCategory_OnDragStop(self)
 	MCFMOVING_STAT_CATEGORY = nil;
 	MCFPaperDoll_UpdateCategoryPositions();
@@ -3207,10 +3202,10 @@ function MCFPaperDollStatCategory_OnDragStop(self)
 	MCFPaperDoll_SaveStatCategoryOrder();
 end
 
---MCFFIX ready (needs complete reworking (changing to modern flyout system))
+--MCFFIXWORKINPROGRESS (needs complete reworking (changing to modern flyout system))
 function MCFPaperDollFrameItemFlyoutButton_OnClick (self)
 	print("Function MCFPaperDollFrameItemFlyoutButton_OnClick just tried to run. It's disabled completely atm.");
-	--[[
+	
 	if ( self.location == PDFITEMFLYOUT_IGNORESLOT_LOCATION ) then
 		local slot = MCFEquipmentFlyoutFrame.button;
 		EquipmentManagerIgnoreSlotForSave(slot:GetID());
@@ -3240,15 +3235,15 @@ function MCFPaperDollFrameItemFlyoutButton_OnClick (self)
 		local action = EquipmentManager_EquipItemByLocation(self.location, self.id);
 		EquipmentManager_RunAction(action);
 	end
-	]]--
+	
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollFrameItemFlyout_GetItems(paperDollItemSlot, itemTable)
 	GetInventoryItemsForSlot(paperDollItemSlot, itemTable);
 end
 
---MCFFIX ready
+--MCFFIXWORKINPROGRESS
 function MCFPaperDollFrameItemFlyout_PostGetItems(itemSlotButton, itemDisplayTable, numItems)
 	if (MCFPaperDollEquipmentManagerPane:IsShown() and (MCFPaperDollEquipmentManagerPane.selectedSetName or MCFGearManagerDialogPopup:IsShown())) then 
 		if ( not itemSlotButton.ignored ) then
@@ -3265,7 +3260,7 @@ function MCFPaperDollFrameItemFlyout_PostGetItems(itemSlotButton, itemDisplayTab
 	return numItems;
 end
 
---MCFFIX ready
+--MCFFIXWORKINPROGRESS
 function MCFGearSetButton_OnClick (self, button, down)
 	print("Function MCFGearSetButton_OnClick just started execution.");
 
@@ -3293,7 +3288,7 @@ function MCFGearSetButton_OnClick (self, button, down)
 	print("Function MCFGearSetButton_OnClick just ended execution.");
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFGearSetButton_OnEnter (self)
 	if ( self.name and self.name ~= "" ) then
 		GameTooltip_SetDefaultAnchor(GameTooltip, self);
@@ -3311,20 +3306,20 @@ GEARSET_ICON_ROW_HEIGHT = 36;
 ]]--
 local MCFEM_ICON_FILENAMES = {};
 
---MCFFIX ready
+--MCFFIX READY (need to test built-in template GearSetPopupButtonTemplate)
 function MCFGearManagerDialogPopup_OnLoad (self)
 	self.buttons = {};
 	
 	local rows = 0;
 	
-	local button = CreateFrame("CheckButton", "MCFGearManagerDialogPopupButton1", MCFGearManagerDialogPopup, "MCFGearSetPopupButtonTemplate");
+	local button = CreateFrame("CheckButton", "MCFGearManagerDialogPopupButton1", MCFGearManagerDialogPopup, "GearSetPopupButtonTemplate");
 	button:SetPoint("TOPLEFT", 24, -85);
 	button:SetID(1);
 	tinsert(self.buttons, button);
 	
 	local lastPos;
 	for i = 2, NUM_GEARSET_ICONS_SHOWN do
-		button = CreateFrame("CheckButton", "MCFGearManagerDialogPopupButton" .. i, MCFGearManagerDialogPopup, "MCFGearSetPopupButtonTemplate");
+		button = CreateFrame("CheckButton", "MCFGearManagerDialogPopupButton" .. i, MCFGearManagerDialogPopup, "GearSetPopupButtonTemplate");
 		button:SetID(i);
 		
 		lastPos = (i - 1) / NUM_GEARSET_ICONS_PER_ROW;
@@ -3352,7 +3347,7 @@ function MCFGearManagerDialogPopup_OnShow (self)
 	PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN);
 	self.name = nil;
 	self.isEdit = false;
-	MCFRecalculateGearManagerDialogPopup();
+	MCFRecalculateGearManagerDialogPopup(); --MCFCHECK
 end
 
 --MCFFIX ready
@@ -3361,7 +3356,7 @@ function MCFGearManagerDialogPopup_OnHide (self)
 	MCFGearManagerDialogPopup:SetSelection(true, nil);
 	MCFGearManagerDialogPopupEditBox:SetText("");
 	if (not MCFPaperDollEquipmentManagerPane.selectedSetName) then
-		MCFPaperDollFrame_ClearIgnoredSlots();
+		MCFPaperDollFrame_ClearIgnoredSlots(); --MCFCHECK
 	end
 	MCFEM_ICON_FILENAMES = nil;
 	collectgarbage();
@@ -3518,12 +3513,11 @@ end
 
 --MCFFIX ready (disabled atm - needs change to modern flyout system)
 function MCFGearManagerDialogPopupOkay_OnClick (self, button, pushed)
-	print("Function MCFGearManagerDialogPopupOkay_OnClick just tried to run. It's disabled atm.");
-	--[[
 	local popup = MCFGearManagerDialogPopup;
 	local iconTexture = MCFGetEquipmentSetIconInfo(popup.selectedIcon);
 
-	if ( GetEquipmentSetInfoByName(popup.name) ) then	
+	--[[ if ( GetEquipmentSetInfoByName(popup.name) ) then ]] --MCFFIX replaced with modern functions
+	if ( C_EquipmentSet.GetEquipmentSetInfo(C_EquipmentSet.GetEquipmentSetID(popup.name)) ) then
 		if (popup.isEdit and popup.name ~= popup.origName)  then
 			-- Not allowed to overwrite an existing set by doing a rename
 			UIErrorsFrame:AddMessage(EQUIPMENT_SETS_CANT_RENAME, 1.0, 0.1, 0.1, 1.0);
@@ -3538,21 +3532,20 @@ function MCFGearManagerDialogPopupOkay_OnClick (self, button, pushed)
 			end
 			return;
 		end
-	elseif ( GetNumEquipmentSets() >= MAX_EQUIPMENT_SETS_PER_PLAYER and not popup.isEdit) then
+	elseif ( C_EquipmentSet.GetNumEquipmentSets() >= MAX_EQUIPMENT_SETS_PER_PLAYER and not popup.isEdit) then
 		UIErrorsFrame:AddMessage(EQUIPMENT_SETS_TOO_MANY, 1.0, 0.1, 0.1, 1.0);
 		return;
 	end
 	
 	if (popup.isEdit) then
 		--Modifying a set
-		PaperDollEquipmentManagerPane.selectedSetName = popup.name;
-		ModifyEquipmentSet(popup.origName, popup.name, iconTexture);
+		MCFPaperDollEquipmentManagerPane.selectedSetName = popup.name;
+		C_EquipmentSet.ModifyEquipmentSet(popup.origName, popup.name, iconTexture);
 	else
 		-- Saving a new set
-		SaveEquipmentSet(popup.name, iconTexture);
+		C_EquipmentSet.SaveEquipmentSet(popup.name, iconTexture);
 	end
 	popup:Hide();
-	]]--
 end
 
 --MCFFIX ready
@@ -3609,16 +3602,14 @@ function MCFPaperDollEquipmentManagerPane_OnUpdate(self)
 	end
 end
 
---MCFFIX ready
---RENAMED BUT ISN'T FIXED. JUST COMMENTED OUT
+--MCFFIXWORKINPROGRESS
 function MCFPaperDollEquipmentManagerPane_OnShow(self)
-	print("function MCFPaperDollEquipmentManagerPane_OnShow tried execution");
-	--HybridScrollFrame_CreateButtons(MCFPaperDollEquipmentManagerPane, "MCFGearSetButtonTemplate");
-	--MCFPaperDollEquipmentManagerPane_Update();
-	--EquipmentFlyoutPopoutButton_ShowAll();
+	HybridScrollFrame_CreateButtons(MCFPaperDollEquipmentManagerPane, "MCFGearSetButtonTemplate");
+	MCFPaperDollEquipmentManagerPane_Update();
+	--[[ EquipmentFlyoutPopoutButton_ShowAll(); ]]
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollEquipmentManagerPane_OnEvent(self, event, ...)
 
 	if ( event == "EQUIPMENT_SWAP_FINISHED" ) then
@@ -3643,23 +3634,26 @@ function MCFPaperDollEquipmentManagerPane_OnEvent(self, event, ...)
 	end
 end
 
---MCFFIX ready
---RENAMED BUT ISN'T FIXED. JUST COMMENTED OUT
+--MCFFIXWORKINPROGRESS
 function MCFPaperDollEquipmentManagerPane_OnHide(self)
-	print("function MCFPaperDollEquipmentManagerPane_OnHide tried execution");
-	--EquipmentFlyoutPopoutButton_HideAll();
-	--MCFPaperDollFrame_ClearIgnoredSlots();
-	--MCFGearManagerDialogPopup:Hide();
-	--StaticPopup_Hide("CONFIRM_SAVE_EQUIPMENT_SET");
-	--StaticPopup_Hide("CONFIRM_OVERWRITE_EQUIPMENT_SET");
+	--[[ EquipmentFlyoutPopoutButton_HideAll(); ]]
+	MCFPaperDollFrame_ClearIgnoredSlots();
+	MCFGearManagerDialogPopup:Hide();
+	StaticPopup_Hide("CONFIRM_SAVE_EQUIPMENT_SET");
+	StaticPopup_Hide("CONFIRM_OVERWRITE_EQUIPMENT_SET");
 end
 
 --MCFFIX ready
 --Disabled completely, needs rework
 function MCFPaperDollEquipmentManagerPane_Update()
-	print("Function MCFPaperDollEquipmentManagerPane_Update just tried to run");
-	
-	local _, _, setID, isEquipped = C_EquipmentSet.GetEquipmentSetInfo(MCFPaperDollEquipmentManagerPane.selectedSetName or "");
+	--[[ local _, setID, isEquipped = GetEquipmentSetInfoByName(MCFPaperDollEquipmentManagerPane.selectedSetName or ""); ]] --MCFFIX replaced with a few lines below
+
+	local setID, isEquipped
+	if ( MCFPaperDollEquipmentManagerPane.selectedSetName ) then
+		setID = C_EquipmentSet.GetEquipmentSetID(MCFPaperDollEquipmentManagerPane.selectedSetName);
+		_, _, _, isEquipped = C_EquipmentSet.GetEquipmentSetInfo(setID);
+	end
+
 	if (setID) then
 		if (isEquipped) then
 			MCFPaperDollEquipmentManagerPaneSaveSet:Disable();
@@ -3679,7 +3673,7 @@ function MCFPaperDollEquipmentManagerPane_Update()
 		end
 	end
 
-	local numSets = GetNumEquipmentSets();
+	local numSets = C_EquipmentSet.GetNumEquipmentSets();
 	local numRows = numSets;
 	if (numSets < MAX_EQUIPMENT_SETS_PER_PLAYER) then
 		numRows = numRows + 1;  -- "Add New Set" button
@@ -3699,7 +3693,7 @@ function MCFPaperDollEquipmentManagerPane_Update()
 			
 			if (i+scrollOffset <= numSets) then
 				-- Normal equipment set button
-				name, texture, setID, isEquipped, _, _, _, numLost = GetEquipmentSetInfo(i+scrollOffset);
+				name, texture, setID, isEquipped, _, _, _, numLost = C_EquipmentSet.GetEquipmentSetInfo(i+scrollOffset);
 				button.name = name;
 				button.text:SetText(name);
 				if (numLost > 0) then
@@ -3769,6 +3763,7 @@ end
 
 --MCFFIX ready
 function MCFPaperDollEquipmentManagerPaneSaveSet_OnClick (self)
+	print("Function MCFPaperDollEquipmentManagerPaneSaveSet_OnClick just executed");
 	local selectedSetName = MCFPaperDollEquipmentManagerPane.selectedSetName
 	if (selectedSetName and selectedSetName ~= "") then
 		local dialog = StaticPopup_Show("CONFIRM_SAVE_EQUIPMENT_SET", selectedSetName);
@@ -3783,12 +3778,12 @@ end
 --MCFFIX ready
 --Temporary disabled
 function MCFPaperDollEquipmentManagerPaneEquipSet_OnClick (self)
+	print("Function MCFPaperDollEquipmentManagerPaneEquipSet_OnClick just executed");
 	local selectedSetName = MCFPaperDollEquipmentManagerPane.selectedSetName;
 	if ( selectedSetName and selectedSetName ~= "") then
 		PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);	-- inappropriately named, but a good sound.
 		--MCFFIX
 		--EquipmentManager_EquipSet(selectedSetName);
-		print("Function MCFPaperDollEquipmentManagerPaneEquipSet_OnClick tries to use EquipmentManager_EquipSet");
 	end
 end
 
@@ -3896,7 +3891,7 @@ function MCFPlayerTitleButton_OnClick(self)
 	SetCurrentTitle(self.titleId);
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFSetTitleByName(name)
 	name = strlower(name);
 	for i = 1, GetNumTitles() do
