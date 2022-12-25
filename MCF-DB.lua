@@ -1,3 +1,6 @@
+MCF_PLAYER_LEVEL = "|c%2$s%4$s (%3$s)|r %1$s-го уровня";
+MCF_PLAYER_LEVEL_NO_SPEC = "|c%2$s%3$s|r %1$s-го уровня";
+
 MCF_STATS_COLLAPSE_TOOLTIP = "Скрыть информацию о персонаже";
 MCF_STATS_EXPAND_TOOLTIP = "Показать информацию о персонаже";
 MCF_PET_STATS_COLLAPSE_TOOLTIP = "Скрыть информацию о питомце";
