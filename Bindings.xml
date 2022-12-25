@@ -1,5 +1,5 @@
 <Bindings>
-	<Binding name="Open Modern Character Frame" category = "ModernCharacterFrame" header="INTERFACE" default="V">
-		MCFToggleCharacter("MCFCharacterFrame");
+	<Binding name="Open Modern Character Frame" category = "Modern Character Frame" default="V">
+		MCFToggleCharacter("MCFPaperDollFrame");
 	</Binding>
 </Bindings>
