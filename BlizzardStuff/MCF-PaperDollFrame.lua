@@ -1,30 +1,5 @@
 --MCFFIX Added this constant(s) because they don't exist in modern version
-MCFVERTICAL_FLYOUTS = { [16] = true, [17] = true, [18] = true }
-MCF_SETTINGS = {
-	["characterFrameCollapsed"] = "0",
-
-	["statCategoryOrder"] = "", --"1,2,3,4,5,6,7",
-	["statCategoryOrder_2"] = "", --"1,2,3,4,5,6,7",
-
-	["statCategoriesCollapsed"] = {false, false, false, false, false, false, false},
-	["statCategoriesCollapsed_2"] = {false, false, false, false, false, false, false},
-}
-
-function MCF_GetSettings(query, id)
-	if (id) then
-		return MCF_SETTINGS[query][id];
-	else
-		return MCF_SETTINGS[query];
-	end
-end
-
-function MCF_SetSettings(setting, value, id)
-	if (id) then
-		MCF_SETTINGS[setting][id] = value;
-	else
-		MCF_SETTINGS[setting] = value;
-	end
-end
+MCFVERTICAL_FLYOUTS = { [16] = true, [17] = true, [18] = true };
 
 --MCFFIX these constants are already in the game with same values
 --[[
@@ -115,7 +90,6 @@ local itemSlotButtons = {};
 local STATCATEGORY_PADDING = 4;
 local STATCATEGORY_MOVING_INDENT = 4;
 
---MCFFIX these constants are already in the game with same values
 MCFMOVING_STAT_CATEGORY = nil;
 
 local StatCategoryFrames = {};
