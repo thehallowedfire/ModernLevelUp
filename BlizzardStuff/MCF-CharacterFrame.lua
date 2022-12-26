@@ -49,18 +49,18 @@ function MCFToggleCharacter (tab)
 	local subFrame = _G[tab];
 	if ( subFrame ) then
 		if (not subFrame.hidden) then
-			print("debug", MCFCharacterFrame.selectedTab);
 			PanelTemplates_SetTab(MCFCharacterFrame, subFrame:GetID());
-			print("debug", MCFCharacterFrame.selectedTab);
 			if ( MCFCharacterFrame:IsShown() ) then
 				if ( subFrame:IsShown() ) then
-					HideUIPanel(MCFCharacterFrame);
+					--[[ HideUIPanel(MCFCharacterFrame); ]] --MCFFIX swapped to :Hide() because HideUIPanel doesn't work in combat
+					MCFCharacterFrame:Hide();
 				else
 					PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
 					MCFCharacterFrame_ShowSubFrame(tab);
 				end
 			else
-				ShowUIPanel(MCFCharacterFrame);
+				--[[ ShowUIPanel(MCFCharacterFrame); ]] --MCFFIX swapped to :Show() because HideUIPanel doesn't work in combat
+				MCFCharacterFrame:Show();
 				MCFCharacterFrame_ShowSubFrame(tab);
 			end
 		end
