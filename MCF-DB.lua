@@ -21,5 +21,7 @@ MCF_STAT_HASTE_BASE_TOOLTIP = "\nРейтинг скорости: %d (скоро
 MCF_CR_BLOCK_TOOLTIP = "Рейтинг блока %d увеличивает вероятность блокировать удар на %.2f%%.\nПри успешном блоке урон уменьшается на %d%%.";
 MCF_RESISTANCE_TOOLTIP_SUBTEXT = "Уменьшает урон, получаемый персонажем от атак, в ходе которых используется %s, в среднем на %.2f%%.";
 
-
 MCF_WEAPON_SPEED = "Скорость атаки";
+
+MCF_STAT_AVERAGE_ITEM_LEVEL = "Ур. предметов";
+MCF_STAT_AVERAGE_ITEM_LEVEL_EQUIPPED = "(Надето %d)";
