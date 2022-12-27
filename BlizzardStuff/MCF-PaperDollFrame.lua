@@ -1,6 +1,20 @@
 --MCFFIX Added this constant(s) because they don't exist in modern version
 MCF_VERTICAL_FLYOUTS = { [16] = true, [17] = true, [18] = true };
 
+StaticPopupDialogs["MCF_CONFIRM_OVERWRITE_EQUIPMENT_SET"] = {
+	text = CONFIRM_OVERWRITE_EQUIPMENT_SET,
+	button1 = YES,
+	button2 = NO,
+	OnAccept = function (self) C_EquipmentSet.SaveEquipmentSet(self.data, self.selectedIcon); MCFGearManagerDialogPopup:Hide(); end,
+	OnCancel = function (self) end,
+	OnHide = function (self) self.data = nil; self.selectedIcon = nil; end,
+	hideOnEscape = 1,
+	timeout = 0,
+	exclusive = 1,
+	whileDead = 1,
+}
+
+
 --MCFFIX these constants are already in the game with same values
 --[[
 EQUIPPED_FIRST = 1;
@@ -2329,9 +2343,9 @@ function MCFPaperDollFrame_ClearIgnoredSlots ()
 end
 
 --MCFFIX READY
-function MCFPaperDollFrame_IgnoreSlotsForSet (setName)
+function MCFPaperDollFrame_IgnoreSlotsForSet (setID)
 	--[[ local set = GetEquipmentSetItemIDs(setName); ]] --MCFFIX replaced with modern version
-	local set = C_EquipmentSet.GetItemIDs(C_EquipmentSet.GetEquipmentSetID(setName));
+	local set = C_EquipmentSet.GetItemIDs(setID);
 	for slot, item in ipairs(set) do
 		if ( item == EQUIPMENT_SET_IGNORED_SLOT ) then
 			--[[ EquipmentManagerIgnoreSlotForSave(slot); ]] --MCFFIX replaced with modern version
@@ -2512,7 +2526,7 @@ function MCFPaperDollItemSlotButton_Update (self)
 	else
 		local textureName = self.backgroundTextureName;
 		if ( self.checkRelic and UnitHasRelicSlot("player") ) then
-			textureName = "Interface\\AddOns\\ModernCharacterFrame\\Textures\\Paperdoll\\UI-PaperDoll-Slot-Relic.blp";
+			textureName = "Interface\\Paperdoll\\UI-PaperDoll-Slot-Relic.blp";
 		end
 		SetItemButtonTexture(self, textureName);
 		SetItemButtonCount(self, 0);
@@ -3240,22 +3254,32 @@ function MCFPaperDollFrameItemFlyout_PostGetItems(itemSlotButton, itemDisplayTab
 	return numItems;
 end
 
+function MCFGearSetDeleteButton_OnClick(self)
+	local dialog = StaticPopup_Show("CONFIRM_DELETE_EQUIPMENT_SET", self:GetParent().setID);
+	if ( dialog ) then
+		dialog.data = self:GetParent().setID;
+	else
+		UIErrorsFrame:AddMessage(ERR_CLIENT_LOCKED_OUT, 1.0, 0.1, 0.1, 1.0);
+	end
+end
+
 --MCFFIXWORKINPROGRESS
 function MCFGearSetButton_OnClick (self, button, down)
-	print("Function MCFGearSetButton_OnClick just started execution.");
-
-	if ( self.name and self.name ~= "" ) then
+	if ( self.setID ) then
 		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);		-- inappropriately named, but a good sound.
 		MCFPaperDollEquipmentManagerPane.selectedSetName = self.name;
+		MCFPaperDollEquipmentManagerPane.selectedSetID = self.setID;
 		-- mark the ignored slots
 		MCFPaperDollFrame_ClearIgnoredSlots();
-		MCFPaperDollFrame_IgnoreSlotsForSet(self.name);
+		MCFPaperDollFrame_IgnoreSlotsForSet(self.setID);
 		MCFPaperDollEquipmentManagerPane_Update();
 		MCFGearManagerDialogPopup:Hide();
 	else
 		-- This is the "New Set" button
 		MCFGearManagerDialogPopup:Show();
+		MCFPaperDollEquipmentManagerPane.setID = nil;
 		MCFPaperDollEquipmentManagerPane.selectedSetName = nil;
+		MCFPaperDollEquipmentManagerPane.selectedSetID = nil;
 		MCFPaperDollFrame_ClearIgnoredSlots();
 		MCFPaperDollEquipmentManagerPane_Update();
 		-- Ignore shirt and tabard by default
@@ -3263,12 +3287,10 @@ function MCFGearSetButton_OnClick (self, button, down)
 		MCFPaperDollFrame_IgnoreSlot(19);
 	end
 	StaticPopup_Hide("CONFIRM_SAVE_EQUIPMENT_SET");
-	StaticPopup_Hide("CONFIRM_OVERWRITE_EQUIPMENT_SET");
-
-	print("Function MCFGearSetButton_OnClick just ended execution.");
+	StaticPopup_Hide("MCF_CONFIRM_OVERWRITE_EQUIPMENT_SET");
 end
 
---MCFFIX READY
+--MCFFIXWORKINPROGRESS need to test :SetEquipmentSet(name) if it uses only names or can use IDs
 function MCFGearSetButton_OnEnter (self)
 	if ( self.name and self.name ~= "" ) then
 		GameTooltip_SetDefaultAnchor(GameTooltip, self);
@@ -3327,16 +3349,16 @@ function MCFGearManagerDialogPopup_OnShow (self)
 	PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN);
 	self.name = nil;
 	self.isEdit = false;
-	MCFRecalculateGearManagerDialogPopup(); --MCFCHECK
+	MCFRecalculateGearManagerDialogPopup();
 end
 
---MCFFIX ready
+--MCFFIXWORKINPROGRESS
 function MCFGearManagerDialogPopup_OnHide (self)
 	MCFGearManagerDialogPopup.name = nil;
 	MCFGearManagerDialogPopup:SetSelection(true, nil);
 	MCFGearManagerDialogPopupEditBox:SetText("");
 	if (not MCFPaperDollEquipmentManagerPane.selectedSetName) then
-		MCFPaperDollFrame_ClearIgnoredSlots(); --MCFCHECK
+		MCFPaperDollFrame_ClearIgnoredSlots();
 	end
 	MCFEM_ICON_FILENAMES = nil;
 	collectgarbage();
@@ -3431,8 +3453,7 @@ function MCFRefreshEquipmentSetIconInfo ()
 	GetMacroIcons(MCFEM_ICON_FILENAMES);
 end
 
---MCFFIX ready (kinda)
---Function is simple but whole GearManager system needs reworking or replacing with modern system.
+--MCFFIX READY
 --[[ 
 GetEquipmentSetIconInfo(index) determines the texture and real index of a regular index
 	Input: 	index = index into a list of equipped items followed by the macro items. Only tricky part is the equipped items list keeps changing.
@@ -3444,7 +3465,7 @@ function MCFGetEquipmentSetIconInfo(index)
 
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFGearManagerDialogPopup_Update ()
 	MCFRefreshEquipmentSetIconInfo();
 
@@ -3482,7 +3503,7 @@ function MCFGearManagerDialogPopup_Update ()
 	FauxScrollFrame_Update(MCFGearManagerDialogPopupScrollFrame, ceil(#MCFEM_ICON_FILENAMES / NUM_GEARSET_ICONS_PER_ROW) , NUM_GEARSET_ICON_ROWS, GEARSET_ICON_ROW_HEIGHT );
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFGearManagerDialogPopupOkay_Update ()
 	local popup = MCFGearManagerDialogPopup;
 	local button = MCFGearManagerDialogPopupOkay;
@@ -3494,49 +3515,47 @@ function MCFGearManagerDialogPopupOkay_Update ()
 	end
 end
 
+--MCFFIX READY added this function to re-create old one's behavior
+function MCF_GetEquipmentSetInfoByName(arg) -- arg could be: "", "name", 1 (number),
+	if ( type(arg) =="string" and arg ~= "" ) then
+		if ( C_EquipmentSet.GetEquipmentSetID(arg) ~= nil ) then
+			return C_EquipmentSet.GetEquipmentSetInfo(C_EquipmentSet.GetEquipmentSetID(arg));
+		else
+			return nil;
+		end
+	elseif ( arg == "" ) then
+		return nil;
+	else
+		return C_EquipmentSet.GetEquipmentSetInfo(arg);
+	end
+end
+
+
 --MCFFIXWORKINPROGRESS
 function MCFGearManagerDialogPopupOkay_OnClick (self, button, pushed)
 	local popup = MCFGearManagerDialogPopup;
-	local iconTexture = MCFGetEquipmentSetIconInfo(popup.selectedIcon); --MCFTEST 135011
 
-	--[[ if ( GetEquipmentSetInfoByName(popup.name) ) then ]] --MCFFIX replaced with modern functions
+	local icon = MCFGetEquipmentSetIconInfo(popup.selectedIcon);
+	local setID = C_EquipmentSet.GetEquipmentSetID(popup.name);
 
-	if ( (C_EquipmentSet.GetEquipmentSetID(popup.name) ~= nil) and C_EquipmentSet.GetEquipmentSetInfo(C_EquipmentSet.GetEquipmentSetID(popup.name)) ) then
-		if (popup.isEdit and popup.name ~= popup.origName)  then
-			-- Not allowed to overwrite an existing set by doing a rename
-			UIErrorsFrame:AddMessage(EQUIPMENT_SETS_CANT_RENAME, 1.0, 0.1, 0.1, 1.0);
-			return;
-		elseif (not popup.isEdit) then
-			local dialog = StaticPopup_Show("CONFIRM_OVERWRITE_EQUIPMENT_SET", popup.name);
-			if ( dialog ) then
-				dialog.data = C_EquipmentSet.GetEquipmentSetID(popup.name);
-				dialog.selectedIcon = popup.selectedIcon;
-			else
-				UIErrorsFrame:AddMessage(ERR_CLIENT_LOCKED_OUT, 1.0, 0.1, 0.1, 1.0);
-			end
-			return;
+	if ( setID ) then
+		local dialog = StaticPopup_Show("MCF_CONFIRM_OVERWRITE_EQUIPMENT_SET", popup.name);
+		if ( dialog ) then
+			dialog.data = setID;
+			dialog.selectedIcon = icon;
+		else
+			UIErrorsFrame:AddMessage(ERR_CLIENT_LOCKED_OUT, 1.0, 0.1, 0.1, 1.0);
 		end
-	elseif ( C_EquipmentSet.GetNumEquipmentSets() >= MAX_EQUIPMENT_SETS_PER_PLAYER and not popup.isEdit) then
+		return;
+	elseif ( C_EquipmentSet.GetNumEquipmentSets() >= MAX_EQUIPMENT_SETS_PER_PLAYER ) then
 		UIErrorsFrame:AddMessage(EQUIPMENT_SETS_TOO_MANY, 1.0, 0.1, 0.1, 1.0);
 		return;
 	end
-	
-	if (popup.isEdit) then
-		--Modifying a set
-		MCFPaperDollEquipmentManagerPane.selectedSetName = popup.name;
-		if ( popup.origName ~= nil and (C_EquipmentSet.GetEquipmentSetID(popup.origName) ~= nil) ) then
-			C_EquipmentSet.ModifyEquipmentSet(C_EquipmentSet.GetEquipmentSetID(popup.origName), popup.name, iconTexture);
-		end
-	else
-		-- Saving a new set
-		if ( popup.name ~= nil ) then
-			C_EquipmentSet.CreateEquipmentSet(popup.name, iconTexture);
-		end
-	end
+	C_EquipmentSet.CreateEquipmentSet(popup.name, icon);
 	popup:Hide();
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFGearManagerDialogPopupCancel_OnClick ()
 	MCFGearManagerDialogPopup:Hide();
 end
@@ -3599,11 +3618,11 @@ end
 function MCFPaperDollEquipmentManagerPane_OnEvent(self, event, ...)
 
 	if ( event == "EQUIPMENT_SWAP_FINISHED" ) then
-		local completed, setName = ...;
+		local completed, setID = ...;
 		if ( completed ) then
 			PlaySound(SOUNDKIT.PUT_DOWN_SMALL_CHAIN); -- plays the equip sound for plate mail
 			if (self:IsShown()) then
-				self.selectedSetName = setName;
+				self.selectedSetID = setID;
 				MCFPaperDollEquipmentManagerPane_Update();
 			end
 		end
@@ -3614,6 +3633,7 @@ function MCFPaperDollEquipmentManagerPane_OnEvent(self, event, ...)
 		if ( event == "EQUIPMENT_SETS_CHANGED" ) then
 			MCFPaperDollEquipmentManagerPane_Update();
 		elseif ( event == "PLAYER_EQUIPMENT_CHANGED" or event == "BAG_UPDATE" ) then
+			MCFPaperDollEquipmentManagerPane_Update();
 			-- This queues the update to only happen once at the end of the frame
 			self.queuedUpdate = true;
 		end
@@ -3626,19 +3646,14 @@ function MCFPaperDollEquipmentManagerPane_OnHide(self)
 	MCFPaperDollFrame_ClearIgnoredSlots();
 	MCFGearManagerDialogPopup:Hide();
 	StaticPopup_Hide("CONFIRM_SAVE_EQUIPMENT_SET");
-	StaticPopup_Hide("CONFIRM_OVERWRITE_EQUIPMENT_SET");
+	StaticPopup_Hide("MCF_CONFIRM_OVERWRITE_EQUIPMENT_SET");
 end
 
 --MCFFIX ready
 function MCFPaperDollEquipmentManagerPane_Update()
-	--[[ local _, setID, isEquipped = GetEquipmentSetInfoByName(MCFPaperDollEquipmentManagerPane.selectedSetName or ""); ]] --MCFFIX replaced with a few lines below
-
-	local setID, isEquipped
-	if ( MCFPaperDollEquipmentManagerPane.selectedSetName ) then
-		setID = C_EquipmentSet.GetEquipmentSetID(MCFPaperDollEquipmentManagerPane.selectedSetName);
-		_, _, _, isEquipped = C_EquipmentSet.GetEquipmentSetInfo(setID);
-	end
-
+	--MCFFIX replaced with a few lines below
+	--[[ local _, setID, isEquipped = GetEquipmentSetInfoByName(MCFPaperDollEquipmentManagerPane.selectedSetName or ""); ]]
+	local _, _, setID, isEquipped = MCF_GetEquipmentSetInfoByName(MCFPaperDollEquipmentManagerPane.selectedSetName or "");
 	if (setID) then
 		if (isEquipped) then
 			MCFPaperDollEquipmentManagerPaneSaveSet:Disable();
@@ -3652,8 +3667,8 @@ function MCFPaperDollEquipmentManagerPane_Update()
 		MCFPaperDollEquipmentManagerPaneEquipSet:Disable();
 		
 		-- Clear selected equipment set if it doesn't exist
-		if (MCFPaperDollEquipmentManagerPane.selectedSetName) then
-			MCFPaperDollEquipmentManagerPane.selectedSetName = nil;
+		if (MCFPaperDollEquipmentManagerPane.selectedSetID) then
+			MCFPaperDollEquipmentManagerPane.selectedSetID = nil;
 			MCFPaperDollFrame_ClearIgnoredSlots();
 		end
 	end
@@ -3668,36 +3683,39 @@ function MCFPaperDollEquipmentManagerPane_Update()
 	
 	local scrollOffset = HybridScrollFrame_GetOffset(MCFPaperDollEquipmentManagerPane);
 	local buttons = MCFPaperDollEquipmentManagerPane.buttons;
-	local selectedName = MCFPaperDollEquipmentManagerPane.selectedSetName;
-	local name, texture, button, numLost;
+	local selectedSetID = MCFPaperDollEquipmentManagerPane.selectedSetID;
+	local name, icon, button, numLost;
 	for i = 1, #buttons do
 		if (i+scrollOffset <= numRows) then
 			button = buttons[i];
 			buttons[i]:Show();
 			button:Enable();
+			button.setID = nil;
 			
 			if (i+scrollOffset <= numSets) then
 				-- Normal equipment set button
-				name, texture, setID, isEquipped, _, _, _, numLost = C_EquipmentSet.GetEquipmentSetInfo(i+scrollOffset-1);
+				local sets = C_EquipmentSet.GetEquipmentSetIDs();
+				name, icon, setID, isEquipped, _, _, _, numLost, _ = C_EquipmentSet.GetEquipmentSetInfo(sets[i+scrollOffset]);
 				button.name = name;
+				button.setID = setID;
 				button.text:SetText(name);
 				if (numLost > 0) then
 					button.text:SetTextColor(RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b);
 				else
 					button.text:SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
 				end
-				if (texture) then
-					button.icon:SetTexture(texture);
+				if (icon) then
+					button.icon:SetTexture(icon);
 				else
 					button.icon:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark");
 				end
-							
-				if (selectedName and button.name == selectedName) then
+								
+				if (selectedSetID and button.setID == selectedSetID) then
 					button.SelectedBar:Show();
 				else
 					button.SelectedBar:Hide();
 				end
-				
+					
 				if (isEquipped) then
 					button.Check:Show();
 				else
@@ -3746,29 +3764,27 @@ function MCFPaperDollEquipmentManagerPane_Update()
 	end
 end
 
---MCFFIX ready
+--MCFFIX READY
 function MCFPaperDollEquipmentManagerPaneSaveSet_OnClick (self)
-	print("Function MCFPaperDollEquipmentManagerPaneSaveSet_OnClick just executed");
-	local selectedSetName = MCFPaperDollEquipmentManagerPane.selectedSetName
-	if (selectedSetName and selectedSetName ~= "") then
+	local selectedSetName = MCFPaperDollEquipmentManagerPane.selectedSetName;
+	local selectedSetID = MCFPaperDollEquipmentManagerPane.selectedSetID;
+	if ( selectedSetID ) then
 		local dialog = StaticPopup_Show("CONFIRM_SAVE_EQUIPMENT_SET", selectedSetName);
 		if ( dialog ) then
-			dialog.data = selectedSetName;
+			dialog.data = selectedSetID;
 		else
 			UIErrorsFrame:AddMessage(ERR_CLIENT_LOCKED_OUT, 1.0, 0.1, 0.1, 1.0);
 		end
 	end
 end
 
---MCFFIX ready
---Temporary disabled
+--MCFFIX READY
 function MCFPaperDollEquipmentManagerPaneEquipSet_OnClick (self)
-	print("Function MCFPaperDollEquipmentManagerPaneEquipSet_OnClick just executed");
 	local selectedSetName = MCFPaperDollEquipmentManagerPane.selectedSetName;
 	if ( selectedSetName and selectedSetName ~= "") then
 		PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);	-- inappropriately named, but a good sound.
-		--MCFFIX
-		--EquipmentManager_EquipSet(selectedSetName);
+		--EquipmentManager_EquipSet(selectedSetName); --MCFFIX replaced with modern version
+		C_EquipmentSet.UseEquipmentSet(C_EquipmentSet.GetEquipmentSetID(selectedSetName));
 	end
 end
 
@@ -3783,7 +3799,7 @@ end
 function MCFPaperDollTitlesPane_UpdateScrollFrame()
 	local buttons = MCFPaperDollTitlesPane.buttons;
 	local playerTitles = MCFPaperDollTitlesPane.titles;
-	local numButtons = #buttons; -- 18
+	local numButtons = #buttons;
 	local scrollOffset = HybridScrollFrame_GetOffset(MCFPaperDollTitlesPane);
 	local playerTitle;
 	for i = 1, numButtons do
