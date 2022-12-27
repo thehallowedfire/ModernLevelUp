@@ -353,7 +353,6 @@
 			</OnLeave>
 		</Scripts>
 	</Button>
-	<!-- ItemButtonTemplate is a little bit different in modern client so needs testing (it has IconBorder and IconOverlay textures on OVERLAY) -->
 	<Button name="MCFPaperDollItemSlotButtonTemplate" inherits="ItemButtonTemplate" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
@@ -520,6 +519,16 @@
 		</ButtonText>
 		<HighlightTexture file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar-Blue" alphaMode="ADD"/>	
 	</Button>
+	<Button name="MCFUIPanelButtonTemplate" virtual="true">
+		<ButtonText name="$parentText"/>
+		<NormalFont style="GameFontNormal"/>
+		<HighlightFont style="GameFontHighlight"/>
+		<DisabledFont style="GameFontDisable"/>
+		<NormalTexture inherits="UIPanelButtonUpTexture"/>
+		<PushedTexture inherits="UIPanelButtonDownTexture"/>
+		<DisabledTexture inherits="UIPanelButtonDisabledTexture"/>
+		<HighlightTexture inherits="UIPanelButtonHighlightTexture"/>
+	</Button>
 	<!-- NOT READY -->
 	<Button name="MCFGearSetButtonTemplate" virtual="true">
 		<Size x="169" y="44"/>
@@ -614,12 +623,7 @@
 						self.texture:SetPoint("TOPLEFT", 0, 0);
 					</OnMouseUp>
 					<OnClick>
-						local dialog = StaticPopup_Show("CONFIRM_DELETE_EQUIPMENT_SET", self:GetParent().name);
-						if ( dialog ) then
-							dialog.data = self:GetParent().name;
-						else
-							UIErrorsFrame:AddMessage(ERR_CLIENT_LOCKED_OUT, 1.0, 0.1, 0.1, 1.0);
-						end
+						MCFGearSetDeleteButton_OnClick(self)
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -670,13 +674,16 @@
 			<OnClick>
 				MCFGearSetButton_OnClick(self, button, down);
 			</OnClick>
-			<!-- NOT READY -->
 			<OnDoubleClick>
-				local name = self.name;
+				<!-- local name = self.name;
 				if ( name and name ~= "" ) then
 					PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
-					<!-- MCFEquipmentManager_EquipSet(name); --> <!-- MCFFIX temporary disabled and added debug msg -->
-					print("Just tried to use OnDoubleClick script in MCFGearSetButtonTemplate");
+					EquipmentManager_EquipSet(name);
+				end --> <!-- MCFFIX replaced with modern version using IDs -->
+				local id = self.setID;
+				if ( id ) then
+					PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
+					C_EquipmentSet.UseEquipmentSet(id);
 				end
 			</OnDoubleClick>
 			<OnEnter>
@@ -688,10 +695,9 @@
 			<OnDragStart>
 				<!-- if ( self.name and self.name ~= "" ) then
 					PickupEquipmentSetByName(self.name);
-				end --> <!-- MCFFIX temporary replaced with modern version -->
-				if ( self.name and self.name ~= "" ) then
-					C_EquipmentSet.PickupEquipmentSet(self.id);
-					print("Just used function C_EquipmentSet.PickupEquipmentSet()");
+				end --> <!-- MCFFIX temporary replaced with modern version using IDs -->
+				if ( self.setID ) then
+					C_EquipmentSet.PickupEquipmentSet(self.setID);
 				end
 			</OnDragStart>
 		</Scripts>
@@ -737,7 +743,6 @@
 	</CheckButton>	
 
     <!-- FRAME TEMPLATES -->
-    <!-- InsetFrameTemplate. This is the inner frame used by ButtonFrameTemplate -->
 	<Frame name="MCFInsetFrameTemplate" virtual="true">
 		<Size x="64" y="64"/>
 		<Layers>
@@ -997,7 +1002,6 @@
 			</Frame>
 		</Frames>
 	</Frame>
-    <!-- PortraitFrameTemplate. This is an empty frame with space for a portrait/icon in the top left corner. -->
 	<Frame name="MCFPortraitFrameTemplate" virtual="true">
 		<Size x="338" y="424"/>
 		<Layers>
@@ -1100,8 +1104,6 @@
 			</Button>
 		</Frames>
 	</Frame>
-    <!-- ButtonFrameTemplate. This is a Portrait Frame that also has space for buttons along the bottom edge, and includes an inset content area.
-    Show/hide the Button bar using: ButtonFrameTemplate_ShowButtonBar(self) or ButtonFrameTemplate_HideButtonBar(self) -->
 	<Frame name="MCFButtonFrameTemplate" inherits="MCFPortraitFrameTemplate" virtual="true">
 		<Layers>
 			<Layer level="BORDER" textureSubLevel="1">
@@ -1132,7 +1134,6 @@
 			</Frame>
 		</Frames>
 	</Frame>
-	<!-- NOT READY -->
     <!-- CharacterFrame MAIN template -->
     <Frame name="MCFCharacterFrame" toplevel="true" movable="true" parent="UIParent" hidden="true" inherits="MCFButtonFrameTemplate">
 		<Anchors>
@@ -1281,7 +1282,6 @@
 				</ScrollChild>
 			</ScrollFrame>
 		</Frames>
-		<!-- NOT READY -->
 		<Scripts>
 			<OnLoad function="MCFCharacterFrame_OnLoad"/>
             <OnEvent function="MCFCharacterFrame_OnEvent"/>
@@ -1289,7 +1289,6 @@
 			<OnHide function="MCFCharacterFrame_OnHide"/>
         </Scripts>
     </Frame>
-	<!-- NOT READY -->
 	<!-- PaperDollFrame MAIN template -->
 	<Frame name="MCFPaperDollFrame" setAllPoints="true" enableMouse="true" parent="MCFCharacterFrame" useParentLevel="true" id="1">
 		<Layers>
@@ -1411,14 +1410,13 @@
 					</OnShow>
 				</Scripts>
 			</ScrollFrame>	
-			<!-- NOT READY -->	
 			<ScrollFrame name="MCFPaperDollEquipmentManagerPane" inherits="HybridScrollFrameTemplate" hidden="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="MCFCharacterFrameInsetRight" x="4" y="-4"/>
 					<Anchor point="BOTTOMRIGHT" relativeTo="MCFCharacterFrameInsetRight" x="-27" y="2"/>
 				</Anchors>
 				<Frames>
-					<Button name="$parentEquipSet" text="EQUIPSET_EQUIP" parentKey="EquipSet" inherits="UIPanelButtonTemplate">
+					<Button name="$parentEquipSet" text="EQUIPSET_EQUIP" parentKey="EquipSet" inherits="MCFUIPanelButtonTemplate">
 						<Size x="87" y="22"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="0"/>
@@ -1438,7 +1436,7 @@
 							</Layer>
 						</Layers>
 					</Button>
-					<Button name="$parentSaveSet" text="SAVE" parentKey="SaveSet" inherits="UIPanelButtonTemplate">
+					<Button name="$parentSaveSet" text="SAVE" parentKey="SaveSet" inherits="MCFUIPanelButtonTemplate">
 						<Size x="87" y="22"/>
 						<Anchors>
 							<Anchor point="LEFT" relativeTo="$parentEquipSet" relativePoint="RIGHT"/>
@@ -1458,7 +1456,6 @@
 						</Anchors>
 					</Slider>
 				</Frames>
-				<!-- NOT READY -->
 				<Scripts>
 					<OnLoad>
 						self.scrollBar.doNotHide  = 1;
@@ -1470,7 +1467,7 @@
 					<OnShow function="MCFPaperDollEquipmentManagerPane_OnShow"/>
 					<OnHide function="MCFPaperDollEquipmentManagerPane_OnHide"/>
 					<OnEvent function="MCFPaperDollEquipmentManagerPane_OnEvent"/>
-					<!-- <OnUpdate function="MCFPaperDollEquipmentManagerPane_OnUpdate"/> -->
+					<OnUpdate function="MCFPaperDollEquipmentManagerPane_OnUpdate"/>
 				</Scripts>
 			</ScrollFrame>
 			<PlayerModel name="MCFCharacterModelFrame" inherits="ModelWithControlsTemplate">
@@ -1698,7 +1695,6 @@
 				</Frames>
 			</Frame>
 		</Frames>
-		<!-- NOT READY -->
         <Scripts>
             <OnLoad function="MCFPaperDollFrame_OnLoad"/>
             <OnEvent function="MCFPaperDollFrame_OnEvent"/>
@@ -1706,15 +1702,67 @@
 			<OnHide function="MCFPaperDollFrame_OnHide"/>
         </Scripts>
     </Frame>
-
 	<Frame name="MCFGearManagerDialogPopup" hidden="true" parent="MCFPaperDollFrame">
-		<Size x="297" y="254"/>
+		<Size x="525" y="475"/>
 		<Anchors>
-			<Anchor point="LEFT" relativePoint="RIGHT"/>
+			<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" y="6"/>
 		</Anchors>
 		<Layers>
+			<Layer level="BORDER">
+				<Texture parentKey="TopLeft" atlas="macropopup-topleft" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="TopRight" atlas="macropopup-topright" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture atlas="_macropopup-top" horizTile="true" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.TopLeft" relativePoint="TOPRIGHT" x="0" y="0"/>
+						<Anchor point="TOPRIGHT" relativeKey="$parent.TopRight" relativePoint="TOPLEFT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="BottomLeft" atlas="macropopup-bottomleft" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="BottomRight" atlas="macropopup-bottomright" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture atlas="_macropopup-bottom" horizTile="true" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeKey="$parent.BottomLeft" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.BottomRight" relativePoint="BOTTOMLEFT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture atlas="!macropopup-left" vertTile="true" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.TopLeft" relativePoint="BOTTOMLEFT" x="0" y="0"/>
+						<Anchor point="BOTTOMLEFT" relativeKey="$parent.BottomLeft" relativePoint="TOPLEFT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture atlas="!macropopup-right" vertTile="true" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPRIGHT" relativeKey="$parent.TopRight" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.BottomRight" relativePoint="TOPRIGHT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\MacroFrame\MacroPopup-TopLeft">
+				<Texture parentKey="BG">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="7" y="-7"/>
+						<Anchor point="BOTTOMRIGHT" x="-7" y="7"/>
+					</Anchors>
+					<Color r="0" g="0" b="0" a=".80"/>
+				</Texture>
+				<!-- <Texture file="Interface\MacroFrame\MacroPopup-TopLeft">
 					<Size x="256" y="212"/>
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
@@ -1724,7 +1772,7 @@
 				<Texture file="Interface\MacroFrame\MacroPopup-TopRight">
 					<Size x="64" y="212"/>
 					<Anchors>
-						<Anchor point="TOPLEFT">
+						<Anchor point="TOPRIGHT">
 							<Offset x="256" y="0"/>
 						</Anchor>
 					</Anchors>
@@ -1745,7 +1793,7 @@
 							<Offset x="256" y="-212"/>
 						</Anchor>
 					</Anchors>
-				</Texture>
+				</Texture> -->
 			</Layer>	
 			<Layer level="ARTWORK">
 				<FontString inherits="GameFontHighlightSmall" text="GEARSETS_POPUP_TEXT" name="$parentNameText">
@@ -1765,9 +1813,9 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate">
+			<ScrollFrame name="$parentScrollFrame" inherits="ListScrollFrameTemplate">
 				<Size>
-					<AbsDimension x="296" y="151"/>
+					<AbsDimension x="485" y="369"/>
 				</Size>
 				<Anchors>
 					<Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
@@ -1858,7 +1906,7 @@
 				</Scripts>
 				<FontString inherits="ChatFontNormal"/>
 			</EditBox>	
-			<Button name="$parentCancel" inherits="UIPanelButtonTemplate" text="CANCEL">
+			<Button name="$parentCancel" inherits="MCFUIPanelButtonTemplate" text="CANCEL">
 				<Size x="78" y="22"/>
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT">
@@ -1872,7 +1920,7 @@
 					</OnClick>
 				</Scripts>
 			</Button>					
-			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="OKAY">
+			<Button name="$parentOkay" inherits="MCFUIPanelButtonTemplate" text="OKAY">
 				<Size x="78" y="22"/>
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT" relativeTo="$parentCancel" relativePoint="BOTTOMLEFT">
@@ -1893,8 +1941,4 @@
 			<OnHide function="MCFGearManagerDialogPopup_OnHide"/>
 		</Scripts>				
 	</Frame>
-
-
-
-
 </Ui>
