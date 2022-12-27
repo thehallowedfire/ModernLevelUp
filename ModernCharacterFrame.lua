@@ -42,7 +42,7 @@ MCF_FRAME_OFFSETS = {
     ["QuestLogFrame"] = 698,
     ["CommunitiesFrame"] = 878,
     ["AuctionFrame"] = 952,
-    ["AchievementFrame"] = 952, -- LoadOnDemand, doesn't work
+    ["AchievementFrame"] = 952,
 }
 
 function MCF_ChangePosition(frame, dir)
@@ -56,61 +56,61 @@ function MCF_ChangePosition(frame, dir)
 end
 
 local tblFrame = {
-    GossipFrame,
-    MerchantFrame,
-    FriendsFrame,
-    PVPFrame,
-    LFGParentFrame,
-    SpellBookFrame,
-    PlayerTalentFrame,
-    ChannelFrame,
-    QuestLogFrame,
-    CommunitiesFrame,
-    AuctionFrame,
-    AchievementFrame, -- LoadOnDemand, doesn't work
+    GossipFrame, --ok
+    MerchantFrame, --ok
+    FriendsFrame, --ok
+    PVPFrame, --ok
+    LFGParentFrame, -- CHECK Loads a little bit later than others
+    SpellBookFrame, --ok
+    PlayerTalentFrame, --ok
+    ChannelFrame, --ok
+    QuestLogFrame, --ok
+    CommunitiesFrame,-- CHECK Loads on first open
+    AuctionFrame,-- CHECK Loads on first open
+    AchievementFrame,-- CHECK Loads on first open
 };
 
-for _,frame in pairs(tblFrame) do
-frame:HookScript("OnShow",function(self)
-                MCF_ChangePosition(self);
-                end);
-frame:HookScript("OnHide",function(self)
-                MCF_ChangePosition(self,"left");
-                end);
+function MCF_SetHookOnDefaultFrames()
+    for _,frame in pairs(tblFrame) do
+        print(frame:GetName(),
+        frame:HookScript("OnShow",function(self)
+                        MCF_ChangePosition(self);
+                        end),
+        frame:HookScript("OnHide",function(self)
+                        MCF_ChangePosition(self,"left");
+                        end));
+    end
 end
+MCF_SetHookOnDefaultFrames()
 
+
+-- Makes addon's frame closable by pressing Esc
 table.insert(UISpecialFrames, "MCFCharacterFrame");
 
---[[ GameMenuFrame:HookScript("OnShow",function()
-                MCFCharacterFrame:Hide();
-                end); ]]
-
-
+-- Sets up Micromenu button call of addon's frame instead of default one
 CharacterMicroButton:SetScript("OnMouseDown", nil);
 CharacterMicroButton:SetScript("OnMouseUp", nil);        
---[[ CharacterMicroButton:SetScript("OnClick", nil); ]]
 CharacterMicroButton:SetScript("OnMouseDown", function(self)
-                                if ( self.down ) then
-                                    self.down = nil;
-                                    MCFToggleCharacter("MCFPaperDollFrame");
-                                    return;
-                                end
-                                CharacterMicroButton_SetPushed();
-                                self.down = 1;
+                                    if ( self.down ) then
+                                        self.down = nil;
+                                        MCFToggleCharacter("MCFPaperDollFrame");
+                                        return;
+                                    end
+                                    CharacterMicroButton_SetPushed();
+                                    self.down = 1;
                                 end);
 CharacterMicroButton:SetScript("OnMouseUp", function(self)
-                                if ( self.down ) then
-                                    self.down = nil;
-                                    if ( self:IsMouseOver() ) then
-                                        MCFToggleCharacter("MCFPaperDollFrame");
+                                    if ( self.down ) then
+                                        self.down = nil;
+                                        if ( self:IsMouseOver() ) then
+                                            MCFToggleCharacter("MCFPaperDollFrame");
+                                        end
+                                        MCFUpdateMicroButtons();
+                                        return;
                                     end
-                                    MCFUpdateMicroButtons();
-                                    return;
-                                end
-                                if ( self:GetButtonState() == "NORMAL" ) then
-                                    CharacterMicroButton_SetPushed(); self.down = 1;
-                                else
-                                    CharacterMicroButton_SetNormal(); self.down = 1;
-                                end
+                                    if ( self:GetButtonState() == "NORMAL" ) then
+                                        CharacterMicroButton_SetPushed(); self.down = 1;
+                                    else
+                                        CharacterMicroButton_SetNormal(); self.down = 1;
+                                    end
                                 end);
---[[ CharacterMicroButton:SetScript("OnClick", function(self) MCFToggleCharacter("MCFPaperDollFrame") end); ]]
