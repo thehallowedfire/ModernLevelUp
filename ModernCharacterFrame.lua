@@ -1,4 +1,5 @@
-print("Hello! Thank you for testing Modern Character Frame! Don't forget to bind a key in settings.");
+print("Hello! Thank you for testing Modern Character Frame!");
+print("Don't forget to bind a key in settings.");
 
 ModernCharacterFrame3 = CreateFrame("Frame", "MCFPetPaperDollFrame", MCFCharacterFrame);
 ModernCharacterFrame4 = CreateFrame("Frame", "MCFReputationFrame", MCFCharacterFrame);
