@@ -9,9 +9,6 @@ MCF_DEFAULT_SETTINGS = {
 
 	["statCategoriesCollapsed"] = {false, false, false, false, false, false, false},
 	["statCategoriesCollapsed_2"] = {false, false, false, false, false, false, false},
-
-	["newSetting1"] = true,
-	["newSetting2"] = {"one", "two"},
 }
 
 function MCF_SetSettings(setting, value, id)
