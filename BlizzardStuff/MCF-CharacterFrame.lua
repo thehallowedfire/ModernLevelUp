@@ -1,34 +1,6 @@
 ---------------------------------------------------------------------------------------------------------
 -- MCFFIX added these lines
 ---------------------------------------------------------------------------------------------------------
-MCF_DEFAULT_SETTINGS = {
-	["characterFrameCollapsed"] = "0",
-
-	["statCategoryOrder"] = "", --"1,2,3,4,5,6,7",
-	["statCategoryOrder_2"] = "", --"1,2,3,4,5,6,7",
-
-	["statCategoriesCollapsed"] = {false, false, false, false, false, false, false},
-	["statCategoriesCollapsed_2"] = {false, false, false, false, false, false, false},
-}
-
-function MCF_SetSettings(setting, value, id)
-	if (id) then
-		MCF_SETTINGS[setting][id] = value;
-	else
-		MCF_SETTINGS[setting] = value;
-	end
-end
-
-function MCF_GetSettings(query, id)
-	if ( MCF_SETTINGS[query] == nil ) then
-		MCF_SETTINGS[query] = MCF_DEFAULT_SETTINGS[query];
-	end
-	if (id) then
-		return MCF_SETTINGS[query][id];
-	else
-		return MCF_SETTINGS[query];
-	end
-end
 
 --Added this function because built-in is calling CharacterFrame
 function MCFUpdateMicroButtons()
@@ -43,7 +15,6 @@ end
 ---------------------------------------------------------------------------------------------------------
 
 MCFCHARACTERFRAME_SUBFRAMES = { "MCFPaperDollFrame", "MCFPetPaperDollFrame", "MCFReputationFrame", "MCFTokenFrame" };
-MCFCHARACTERFRAME_EXPANDED_WIDTH = 540;
 
 local MCFNUM_CHARACTERFRAME_TABS = 4;
 
@@ -127,7 +98,7 @@ function MCFCharacterFrame_OnLoad(self)
 	PanelTemplates_SetTab(self, 1);
 end
 
---MCFFIX READY
+--MCFFIX READY copied
 function MCFCharacterFrame_UpdatePortrait()
 	local masteryIndex = MCF_GetPrimaryTalentTree();
 	if (masteryIndex == 0) then
@@ -214,7 +185,7 @@ function MCFCharacterFrame_OnHide(self)
 	MCFPaperDollFrame.currentSideBar = nil;
 end
 
---MCFFIX READY
+--MCFFIX READY copied
 function MCFCharacterFrame_Collapse()
 	MCFCharacterFrame:SetWidth(PANEL_DEFAULT_WIDTH);
 	MCFCharacterFrame.Expanded = false;
@@ -234,9 +205,9 @@ function MCFCharacterFrame_Collapse()
 	--CharacterTrialLevelErrorText:SetPoint("TOP", CharacterLevelText, "BOTTOM", 0, -3);
 end
 
---MCFFIX ready
+--MCFFIX READY copied
 function MCFCharacterFrame_Expand()
-	MCFCharacterFrame:SetWidth(MCFCHARACTERFRAME_EXPANDED_WIDTH);
+	MCFCharacterFrame:SetWidth(MCF_CHARACTERFRAME_EXPANDED_WIDTH);
 	MCFCharacterFrame.Expanded = true;
 	MCFCharacterFrameExpandButton:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Up");
 	MCFCharacterFrameExpandButton:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Down");

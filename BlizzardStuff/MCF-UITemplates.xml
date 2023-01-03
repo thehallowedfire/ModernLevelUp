@@ -281,7 +281,7 @@
 		<NormalFont style="GameFontNormalSmall"/>
 		<HighlightFont style="GameFontHighlightSmall"/>
 		<DisabledFont style="GameFontHighlightSmall"/>
-		<HighlightTexture name="$parentHighlightTexture" file="Interface\AddOns\ModernCharacterFrame\Textures\PaperDollInfoFrame\UI-Character-Tab-RealHighlight" alphaMode="ADD">
+		<HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-RealHighlight" alphaMode="ADD">
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
@@ -353,6 +353,7 @@
 			</OnLeave>
 		</Scripts>
 	</Button>
+
 	<Button name="MCFPaperDollItemSlotButtonTemplate" inherits="ItemButtonTemplate" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
@@ -454,6 +455,7 @@
 			</Layer>
 		</Layers>
 	</Button>
+
 	<Button name="MCFPlayerTitleButtonTemplate" virtual="true">
 		<Size x="169" y="22"/>
 		<Anchors>
@@ -519,6 +521,7 @@
 		</ButtonText>
 		<HighlightTexture file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar-Blue" alphaMode="ADD"/>	
 	</Button>
+
 	<Button name="MCFUIPanelButtonTemplate" virtual="true">
 		<ButtonText name="$parentText"/>
 		<NormalFont style="GameFontNormal"/>
@@ -529,6 +532,7 @@
 		<DisabledTexture inherits="UIPanelButtonDisabledTexture"/>
 		<HighlightTexture inherits="UIPanelButtonHighlightTexture"/>
 	</Button>
+
 	<!-- NOT READY -->
 	<Button name="MCFGearSetButtonTemplate" virtual="true">
 		<Size x="169" y="44"/>
@@ -901,14 +905,14 @@
 					<OnClick>
 						if self:GetParent().collapsed then
 							MCFPaperDollFrame_ExpandStatCategory(self:GetParent());
-							local categoryInfo = MCFPAPERDOLL_STATCATEGORIES[self:GetParent().Category];
+							local categoryInfo = MCF_PAPERDOLL_STATCATEGORIES[self:GetParent().Category];
 							if (categoryInfo and MCFCharacterStatsPane.collapsedCVarName) then
 								<!-- MCFFIX replaced SetCVarBitfield() with own MCF_SetSettings() and swaped last 2 args between each other -->
 								MCF_SetSettings(MCFCharacterStatsPane.collapsedCVarName, false, categoryInfo.id);
 							end
 						else
 							MCFPaperDollFrame_CollapseStatCategory(self:GetParent());
-							local categoryInfo = MCFPAPERDOLL_STATCATEGORIES[self:GetParent().Category];
+							local categoryInfo = MCF_PAPERDOLL_STATCATEGORIES[self:GetParent().Category];
 							if (categoryInfo and MCFCharacterStatsPane.collapsedCVarName) then
 								<!-- MCFFIX replaced SetCVarBitfield() with own MCF_SetSettings() and swaped last 2 args between each other -->
 								MCF_SetSettings(MCFCharacterStatsPane.collapsedCVarName, true, categoryInfo.id);
