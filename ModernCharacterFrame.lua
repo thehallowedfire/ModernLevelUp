@@ -1,6 +1,3 @@
-print("Hello! Thank you for testing Modern Character Frame!");
-print("Don't forget to bind a key in settings.");
-
 ModernCharacterFrame3 = CreateFrame("Frame", "MCFPetPaperDollFrame", MCFCharacterFrame);
 ModernCharacterFrame4 = CreateFrame("Frame", "MCFReputationFrame", MCFCharacterFrame);
 ModernCharacterFrame5 = CreateFrame("Frame", "MCFTokenFrame", MCFCharacterFrame);
@@ -72,13 +69,12 @@ local tblFrame = {
 
 function MCF_SetHookOnDefaultFrames()
     for _,frame in pairs(tblFrame) do
-        print(frame:GetName(),
         frame:HookScript("OnShow",function(self)
                         MCF_ChangePosition(self);
-                        end),
+                        end);
         frame:HookScript("OnHide",function(self)
                         MCF_ChangePosition(self,"left");
-                        end));
+                        end);
     end
 end
 MCF_SetHookOnDefaultFrames()
@@ -114,3 +110,6 @@ CharacterMicroButton:SetScript("OnMouseUp", function(self)
                                         CharacterMicroButton_SetNormal(); self.down = 1;
                                     end
                                 end);
+
+
+MCFCharacterFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 716, -116);
