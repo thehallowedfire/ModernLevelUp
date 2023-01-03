@@ -2,13 +2,21 @@
 ## Title: Modern Character Frame
 ## Notes: Re-creates modern Character Frame
 ## Author: Vladislav Kondrashov
-## Version: 0.2.2
+## Version: 0.3.0
 ## SavedVariablesPerCharacter: MCF_SETTINGS
 
-MCF-DB.lua
+DB.lua
+DBText.lua
+DBSettings.lua
 
-BlizzardStuff\MCF-CharacterFrame.lua
-BlizzardStuff\MCF-PaperDollFrame.lua
-BlizzardStuff\MCF-UITemplates.xml
+UITemplates.xml
 
-ModernCharacterFrame.lua
+Reskinning.lua
+CharacterModel.lua
+Stats.lua
+Titles.lua
+GearManager.lua
+Options.lua
+Core.lua
+
+Init.lua
