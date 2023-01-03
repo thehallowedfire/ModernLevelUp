@@ -1,13 +1,14 @@
 ----------------------------------------------------------------------------------
 --------------------------------- CORE FUNCTIONS ---------------------------------
 ----------------------------------------------------------------------------------
+
 local talentFrameSetUp = false;
 
 -- Runs when player just entered world (after loading screen)
 function MCF_OnEvent(self, event, ...)
-    local arg = ...;
+    local arg1, arg2 = ...;
 
-    if ( event == "PLAYER_ENTERING_WORLD" ) then
+    if ( event == "PLAYER_ENTERING_WORLD" and (arg1 or arg2) ) then
         if MCF_SETTINGS == nil then
             MCF_SETTINGS = MCF_DEFAULT_SETTINGS;
         end
@@ -61,12 +62,16 @@ function MCF_OnEvent(self, event, ...)
         PaperDollFrame:SetScript("OnEvent", function(self, event, ...) MCF_PaperDollFrame_OnEvent(self, event, ...); end);
         PaperDollFrame:SetScript("OnShow", function(self) MCF_PaperDollFrame_OnShow(self); end);
         PaperDollFrame:SetScript("OnHide", function(self) MCF_PaperDollFrame_OnHide(self); end);
-    elseif ( event == "ADDON_LOADED" and arg == "Blizzard_TalentUI" and (not InCombatLockdown()) ) then
+    elseif ( event == "ADDON_LOADED" and arg1 == "Blizzard_TalentUI" and (not InCombatLockdown()) ) then
         SetUIPanelAttribute(PlayerTalentFrame, "width", 383);
         talentFrameSetUp = true;
+        MCF:UnregisterEvent("ADDON_LOADED");
+        MCF:UnregisterEvent("PLAYER_REGEN_ENABLED");
     elseif ( IsAddOnLoaded("Blizzard_TalentUI") and (not talentFrameSetUp) and (event == "PLAYER_REGEN_ENABLED") ) then
         SetUIPanelAttribute(PlayerTalentFrame, "width", 383);
         talentFrameSetUp = true;
+        MCF:UnregisterEvent("ADDON_LOADED");
+        MCF:UnregisterEvent("PLAYER_REGEN_ENABLED");
     end
 end
 
