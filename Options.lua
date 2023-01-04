@@ -1,3 +1,5 @@
+local _, L = ...;
+
 ----------------------------------------------------------------------------------
 ----------------------------- OPTION PANEL FUNCTIONS -----------------------------
 ----------------------------------------------------------------------------------
@@ -17,6 +19,7 @@ function MCF_OptionsFrameTTEnableButton_OnEvent(self, event, ...)
         else
             self:SetChecked(true);
         end
+        self:UnregisterEvent(event);
     end
 end
 function MCF_OptionsFrameTTEnableButton_OnShow(self)
@@ -128,8 +131,8 @@ function MCF_OptionsFrameGSColorEnableButton_OnEvent(self, event, ...)
         else
             self:SetChecked(true);
         end
+        self:UnregisterEvent(event);
     end
-    self:UnregisterEvent(event);
 end
 function MCF_OptionsFrameGSColorEnableButton_OnShow(self)
     local EnableButton = _G[self:GetParent():GetName().."EnableButton"];

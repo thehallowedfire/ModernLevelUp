@@ -1,3 +1,5 @@
+local _, L = ...;
+
 ----------------------------------------------------------------------------------
 --------------------------------- CORE FUNCTIONS ---------------------------------
 ----------------------------------------------------------------------------------
@@ -252,8 +254,8 @@ function MCF_PaperDollFrame_OnShow(self)
 		MCF_CharacterFrame_Expand();
 	end
 	CharacterFrameExpandButton:Show();
-	CharacterFrameExpandButton.collapseTooltip = MCF_STATS_COLLAPSE_TOOLTIP;
-	CharacterFrameExpandButton.expandTooltip = MCF_STATS_EXPAND_TOOLTIP;
+	CharacterFrameExpandButton.collapseTooltip = L["MCF_STATS_COLLAPSE_TOOLTIP"];
+	CharacterFrameExpandButton.expandTooltip = L["MCF_STATS_EXPAND_TOOLTIP"];
 	
 	MCF_SetPaperDollBackground(CharacterModelFrame, "player");
 	MCF_PaperDollBgDesaturate(1);
@@ -397,9 +399,9 @@ function MCF_PaperDollFrame_SetLevel()
 	end
 	
 	if (specName and specName ~= "") then
-		CharacterLevelText:SetFormattedText(MCF_PLAYER_LEVEL, UnitLevel("player"), classColorString, specName, classDisplayName);
+		CharacterLevelText:SetFormattedText(L["MCF_PLAYER_LEVEL"], UnitLevel("player"), classColorString, specName, classDisplayName);
 	else
-		CharacterLevelText:SetFormattedText(MCF_PLAYER_LEVEL_NO_SPEC, UnitLevel("player"), classColorString, classDisplayName);
+		CharacterLevelText:SetFormattedText(L["MCF_PLAYER_LEVEL_NO_SPEC"], UnitLevel("player"), classColorString, classDisplayName);
 	end
 	
 	-- Hack: if the string is very long, move it a bit so that it has more room (although it will no longer be centered)
