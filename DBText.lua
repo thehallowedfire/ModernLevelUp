@@ -25,3 +25,5 @@ MCF_WEAPON_SPEED = "Скорость атаки";
 
 MCF_STAT_AVERAGE_ITEM_LEVEL = "Ур. предметов";
 MCF_STAT_AVERAGE_ITEM_LEVEL_EQUIPPED = "(Надето %d)";
+MCF_STAT_GEARSCORE_LABEL = "Ур. предметов (GS)";
+MCF_STAT_GEARSCORE = "(Gear Score %d)";
