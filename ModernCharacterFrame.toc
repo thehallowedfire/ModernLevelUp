@@ -5,6 +5,9 @@
 ## Version: 0.3.0
 ## SavedVariablesPerCharacter: MCF_SETTINGS
 
+Localization/enUS.lua
+Localization/ruRU.lua
+
 DB.lua
 DBText.lua
 DBSettings.lua
