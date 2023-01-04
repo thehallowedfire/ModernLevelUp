@@ -1032,15 +1032,43 @@ function MCF_PaperDollFrame_SetItemLevel(statFrame, unit)
     end
     _G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, MCF_STAT_AVERAGE_ITEM_LEVEL));
     local text = _G[statFrame:GetName().."StatText"];
-    --[[ local avgItemLevel, avgItemLevelEquipped = GetAverageItemLevel(); ]] --MCFFIX replaced with stroke below because function doesn't exist in Wrath Classic
-    local avgItemLevel, avgItemLevelEquipped = 777.77, 666.66
+    --[[ local avgItemLevel, avgItemLevelEquipped = GetAverageItemLevel();
     avgItemLevel = floor(avgItemLevel);
     avgItemLevelEquipped = floor(avgItemLevelEquipped);
     text:SetText(avgItemLevelEquipped .. " / " .. avgItemLevel);
     statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, MCF_STAT_AVERAGE_ITEM_LEVEL).." "..avgItemLevel;
     if (avgItemLevelEquipped ~= avgItemLevel) then
         statFrame.tooltip = statFrame.tooltip .. "  " .. format(MCF_STAT_AVERAGE_ITEM_LEVEL_EQUIPPED, avgItemLevelEquipped);
+    end ]]
+
+    local avgItemLevelEquipped = MCF_CalculateAverageItemLevel();
+    avgItemLevelEquipped = floor(avgItemLevelEquipped);
+
+    if ( IsAddOnLoaded("TacoTip") and MCF_GetSettings("TT_IntegrationEnabled") ) then
+        local personalGS, _ = TT_GS:GetScore("player");
+        local textType = MCF_GetSettings("TT_IntegrationType");
+        local colorGS = "";
+        if ( MCF_GetSettings("TT_IntegrationColorEnabled") ) then
+            local r, g, b, _ = TT_GS:GetQuality(personalGS);
+            local tempColor = CreateColor(r, g, b);
+            colorGS = tempColor:GenerateHexColorMarkup();
+        end
+
+        if ( textType == 2 ) then
+            text:SetText(avgItemLevelEquipped .. " (" .. (colorGS..(personalGS or NOT_APPLICABLE)..FONT_COLOR_CODE_CLOSE) .. ")");
+        elseif ( textType == 3 ) then
+            _G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, MCF_STAT_GEARSCORE_LABEL));
+            text:SetText(colorGS..(personalGS or NOT_APPLICABLE)..FONT_COLOR_CODE_CLOSE);
+        else
+            text:SetText(avgItemLevelEquipped .. " / " .. (colorGS..(personalGS or NOT_APPLICABLE)..FONT_COLOR_CODE_CLOSE));
+        end
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, MCF_STAT_AVERAGE_ITEM_LEVEL).." "..avgItemLevelEquipped;
+        statFrame.tooltip = statFrame.tooltip .. "  " .. format(MCF_STAT_GEARSCORE, (personalGS or NOT_APPLICABLE));
+    else
+        text:SetText(avgItemLevelEquipped);
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, MCF_STAT_AVERAGE_ITEM_LEVEL).." "..avgItemLevelEquipped;
     end
+    
     statFrame.tooltip = statFrame.tooltip .. FONT_COLOR_CODE_CLOSE;
     statFrame.tooltip2 = STAT_AVERAGE_ITEM_LEVEL_TOOLTIP;
 end
@@ -2207,3 +2235,19 @@ end
 	statFrame:SetScript("OnEnter", MCF_Mastery_OnEnter);
 	statFrame:Show();
 end ]]
+
+
+function MCF_CalculateAverageItemLevel()
+    local avgItemLevel, sumItemLevel, itemCount = 0, 0, 0;
+
+    for i=1, 18 do
+        if ( (i ~= 4) and GetInventoryItemID("player", i) ) then
+            local id, _ = GetInventoryItemID("player", i);
+            local _, _, _, ilvl = GetItemInfo(id);
+            sumItemLevel = sumItemLevel + ilvl;
+            itemCount = itemCount + 1;
+        end
+    end
+    avgItemLevel = sumItemLevel/itemCount;
+    return avgItemLevel;    
+end
