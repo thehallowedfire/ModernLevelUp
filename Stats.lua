@@ -1,3 +1,5 @@
+local _, L = ...;
+
 ----------------------------------------------------------------------------------
 ------------------------------ STATS PANE FUNCTIONS ------------------------------
 ----------------------------------------------------------------------------------
@@ -489,6 +491,21 @@ function MCF_ComputePetBonus(stat, value)
 	return 0;
 end
 
+function MCF_CalculateAverageItemLevel()
+    local avgItemLevel, sumItemLevel, itemCount = 0, 0, 0;
+
+    for i=1, 18 do
+        if ( (i ~= 4) and GetInventoryItemID("player", i) ) then
+            local id, _ = GetInventoryItemID("player", i);
+            local _, _, _, ilvl = GetItemInfo(id);
+            sumItemLevel = sumItemLevel + ilvl;
+            itemCount = itemCount + 1;
+        end
+    end
+    avgItemLevel = sumItemLevel/itemCount;
+    return avgItemLevel;    
+end
+
 ----------------------------------------------------------------------------------
 --------------------------------- STATS ON ENTER ---------------------------------
 ----------------------------------------------------------------------------------
@@ -609,7 +626,7 @@ function MCF_CharacterSpellCritChance_OnEnter (self)
 			GameTooltip:AddTexture("Interface\\PaperDollInfoFrame\\SpellSchoolIcon"..i);
 		end
 	end
-	GameTooltip:AddLine(format(MCF_CR_CRIT_SPELL_TOOLTIP, GetCombatRating(CR_CRIT_SPELL), GetCombatRatingBonus(CR_CRIT_SPELL)));
+	GameTooltip:AddLine(format(L["MCF_CR_CRIT_SPELL_TOOLTIP"], GetCombatRating(CR_CRIT_SPELL), GetCombatRatingBonus(CR_CRIT_SPELL)));
 	GameTooltip:Show();
 end
 
@@ -1030,15 +1047,15 @@ function MCF_PaperDollFrame_SetItemLevel(statFrame, unit)
         statFrame:Hide();
         return;
     end
-    _G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, MCF_STAT_AVERAGE_ITEM_LEVEL));
+    _G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_STAT_AVERAGE_ITEM_LEVEL"]));
     local text = _G[statFrame:GetName().."StatText"];
     --[[ local avgItemLevel, avgItemLevelEquipped = GetAverageItemLevel();
     avgItemLevel = floor(avgItemLevel);
     avgItemLevelEquipped = floor(avgItemLevelEquipped);
     text:SetText(avgItemLevelEquipped .. " / " .. avgItemLevel);
-    statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, MCF_STAT_AVERAGE_ITEM_LEVEL).." "..avgItemLevel;
+    statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, L["MCF_STAT_AVERAGE_ITEM_LEVEL"]).." "..avgItemLevel;
     if (avgItemLevelEquipped ~= avgItemLevel) then
-        statFrame.tooltip = statFrame.tooltip .. "  " .. format(MCF_STAT_AVERAGE_ITEM_LEVEL_EQUIPPED, avgItemLevelEquipped);
+        statFrame.tooltip = statFrame.tooltip .. "  " .. format(L["MCF_STAT_AVERAGE_ITEM_LEVEL_EQUIPPED"], avgItemLevelEquipped);
     end ]]
 
     local avgItemLevelEquipped = MCF_CalculateAverageItemLevel();
@@ -1060,16 +1077,16 @@ function MCF_PaperDollFrame_SetItemLevel(statFrame, unit)
         if ( textType == 2 ) then
             text:SetText(avgItemLevelEquipped .. " (" .. (colorGS..(personalGS or NOT_APPLICABLE)..FONT_COLOR_CODE_CLOSE) .. ")");
         elseif ( textType == 3 ) then
-            _G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, MCF_STAT_GEARSCORE_LABEL));
+            _G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_STAT_GEARSCORE_LABEL"]));
             text:SetText(colorGS..(personalGS or NOT_APPLICABLE)..FONT_COLOR_CODE_CLOSE);
         else
             text:SetText(avgItemLevelEquipped .. " / " .. (colorGS..(personalGS or NOT_APPLICABLE)..FONT_COLOR_CODE_CLOSE));
         end
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, MCF_STAT_AVERAGE_ITEM_LEVEL).." "..avgItemLevelEquipped;
-        statFrame.tooltip = statFrame.tooltip .. "  " .. format(MCF_STAT_GEARSCORE, (personalGS or NOT_APPLICABLE));
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, L["MCF_STAT_AVERAGE_ITEM_LEVEL"]).." "..avgItemLevelEquipped;
+        statFrame.tooltip = statFrame.tooltip .. "  " .. format(L["MCF_STAT_GEARSCORE"], (personalGS or NOT_APPLICABLE));
     else
         text:SetText(avgItemLevelEquipped);
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, MCF_STAT_AVERAGE_ITEM_LEVEL).." "..avgItemLevelEquipped;
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, L["MCF_STAT_AVERAGE_ITEM_LEVEL"]).." "..avgItemLevelEquipped;
     end
     
     statFrame.tooltip = statFrame.tooltip .. FONT_COLOR_CODE_CLOSE;
@@ -1077,7 +1094,7 @@ function MCF_PaperDollFrame_SetItemLevel(statFrame, unit)
 end
 
 function MCF_PaperDollFrame_SetMovementSpeed(statFrame, unit)
-	statFrame.Label:SetText(format(STAT_FORMAT, STAT_MOVEMENT_SPEED));
+	statFrame.Label:SetText(format(STAT_FORMAT, L["MCF_STAT_MOVEMENT_SPEED"]));
 	
 	statFrame.wasSwimming = nil;
 	statFrame.unit = unit;
@@ -1129,7 +1146,7 @@ function MCF_PaperDollFrame_SetStat(statFrame, unit, statIndex)
 			text:SetText(GREEN_FONT_COLOR_CODE..effectiveStat..FONT_COLOR_CODE_CLOSE);
 		end
 	end
-	statFrame.tooltip2 = _G["MCF_DEFAULT_STAT"..statIndex.."_TOOLTIP"];
+	statFrame.tooltip2 = L["MCF_DEFAULT_STAT"..statIndex.."_TOOLTIP"];
 	
 	if (unit == "player") then
 		local _, unitClass = UnitClass("player");
@@ -1143,15 +1160,15 @@ function MCF_PaperDollFrame_SetStat(statFrame, unit, statIndex)
 		elseif ( statIndex == 2 ) then
 			local attackPower = GetAttackPowerForStat(statIndex,effectiveStat);
 			if ( attackPower > 0 ) then
-				statFrame.tooltip2 = format(STAT_TOOLTIP_BONUS_AP, attackPower) .. format(statFrame.tooltip2, GetCritChanceFromAgility("player"));
+				statFrame.tooltip2 = format(L["MCF_STAT_TOOLTIP_BONUS_AP"], attackPower) .. format(statFrame.tooltip2, GetCritChanceFromAgility("player"), effectiveStat*ARMOR_PER_AGILITY);
 			else
-				statFrame.tooltip2 = format(statFrame.tooltip2, GetCritChanceFromAgility("player"));
+				statFrame.tooltip2 = format(statFrame.tooltip2, GetCritChanceFromAgility("player"), effectiveStat*ARMOR_PER_AGILITY);
 			end
 		-- Stamina
 		elseif ( statIndex == 3 ) then
 			local baseStam = min(20, effectiveStat);
 			local moreStam = effectiveStat - baseStam;
-			statFrame.tooltip2 = format(statFrame.tooltip2, (baseStam + (moreStam*UnitHPPerStamina("player")))*GetUnitMaxHealthModifier("player"));
+			statFrame.tooltip2 = format(statFrame.tooltip2, (baseStam + (moreStam*HEALTH_PER_STAMINA))*GetUnitMaxHealthModifier("player"));
 		-- Intellect
 		elseif ( statIndex == 4 ) then
 			if ( UnitHasMana("player") ) then
@@ -1176,7 +1193,7 @@ function MCF_PaperDollFrame_SetStat(statFrame, unit, statIndex)
 			if ( UnitHasMana("player") ) then
 				local regen = GetUnitManaRegenRateFromSpirit("player");
 				regen = floor( regen * 5.0 );
-				statFrame.tooltip2 = format(MCF_MANA_REGEN_FROM_SPIRIT, regen);
+				statFrame.tooltip2 = format(L["MCF_MANA_REGEN_FROM_SPIRIT"], regen);
 			else
 				statFrame.tooltip2 = STAT_USELESS_TOOLTIP;
 			end
@@ -1202,7 +1219,7 @@ function MCF_PaperDollFrame_SetStat(statFrame, unit, statIndex)
 		elseif ( statIndex == 5 ) then
 			statFrame.tooltip2 = "";
 			if ( UnitHasMana("pet") ) then
-				statFrame.tooltip2 = format(MCF_MANA_REGEN_FROM_SPIRIT, GetUnitManaRegenRateFromSpirit("pet"));
+				statFrame.tooltip2 = format(L["MCF_MANA_REGEN_FROM_SPIRIT"], GetUnitManaRegenRateFromSpirit("pet"));
 			end
 		end
 	end
@@ -1230,7 +1247,7 @@ function MCF_PaperDollFrame_SetResistance(statFrame, unit, resistanceIndex)
 		statFrame.tooltip = statFrame.tooltip..FONT_COLOR_CODE_CLOSE.." )";
 	end
 	
-	statFrame.tooltip2 = format(MCF_RESISTANCE_TOOLTIP_SUBTEXT, _G["SPELL_SCHOOL"..resistanceIndex.."_CAP"], ResistancePercent(resistance, UnitLevel(unit)));
+	statFrame.tooltip2 = format(L["MCF_RESISTANCE_TOOLTIP_SUBTEXT"], _G["SPELL_SCHOOL"..resistanceIndex.."_CAP"], ResistancePercent(resistance, UnitLevel(unit)));
 	
 	-- TODO: Put this in the tooltip?
 	--local petBonus = ComputePetBonus( "PET_BONUS_RES", resistance );
@@ -1277,7 +1294,7 @@ function MCF_PaperDollFrame_SetBlock(statFrame, unit)
 	local chance = GetBlockChance();
 	MCF_PaperDollFrame_SetLabelAndText(statFrame, STAT_BLOCK, chance, 1);
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, BLOCK_CHANCE).." "..string.format("%.02f", chance).."%"..FONT_COLOR_CODE_CLOSE;
-	statFrame.tooltip2 = format(MCF_CR_BLOCK_TOOLTIP, GetCombatRating(CR_BLOCK), GetCombatRatingBonus(CR_BLOCK), GetShieldBlock());
+	statFrame.tooltip2 = format(L["MCF_CR_BLOCK_TOOLTIP"], GetCombatRating(CR_BLOCK), GetCombatRatingBonus(CR_BLOCK), GetShieldBlock());
 	statFrame:Show();
 end
 
@@ -1413,7 +1430,7 @@ function MCF_PaperDollFrame_SetDamage(statFrame, unit)
 end
 
 function MCF_PaperDollFrame_SetMeleeDPS(statFrame, unit)
-	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, MCF_STAT_DPS_SHORT));
+	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_STAT_DPS_SHORT"]));
 	local text = _G[statFrame:GetName().."StatText"];
 	local speed, offhandSpeed = UnitAttackSpeed(unit);
 	
@@ -1499,7 +1516,7 @@ function MCF_PaperDollFrame_SetRangedDPS(statFrame, unit)
 		statFrame:Hide();
 		return;
 	end
-	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, MCF_STAT_DPS_SHORT));
+	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_STAT_DPS_SHORT"]));
 	local text = _G[statFrame:GetName().."StatText"];
 
 	-- If no ranged attack then set to n/a
@@ -1594,7 +1611,7 @@ function MCF_PaperDollFrame_SetAttackSpeed(statFrame, unit)
 	else
 		text = speed;
 	end
-	MCF_PaperDollFrame_SetLabelAndText(statFrame, MCF_WEAPON_SPEED, text);
+	MCF_PaperDollFrame_SetLabelAndText(statFrame, L["MCF_WEAPON_SPEED"], text);
 
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, ATTACK_SPEED).." "..text..FONT_COLOR_CODE_CLOSE;
 	
@@ -1603,7 +1620,7 @@ end
 
 -- needs improvement because function GetOverrideSpellPowerByAP() doesn't work anymore
 function MCF_PaperDollFrame_SetAttackPower(statFrame, unit)
-    _G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, ATTACK_POWER));
+    _G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_STAT_ATTACK_POWER"]));
     local text = _G[statFrame:GetName().."StatText"];
     local base, posBuff, negBuff = UnitAttackPower(unit);
 
@@ -1775,12 +1792,12 @@ function MCF_PaperDollFrame_SetRangedAttackSpeed(statFrame, unit)
 		text = format("%.2F", text);
 		statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, ATTACK_SPEED).." "..text..FONT_COLOR_CODE_CLOSE;
 	end
-	MCF_PaperDollFrame_SetLabelAndText(statFrame, MCF_WEAPON_SPEED, text);
+	MCF_PaperDollFrame_SetLabelAndText(statFrame, L["MCF_WEAPON_SPEED"], text);
 	statFrame:Show();
 end
 
 function MCF_PaperDollFrame_SetRangedAttackPower(statFrame, unit)
-	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, ATTACK_POWER));
+	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_STAT_ATTACK_POWER"]));
 	local text = _G[statFrame:GetName().."StatText"];
 	local base, posBuff, negBuff = UnitRangedAttackPower(unit);
 
@@ -1918,7 +1935,7 @@ function MCF_PaperDollFrame_SetMeleeCritChance(statFrame, unit)
 	critChance = format("%.2F%%", critChance);
 	text:SetText(critChance);
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, MELEE_CRIT_CHANCE).." "..critChance..FONT_COLOR_CODE_CLOSE;
-	statFrame.tooltip2 = format(MCF_CR_CRIT_MELEE_TOOLTIP, GetCombatRating(CR_CRIT_MELEE), GetCombatRatingBonus(CR_CRIT_MELEE));
+	statFrame.tooltip2 = format(L["MCF_CR_CRIT_MELEE_TOOLTIP"], GetCombatRating(CR_CRIT_MELEE), GetCombatRatingBonus(CR_CRIT_MELEE));
 end
 
 function MCF_PaperDollFrame_SetRangedCritChance(statFrame, unit)
@@ -1933,7 +1950,7 @@ function MCF_PaperDollFrame_SetRangedCritChance(statFrame, unit)
 	critChance = format("%.2F%%", critChance);
 	text:SetText(critChance);
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, RANGED_CRIT_CHANCE).." "..critChance..FONT_COLOR_CODE_CLOSE;
-	statFrame.tooltip2 = format(MCF_CR_CRIT_RANGED_TOOLTIP, GetCombatRating(CR_CRIT_RANGED), GetCombatRatingBonus(CR_CRIT_RANGED));
+	statFrame.tooltip2 = format(L["MCF_CR_CRIT_RANGED_TOOLTIP"], GetCombatRating(CR_CRIT_RANGED), GetCombatRatingBonus(CR_CRIT_RANGED));
 end
 
 function MCF_PaperDollFrame_SetMeleeHitChance(statFrame, unit)
@@ -2066,17 +2083,17 @@ function MCF_PaperDollFrame_SetMeleeHaste(statFrame, unit)
 		haste = "+"..format("%.2F%%", haste);
 	end
 	
-	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, WEAPON_SPEED));	
+	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_STAT_HASTE"]));	
 	local text = _G[statFrame:GetName().."StatText"];
 	text:SetText(haste);
-	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. format(PAPERDOLLFRAME_TOOLTIP_FORMAT, WEAPON_SPEED) .. " " .. haste .. FONT_COLOR_CODE_CLOSE;
+	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. format(PAPERDOLLFRAME_TOOLTIP_FORMAT, L["MCF_STAT_HASTE"]) .. " " .. haste .. FONT_COLOR_CODE_CLOSE;
 	
 	local _, class = UnitClass(unit);	
 	statFrame.tooltip2 = _G["STAT_HASTE_MELEE_"..class.."_TOOLTIP"];
 	if (not statFrame.tooltip2) then
 		statFrame.tooltip2 = STAT_HASTE_MELEE_TOOLTIP;
 	end
-	statFrame.tooltip2 = statFrame.tooltip2 .. format(MCF_STAT_HASTE_BASE_TOOLTIP, GetCombatRating(CR_HASTE_MELEE), GetCombatRatingBonus(CR_HASTE_MELEE));
+	statFrame.tooltip2 = statFrame.tooltip2 .. format(L["MCF_STAT_HASTE_BASE_TOOLTIP"], GetCombatRating(CR_HASTE_MELEE), GetCombatRatingBonus(CR_HASTE_MELEE));
 	
 	statFrame:Show();
 end
@@ -2094,17 +2111,17 @@ function MCF_PaperDollFrame_SetRangedHaste(statFrame, unit)
 		haste = "+"..format("%.2F%%", haste);
 	end
 	
-	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, WEAPON_SPEED));
+	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_STAT_HASTE"]));
 	local text = _G[statFrame:GetName().."StatText"];
 	text:SetText(haste);
-	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. format(PAPERDOLLFRAME_TOOLTIP_FORMAT, WEAPON_SPEED) .. " " .. haste .. FONT_COLOR_CODE_CLOSE;
+	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. format(PAPERDOLLFRAME_TOOLTIP_FORMAT, L["MCF_STAT_HASTE"]) .. " " .. haste .. FONT_COLOR_CODE_CLOSE;
 
 	local _, class = UnitClass(unit);	
 	statFrame.tooltip2 = _G["STAT_HASTE_RANGED_"..class.."_TOOLTIP"];
 	if (not statFrame.tooltip2) then
 		statFrame.tooltip2 = STAT_HASTE_RANGED_TOOLTIP;
 	end
-	statFrame.tooltip2 = statFrame.tooltip2 .. format(MCF_STAT_HASTE_BASE_TOOLTIP, GetCombatRating(CR_HASTE_RANGED), GetCombatRatingBonus(CR_HASTE_RANGED));
+	statFrame.tooltip2 = statFrame.tooltip2 .. format(L["MCF_STAT_HASTE_BASE_TOOLTIP"], GetCombatRating(CR_HASTE_RANGED), GetCombatRatingBonus(CR_HASTE_RANGED));
 
 	statFrame:Show();
 end
@@ -2137,17 +2154,17 @@ function MCF_PaperDollFrame_SetSpellHaste(statFrame, unit)
 		haste = "+"..format("%.2F%%", haste);
 	end
 	
-	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, SPELL_HASTE));
+	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_STAT_HASTE"]));
 	local text = _G[statFrame:GetName().."StatText"];
 	text:SetText(haste);
-	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. format(PAPERDOLLFRAME_TOOLTIP_FORMAT, SPELL_HASTE) .. " " .. haste .. FONT_COLOR_CODE_CLOSE;
+	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. format(PAPERDOLLFRAME_TOOLTIP_FORMAT, L["MCF_STAT_HASTE"]) .. " " .. haste .. FONT_COLOR_CODE_CLOSE;
 	
 	local _, class = UnitClass(unit);	
 	statFrame.tooltip2 = _G["STAT_HASTE_SPELL_"..class.."_TOOLTIP"];
 	if (not statFrame.tooltip2) then
 		statFrame.tooltip2 = STAT_HASTE_SPELL_TOOLTIP;
 	end
-	statFrame.tooltip2 = statFrame.tooltip2 .. format(MCF_STAT_HASTE_BASE_TOOLTIP, GetCombatRating(CR_HASTE_SPELL), GetCombatRatingBonus(CR_HASTE_SPELL));
+	statFrame.tooltip2 = statFrame.tooltip2 .. format(L["MCF_STAT_HASTE_BASE_TOOLTIP"], GetCombatRating(CR_HASTE_SPELL), GetCombatRatingBonus(CR_HASTE_SPELL));
 
 	statFrame:Show();
 end
@@ -2172,7 +2189,7 @@ function MCF_PaperDollFrame_SetManaRegen(statFrame, unit)
 	casting = floor( casting * 5.0 );
 	text:SetText(base);
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. MANA_REGEN .. FONT_COLOR_CODE_CLOSE;
-	statFrame.tooltip2 = format(MANA_REGEN_TOOLTIP, base);
+	statFrame.tooltip2 = format(L["MCF_MANA_REGEN_TOOLTIP"], base);
 	statFrame:Show();
 end
 
@@ -2219,6 +2236,21 @@ function MCF_PaperDollFrame_SetExpertise(statFrame, unit)
 	statFrame:Show();
 end
 
+function MCF_PaperDollFrame_SetArmorPenetration(statFrame, unit)
+	if ( unit ~= "player" ) then
+		statFrame:Hide();
+		return;
+	end
+	
+	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_STAT_ARMOR_PENETRATION"]));
+	local text = _G[statFrame:GetName().."StatText"];
+	local armorPenetration = GetArmorPenetration();
+	armorPenetration = format("%.2F%%", armorPenetration);
+	text:SetText(armorPenetration);
+	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, L["MCF_STAT_ARMOR_PENETRATION"]).." "..armorPenetration..FONT_COLOR_CODE_CLOSE;
+	statFrame.tooltip2 = format(L["MCF_CR_ARMOR_PENETRATION_TOOLTIP"], GetCombatRating(CR_ARMOR_PENETRATION), GetCombatRatingBonus(CR_ARMOR_PENETRATION));
+end
+
 -- Disabled completely because mastery doesn't exist in WotLK
 --[[ function MCF_PaperDollFrame_SetMastery(statFrame, unit)
 	if ( unit ~= "player" ) then
@@ -2238,19 +2270,3 @@ end
 	statFrame:SetScript("OnEnter", MCF_Mastery_OnEnter);
 	statFrame:Show();
 end ]]
-
-
-function MCF_CalculateAverageItemLevel()
-    local avgItemLevel, sumItemLevel, itemCount = 0, 0, 0;
-
-    for i=1, 18 do
-        if ( (i ~= 4) and GetInventoryItemID("player", i) ) then
-            local id, _ = GetInventoryItemID("player", i);
-            local _, _, _, ilvl = GetItemInfo(id);
-            sumItemLevel = sumItemLevel + ilvl;
-            itemCount = itemCount + 1;
-        end
-    end
-    avgItemLevel = sumItemLevel/itemCount;
-    return avgItemLevel;    
-end

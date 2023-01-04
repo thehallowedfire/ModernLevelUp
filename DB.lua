@@ -101,7 +101,10 @@ MCF_PAPERDOLL_STATINFO = {
 	},
 	["EXPERTISE"] = {
 		updateFunc = function(statFrame, unit) MCF_PaperDollFrame_SetExpertise(statFrame, unit); end
-	}, 
+	},
+	["MELEE_ARMOR_PENETRATION"] = {
+		updateFunc = function(statFrame, unit) MCF_PaperDollFrame_SetArmorPenetration(statFrame, unit); end
+	},
 	["ENERGY_REGEN"] = {
 		updateFunc = function(statFrame, unit) MCF_PaperDollFrame_SetEnergyRegen(statFrame, unit); end
 	},
@@ -130,6 +133,9 @@ MCF_PAPERDOLL_STATINFO = {
 	}, 
 	["RANGED_HASTE"] = {
 		updateFunc = function(statFrame, unit) MCF_PaperDollFrame_SetRangedHaste(statFrame, unit); end
+	},
+	["RANGED_ARMOR_PENETRATION"] = {
+		updateFunc = function(statFrame, unit) MCF_PaperDollFrame_SetArmorPenetration(statFrame, unit); end
 	},
 	["FOCUS_REGEN"] = {
 		updateFunc = function(statFrame, unit) MCF_PaperDollFrame_SetFocusRegen(statFrame, unit); end
@@ -234,8 +240,9 @@ MCF_PAPERDOLL_STATCATEGORIES = {
 				"ENERGY_REGEN",
 				"RUNE_REGEN",
 				"HITCHANCE", 
-				"CRITCHANCE", 
-				"EXPERTISE", 
+				"CRITCHANCE",
+				"MELEE_ARMOR_PENETRATION",
+				"EXPERTISE",
 				--[[ "MASTERY", ]] -- Disabled Mastery because it doesn't exist in WotLK Classic
 			}
 	},
@@ -250,7 +257,8 @@ MCF_PAPERDOLL_STATCATEGORIES = {
 				"RANGED_HASTE",
 				"FOCUS_REGEN",
 				"RANGED_HITCHANCE",
-				"RANGED_CRITCHANCE", 
+				"RANGED_CRITCHANCE",
+				"RANGED_ARMOR_PENETRATION",
 				--[[ "MASTERY", ]] -- Disabled Mastery because it doesn't exist in WotLK Classic
 			}
 	},
