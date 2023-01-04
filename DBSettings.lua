@@ -30,3 +30,10 @@ function MCF_GetSettings(query, id)
 		return MCF_SETTINGS[query];
 	end
 end
+
+function MCF_ResetSettings()
+	table.wipe(MCF_SETTINGS);
+	for setting, value in pairs(MCF_DEFAULT_SETTINGS) do
+		MCF_SetSettings(setting, value)
+	end
+end
