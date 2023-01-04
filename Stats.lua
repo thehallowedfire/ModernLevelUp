@@ -1050,6 +1050,9 @@ function MCF_PaperDollFrame_SetItemLevel(statFrame, unit)
         local colorGS = "";
         if ( MCF_GetSettings("TT_IntegrationColorEnabled") ) then
             local r, g, b, _ = TT_GS:GetQuality(personalGS);
+			if ( personalGS == 0 ) then
+				r, g, b = 0.55, 0.55, 0.55;
+			end
             local tempColor = CreateColor(r, g, b);
             colorGS = tempColor:GenerateHexColorMarkup();
         end
