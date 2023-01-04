@@ -6,6 +6,10 @@ MCF_DEFAULT_SETTINGS = {
 
 	["statCategoriesCollapsed"] = {false, false, false, false, false, false, false},
 	["statCategoriesCollapsed_2"] = {false, false, false, false, false, false, false},
+
+	["TT_IntegrationEnabled"] = true,
+	["TT_IntegrationType"] = 1,
+	["TT_IntegrationColorEnabled"] = true,
 }
 
 function MCF_SetSettings(setting, value, id)
