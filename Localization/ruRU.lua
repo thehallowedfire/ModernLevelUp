@@ -20,11 +20,11 @@ if GetLocale() == "ruRU" then
     L["MCF_PET_STATS_EXPAND_TOOLTIP"] = "Показать информацию о питомце";
 
     L["MCF_DEFAULT_STAT1_TOOLTIP"] = "Сила атаки увеличена на %d.";
-    L["MCF_DEFAULT_STAT2_TOOLTIP"] = "Повышает вероятность нанести критический удар на %.2f%%.";
+    L["MCF_DEFAULT_STAT2_TOOLTIP"] = "Повышает вероятность нанести критический удар на %.2f%%.\nУсиливает броню на %d.";
     L["MCF_DEFAULT_STAT3_TOOLTIP"] = "Максимальный уровень здоровья увеличен на %d.";
     L["MCF_DEFAULT_STAT4_TOOLTIP"] = "Запас маны увеличен на %d|nСила заклинаний увеличена (НЕПРАВИЛЬНО РАБОТАЕТ) на %d|nВероятность нанести критический удар заклинанием повышена на %.2f%%.";
     L["MCF_MANA_REGEN_FROM_SPIRIT"] = "Скорость восполнения маны +%d каждые 5 сек. (если персонаж не творит заклинания)";
-    L["MCF_STAT_TOOLTIP_BONUS_AP"] = "Увеличивает силу атаки на %d\13";
+    L["MCF_STAT_TOOLTIP_BONUS_AP"] = "Увеличивает силу атаки на %d.\n";
 
     L["MCF_STAT_MOVEMENT_SPEED"] = "Скорость";
     L["MCF_STAT_ATTACK_POWER"] = "Сила атаки";

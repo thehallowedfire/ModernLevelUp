@@ -30,7 +30,7 @@ if GetLocale() == ("enUS") then
     L["MCF_DEFAULT_STAT3_TOOLTIP"] = DEFAULT_STAT3_TOOLTIP; --"Increases Health by %d";
     L["MCF_DEFAULT_STAT4_TOOLTIP"] = "Increases Mana by %d|nIncreases Spell Power (WRONG - WORK IN PROGRESS) by %d|nIncreases Spell Critical Hit by %.2f%%";
     L["MCF_MANA_REGEN_FROM_SPIRIT"] = MANA_REGEN_FROM_SPIRIT; --"Increases Mana Regeneration by %d Per 5 Seconds while not casting";
-    L["MCF_STAT_TOOLTIP_BONUS_AP"] = "Increases Attack Power by %d\n";
+    L["MCF_STAT_TOOLTIP_BONUS_AP"] = "Increases Attack Power by %d.\n";
 
     L["MCF_STAT_MOVEMENT_SPEED"] = "Speed";
     L["MCF_STAT_ATTACK_POWER"] = "Attack Power";
