@@ -1,3 +1,15 @@
+-- /dump MCF_OptionsPanelTacoTipIntegrationEnable
+
+MCF_OPTIONS_DESCRIPTION = "Re-skins default Character frame into modern version.\n\nVersion: " .. GetAddOnMetadata("ModernCharacterFrame", "Version") .. ".\nAuthor: Профессия — Flamegor (EU).";
+MCF_OPTIONS_TT_INTEGRATION_TITLE = "TacoTip's Gear Score";
+MCF_OPTIONS_TT_INTEGRATION_TITLE_DISABLED = "TacoTip's Gear Score "..RED_FONT_COLOR_CODE.."(аддон выключен)"..FONT_COLOR_CODE_CLOSE;
+MCF_OPTIONS_TT_INTEGRATION_ENABLE_LABEL = "Отображение Gear Score";
+MCF_OPTIONS_TT_INTEGRATION_ENABLE_TOOLTIP = "Отображение значения Gear Score в панели характеристик в строке \"Ур. предметов\"";
+MCF_OPTIONS_TT_INTEGRATION_GSTYPE_LABEL = "Вариант отображения";
+MCF_OPTIONS_TT_INTEGRATION_GSTYPE_TOOLTIP = "Вариант отображения значения Gear Score в панели характеристик";
+MCF_OPTIONS_TT_INTEGRATION_COLOR_LABEL = "Окрашивание Gear Score";
+MCF_OPTIONS_TT_INTEGRATION_COLOR_TOOLTIP = "Включить окрашивание значения Gear Score согласно его величине";
+
 MCF_PLAYER_LEVEL = "|c%2$s%4$s (%3$s)|r %1$s-го уровня";
 MCF_PLAYER_LEVEL_NO_SPEC = "|c%2$s%3$s|r %1$s-го уровня";
 
