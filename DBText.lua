@@ -2,7 +2,7 @@
 
 MCF_OPTIONS_DESCRIPTION = "Re-skins default Character frame into modern version.\n\nVersion: " .. GetAddOnMetadata("ModernCharacterFrame", "Version") .. ".\nAuthor: Профессия — Flamegor (EU).";
 MCF_OPTIONS_TT_INTEGRATION_TITLE = "TacoTip's Gear Score";
-MCF_OPTIONS_TT_INTEGRATION_TITLE_DISABLED = "TacoTip's Gear Score "..RED_FONT_COLOR_CODE.."(аддон выключен)"..FONT_COLOR_CODE_CLOSE;
+MCF_OPTIONS_TT_INTEGRATION_TITLE_DISABLED = "TacoTip's Gear Score "..RED_FONT_COLOR_CODE.."(аддон не загружен)"..FONT_COLOR_CODE_CLOSE;
 MCF_OPTIONS_TT_INTEGRATION_ENABLE_LABEL = "Отображение Gear Score";
 MCF_OPTIONS_TT_INTEGRATION_ENABLE_TOOLTIP = "Отображение значения Gear Score в панели характеристик в строке \"Ур. предметов\"";
 MCF_OPTIONS_TT_INTEGRATION_GSTYPE_LABEL = "Вариант отображения";
