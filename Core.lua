@@ -67,13 +67,13 @@ function MCF_OnEvent(self, event, ...)
     elseif ( event == "ADDON_LOADED" and arg1 == "Blizzard_TalentUI" and (not InCombatLockdown()) ) then
         SetUIPanelAttribute(PlayerTalentFrame, "width", 383);
         talentFrameSetUp = true;
-        MCF:UnregisterEvent("ADDON_LOADED");
+        MCF:UnregisterEvent(event);
         MCF:UnregisterEvent("PLAYER_REGEN_ENABLED");
     elseif ( IsAddOnLoaded("Blizzard_TalentUI") and (not talentFrameSetUp) and (event == "PLAYER_REGEN_ENABLED") ) then
         SetUIPanelAttribute(PlayerTalentFrame, "width", 383);
         talentFrameSetUp = true;
         MCF:UnregisterEvent("ADDON_LOADED");
-        MCF:UnregisterEvent("PLAYER_REGEN_ENABLED");
+        MCF:UnregisterEvent(event);
     end
 end
 
