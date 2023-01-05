@@ -113,8 +113,11 @@ end
 function MCF_PaperDollEquipmentManagerPaneEquipSet_OnClick (self)
 	local selectedSetID = PaperDollEquipmentManagerPane.selectedSetID;
     --[[ if ( selectedSetName and selectedSetName ~= "") then ]]
-	if ( selectedSetID ) then
-		PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);	-- inappropriately named, but a good sound.
+
+	PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
+	if ( InCombatLockdown() ) then
+		UIErrorsFrame:AddMessage(ERR_CLIENT_LOCKED_OUT, 1.0, 0.1, 0.1, 1.0);
+	elseif ( selectedSetID ) then
 		--[[ C_EquipmentSet.UseEquipmentSet(C_EquipmentSet.GetEquipmentSetID(selectedSetName)); ]]
         EquipmentManager_EquipSet(selectedSetID);
 	end
@@ -174,6 +177,15 @@ function MCF_GearSetButton_OnClick (self, button, down)
 	end
 	StaticPopup_Hide("CONFIRM_SAVE_EQUIPMENT_SET");
 	StaticPopup_Hide("MCF_CONFIRM_OVERWRITE_EQUIPMENT_SET");
+end
+function MCF_GearSetButton_OnDoubleClick(self)
+	local id = self.setID;
+	PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
+	if ( InCombatLockdown() ) then
+		UIErrorsFrame:AddMessage(ERR_CLIENT_LOCKED_OUT, 1.0, 0.1, 0.1, 1.0);
+	elseif ( id ) then
+		C_EquipmentSet.UseEquipmentSet(id);
+	end
 end
 
 function MCF_PaperDollFrame_ClearIgnoredSlots()
