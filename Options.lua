@@ -103,11 +103,12 @@ function MCF_OptionsFrameGSTextTypeDropDown_Initialize()
 
 end
 function MCF_OptionsFrameGSTextTypeDropDown_OnEvent(self, event, ...)
-    if ( (event == "ADDON_LOADED") and (... == "ModernCharacterFrame") ) then
+    local arg = ...;
+    if ( (event == "ADDON_LOADED") and (arg == "ModernCharacterFrame") ) then
         self.defaultValue = 1;
         self.oldValue = MCF_GetSettings("TT_IntegrationType");
         self.value = self.defaultValue;
-        self.tooltip = _G["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_TOOLTIP"];
+        self.tooltip = L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_TOOLTIP"];
 
         UIDropDownMenu_SetWidth(self, 90);
         UIDropDownMenu_Initialize(self, MCF_OptionsFrameGSTextTypeDropDown_Initialize);
@@ -195,7 +196,7 @@ function MCF_OptionsFrameResetSettingsButton_OnClick(self)
         button2 = "No",
         OnAccept = function()
             MCF_ResetSettings();
-            print(L["MCF_OPTIONS_RESETED_MESSAGE"]);
+            SendSystemMessage(L["MCF_OPTIONS_RESETED_MESSAGE"]);
             self:Disable();
         end,
         OnCancel = function()
