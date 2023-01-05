@@ -192,8 +192,8 @@ end
 function MCF_OptionsFrameResetSettingsButton_OnClick(self)
     StaticPopupDialogs["MCF_RESET_SETTINGS"] = {
         text = L["MCF_OPTIONS_CONFIRM_RESET"],
-        button1 = "Yes",
-        button2 = "No",
+        button1 = YES,
+        button2 = NO,
         OnAccept = function()
             MCF_ResetSettings();
             SendSystemMessage(L["MCF_OPTIONS_RESETED_MESSAGE"]);
