@@ -1353,7 +1353,7 @@
 			<OnHide function="MCF_GearManagerDialogPopup_OnHide"/>
 		</Scripts>				
 	</Frame>
-    <!-- MCF Interface Options panel -->
+    <!-- Interface Options panel -->
     <Frame name="MCF_OptionsFrameTemplate" hidden="true" virtual="true">
 		<Layers>
 			<Layer level="ARTWORK">
@@ -1366,7 +1366,7 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString name="$parentSubText" text="MCF_OPTIONS_DESCRIPTION" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="4" justifyH="LEFT" justifyV="TOP">
+				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="4" justifyH="LEFT" justifyV="TOP">
 					<Size>
 						<AbsDimension y="42" x="0"/>
 					</Size>
@@ -1388,7 +1388,7 @@
 		<Frames>
             <Frame name="$parentTacoTipIntegration">
 				<Size>
-					<AbsDimension x="135" y="75"/>
+					<AbsDimension x="200" y="107"/>
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentSubText" relativePoint="BOTTOMLEFT">
@@ -1399,7 +1399,7 @@
 				</Anchors>
 				<Layers>
 					<Layer level="ARTWORK">
-						<FontString name="$parentTitle" text="MCF_OPTIONS_TT_INTEGRATION_TITLE" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+						<FontString name="$parentTitle" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
 							<Anchors>
 								<Anchor point="TOPLEFT">
 									<Offset>
@@ -1420,14 +1420,7 @@
                             </Anchor>
                         </Anchors>
                         <Scripts>
-                            <OnLoad>
-                                self.Text:SetText(MCF_OPTIONS_TT_INTEGRATION_ENABLE_LABEL);
-                                self.tooltip = MCF_OPTIONS_TT_INTEGRATION_ENABLE_TOOLTIP;
-
-                                self:RegisterEvent("ADDON_LOADED");
-                                
-                                self:HookScript("OnClick", function(self) MCF_OptionsFrameTTEnableButton_HookOnClick(self); end);
-                            </OnLoad>
+                            <OnLoad function="MCF_OptionsFrameTTEnableButton_OnLoad"/>
                             <OnEvent function="MCF_OptionsFrameTTEnableButton_OnEvent"/>
                             <OnShow function="MCF_OptionsFrameTTEnableButton_OnShow"/>
                             <OnEnter>
@@ -1446,7 +1439,7 @@
                         </Anchors>
                         <Layers>
                             <Layer level="BACKGROUND">
-                                <FontString name="$parentLabel" inherits="GameFontHighlightSmall" text="MCF_OPTIONS_TT_INTEGRATION_GSTYPE_LABEL">
+                                <FontString name="$parentLabel" inherits="GameFontHighlightSmall">
                                     <Anchors>
                                         <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
                                             <Offset>
@@ -1458,9 +1451,7 @@
                             </Layer>
                         </Layers>
                         <Scripts>
-                            <OnLoad>
-                                self:RegisterEvent("ADDON_LOADED");
-                            </OnLoad>
+                            <OnLoad function="MCF_OptionsFrameGSTextTypeDropDown_OnLoad"/>
                             <OnEnter>
                                 local EnableButton = _G[self:GetParent():GetName().."EnableButton"]
                                 if ( EnableButton:GetChecked() and EnableButton:IsEnabled()) then
@@ -1483,14 +1474,7 @@
                             </Anchor>
                         </Anchors>
                         <Scripts>
-                            <OnLoad>
-                                self.Text:SetText(MCF_OPTIONS_TT_INTEGRATION_COLOR_LABEL);
-                                self.tooltip = MCF_OPTIONS_TT_INTEGRATION_COLOR_TOOLTIP;
-
-                                self:RegisterEvent("ADDON_LOADED");
-
-                                self:HookScript("OnClick", function(self) MCF_OptionsFrameGSColorEnableButton_HookOnClick(self); end);
-                            </OnLoad>
+                            <OnLoad function="MCF_OptionsFrameGSColorEnableButton_OnLoad"/>
                             <OnEvent function="MCF_OptionsFrameGSColorEnableButton_OnEvent"/>
                             <OnShow function="MCF_OptionsFrameGSColorEnableButton_OnShow"/>
                             <OnEnter>
@@ -1499,6 +1483,7 @@
                             </OnEnter>
                         </Scripts>
                     </CheckButton>
+
                     <!-- <CheckButton name="$parentCombatTextAuras" inherits="InterfaceOptionsCheckButtonTemplate">
                         <Size x="20" y="20"/>
                         <Anchors>
@@ -1911,22 +1896,30 @@
                     </CheckButton> -->
                 </Frames>
             </Frame>
+            <Button name="$parentButton" inherits="UIPanelButtonTemplate">
+                <Size x="134" y="22"/>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="MCF_OptionsFrame" relativePoint="BOTTOMRIGHT" x="-8" y="8"/>
+                </Anchors>
+                <ButtonText name="$parentText" parentKey="text" justifyH="LEFT" justifyV="MIDDLE">
+                    <Anchors>
+                        <Anchor point="LEFT" x="20" y="0"/>
+                    </Anchors>
+                </ButtonText>
+                <Scripts>
+                    <OnLoad function="MCF_OptionsFrameResetSettingsButton_OnLoad"/>
+                    <OnShow function="MCF_OptionsFrameResetSettingsButton_OnShow"/>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
+                        GameTooltip:SetText(self.tooltip, nil, nil, nil, nil, true);
+                    </OnEnter>
+                    <OnLeave function="GameTooltip_Hide"/>
+                    <OnClick function="MCF_OptionsFrameResetSettingsButton_OnClick"/>
+                </Scripts>
+            </Button>
 		</Frames>
 		<Scripts>
-			<OnLoad>
-                self.name = "Modern Character Frame";
-                InterfaceOptions_AddCategory(self);
-            </OnLoad>
+			<OnLoad function="MCF_OptionsFrame_OnLoad"/>
 		</Scripts>
 	</Frame>
-
-
-
-
-
-
-
-
-
-
 </Ui>
