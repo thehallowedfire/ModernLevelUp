@@ -19,7 +19,7 @@ if GetLocale() == ("enUS") then
     L["MCF_OPTIONS_RESET_BUTTON_TEXT"] = "Reset settings";
     L["MCF_OPTIONS_RESET_BUTTON_TOOLTIP"] = "Reset addon's and Character frame's settings to default state.";
     L["MCF_OPTIONS_CONFIRM_RESET"] = "Are you sure you want to reset Modern Character Frame settings?";
-    L["MCF_OPTIONS_RESETED_MESSAGE"] = "Modern Character Frame settings have been reseted.";
+    L["MCF_OPTIONS_RESETED_MESSAGE"] = "Modern Character Frame settings have been reset.";
 
     L["MCF_PLAYER_LEVEL"] = "Level %s |c%s%s %s|r";
     L["MCF_PLAYER_LEVEL_NO_SPEC"] = "Level %s |c%s%s|r";

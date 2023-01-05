@@ -7,7 +7,7 @@ if GetLocale() == "ruRU" then
     L["MCF_OPTIONS_TT_INTEGRATION_ENABLE_LABEL"] = "Отображение Gear Score";
     L["MCF_OPTIONS_TT_INTEGRATION_ENABLE_TOOLTIP"] = "Отображение значения Gear Score в панели характеристик в строке \"Ур. предметов\".";
     L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_LABEL"] = "Стиль отображения";
-    L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_TOOLTIP"] = "Стиль значения Gear Score в панели характеристик.";
+    L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_TOOLTIP"] = "Стиль отображения Gear Score в панели характеристик.";
     L["MCF_OPTIONS_TT_INTEGRATION_COLOR_LABEL"] = "Окрашивание Gear Score";
     L["MCF_OPTIONS_TT_INTEGRATION_COLOR_TOOLTIP"] = "Включить окрашивание значения Gear Score согласно его величине.";
     L["MCF_OPTIONS_RESET_BUTTON_TEXT"] = "Сброс настроек";
