@@ -11,11 +11,15 @@ if GetLocale() == ("enUS") then
     L["MCF_OPTIONS_TT_INTEGRATION_TITLE"] = "TacoTip's Gear Score";
     L["MCF_OPTIONS_TT_INTEGRATION_TITLE_DISABLED"] = "TacoTip's Gear Score "..RED_FONT_COLOR_CODE.."(AddOn isn't loaded)"..FONT_COLOR_CODE_CLOSE;
     L["MCF_OPTIONS_TT_INTEGRATION_ENABLE_LABEL"] = "Show Gear Score";
-    L["MCF_OPTIONS_TT_INTEGRATION_ENABLE_TOOLTIP"] = "Show Gear Score value on Stats panel in line \"Item Level\"";
-    L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_LABEL"] = "Display option";
-    L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_TOOLTIP"] = "Choose Gear Score value display option";
+    L["MCF_OPTIONS_TT_INTEGRATION_ENABLE_TOOLTIP"] = "Show Gear Score value on Stats panel in line \"Item Level\".";
+    L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_LABEL"] = "Display style";
+    L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_TOOLTIP"] = "Choose Gear Score value display style.";
     L["MCF_OPTIONS_TT_INTEGRATION_COLOR_LABEL"] = "Color Gear Score";
-    L["MCF_OPTIONS_TT_INTEGRATION_COLOR_TOOLTIP"] = "Enable colorizing for Gear Score numbers based on its value";
+    L["MCF_OPTIONS_TT_INTEGRATION_COLOR_TOOLTIP"] = "Enable colorizing for Gear Score numbers based on its value.";
+    L["MCF_OPTIONS_RESET_BUTTON_TEXT"] = "Reset settings";
+    L["MCF_OPTIONS_RESET_BUTTON_TOOLTIP"] = "Reset addon's and Character frame's settings to default state.";
+    L["MCF_OPTIONS_CONFIRM_RESET"] = "Are you sure you want to reset Modern Character Frame settings?";
+    L["MCF_OPTIONS_RESETED_MESSAGE"] = "Modern Character Frame settings have been reseted.";
 
     L["MCF_PLAYER_LEVEL"] = "Level %s |c%s%s %s|r";
     L["MCF_PLAYER_LEVEL_NO_SPEC"] = "Level %s |c%s%s|r";

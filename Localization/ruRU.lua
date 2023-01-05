@@ -1,15 +1,19 @@
 local _, L = ...;
 
 if GetLocale() == "ruRU" then
-    L["MCF_OPTIONS_DESCRIPTION"] = "Re-skins default Character frame into modern version.\n\nВерсия: " .. GetAddOnMetadata("ModernCharacterFrame", "Version") .. ".\nАвтор: Профессия — Flamegor (EU).";
+    L["MCF_OPTIONS_DESCRIPTION"] = "Придает современный вид стандартному окну персонажа.\n\nВерсия: " .. GetAddOnMetadata("ModernCharacterFrame", "Version") .. ".\nАвтор: Профессия — Flamegor (EU).";
     L["MCF_OPTIONS_TT_INTEGRATION_TITLE"] = "TacoTip's Gear Score";
     L["MCF_OPTIONS_TT_INTEGRATION_TITLE_DISABLED"] = "TacoTip's Gear Score "..RED_FONT_COLOR_CODE.."(аддон не загружен)"..FONT_COLOR_CODE_CLOSE;
     L["MCF_OPTIONS_TT_INTEGRATION_ENABLE_LABEL"] = "Отображение Gear Score";
-    L["MCF_OPTIONS_TT_INTEGRATION_ENABLE_TOOLTIP"] = "Отображение значения Gear Score в панели характеристик в строке \"Ур. предметов\"";
-    L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_LABEL"] = "Вариант отображения";
-    L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_TOOLTIP"] = "Вариант отображения значения Gear Score в панели характеристик";
+    L["MCF_OPTIONS_TT_INTEGRATION_ENABLE_TOOLTIP"] = "Отображение значения Gear Score в панели характеристик в строке \"Ур. предметов\".";
+    L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_LABEL"] = "Стиль отображения";
+    L["MCF_OPTIONS_TT_INTEGRATION_GSTYPE_TOOLTIP"] = "Стиль значения Gear Score в панели характеристик.";
     L["MCF_OPTIONS_TT_INTEGRATION_COLOR_LABEL"] = "Окрашивание Gear Score";
-    L["MCF_OPTIONS_TT_INTEGRATION_COLOR_TOOLTIP"] = "Включить окрашивание значения Gear Score согласно его величине";
+    L["MCF_OPTIONS_TT_INTEGRATION_COLOR_TOOLTIP"] = "Включить окрашивание значения Gear Score согласно его величине.";
+    L["MCF_OPTIONS_RESET_BUTTON_TEXT"] = "Сброс настроек";
+    L["MCF_OPTIONS_RESET_BUTTON_TOOLTIP"] = "Сбросить настройки аддона и окна персонажа к стандартным значениям."
+    L["MCF_OPTIONS_CONFIRM_RESET"] = "Вы действительно хотите сбросить настройки Modern Character Frame?";
+    L["MCF_OPTIONS_RESETED_MESSAGE"] = "Настройки Modern Character Frame были сброшены.";
 
     L["MCF_PLAYER_LEVEL"] = "|c%2$s%4$s (%3$s)|r %1$s-го уровня";
     L["MCF_PLAYER_LEVEL_NO_SPEC"] = "|c%2$s%3$s|r %1$s-го уровня";
