@@ -520,13 +520,7 @@
 			<OnClick>
 				MCF_GearSetButton_OnClick(self, button, down);
 			</OnClick>
-			<OnDoubleClick>
-				local id = self.setID;
-				if ( id ) then
-					PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
-					C_EquipmentSet.UseEquipmentSet(id);
-				end
-			</OnDoubleClick>
+			<OnDoubleClick function="MCF_GearSetButton_OnDoubleClick"/>
 			<OnEnter>
 				MCF_GearSetButton_OnEnter(self);
 			</OnEnter>
@@ -1117,7 +1111,7 @@
     <Frame name="MCF-GearManagerDialogPopupTemplate" hidden="true" parent="PaperDollFrame" virtual="true">
 		<Size x="525" y="475"/>
 		<Anchors>
-			<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" y="6"/>
+			<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="170" y="-12"/>
 		</Anchors>
 		<Layers>
 			<Layer level="BORDER">
