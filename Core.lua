@@ -319,6 +319,7 @@ function MCF_CharacterFrame_Collapse()
     -- Fixing CharacterNameFrame coordinates
     CharacterNameFrame:ClearAllPoints();
     CharacterNameFrame:SetPoint("TOP", CharacterModelFrame, "TOP", 4, 59);
+	CharacterNameText:SetSize(218, 12);
     -- Fixing CharacterLevelText coordinates
     CharacterLevelText:SetPoint("TOP", CharacterNameText, "TOP", 0, -31);
 
@@ -349,6 +350,7 @@ function MCF_CharacterFrame_Expand()
     -- Fixing CharacterNameFrame coordinates
     CharacterNameFrame:ClearAllPoints();
     CharacterNameFrame:SetPoint("TOP", CharacterModelFrame, "TOP", 2 + 101, 59);
+	CharacterNameText:SetSize(420, 12);
     -- Fixing CharacterLevelText coordinates
     CharacterLevelText:SetPoint("TOP", CharacterNameText, "TOP", 0, -31);
 
