@@ -38,8 +38,8 @@ if GetLocale() == ("enUS") then
 
     L["MCF_STAT_MOVEMENT_SPEED"] = "Speed";
     L["MCF_STAT_ATTACK_POWER"] = "Attack Power";
-    L["MCF_STAT_DPS_SHORT"] = STAT_DPS_SHORT; --"Урон в сек";
-    L["MCF_WEAPON_SPEED"] = WEAPON_SPEED; --"Скорость атаки";
+    L["MCF_STAT_DPS_SHORT"] = STAT_DPS_SHORT;
+    L["MCF_WEAPON_SPEED"] = WEAPON_SPEED;
     L["MCF_STAT_HASTE"] = "Haste";
     L["MCF_STAT_ARMOR_PENETRATION"] = "Armor Penetration";
     L["MCF_SPELL_PENETRATION"] = SPELL_PENETRATION;
@@ -51,14 +51,14 @@ if GetLocale() == ("enUS") then
     L["MCF_CR_CRIT_SPELL_TOOLTIP"] = "Chance of spells doing extra damage.\nCrit rating %d (+%.2f%% crit chance)";
     L["MCF_STAT_HASTE_BASE_TOOLTIP"] = "\nHaste rating %d (+%.2f%% Haste)";
     L["MCF_MANA_REGEN_TOOLTIP"] = "%d mana regenerated every 5 seconds while not in combat.";
-    L["MCF_CR_BLOCK_TOOLTIP"] = CR_BLOCK_TOOLTIP; --"Рейтинг блока %d увеличивает вероятность блокировать удар на %.2f%%.\nПри успешном блоке урон уменьшается на %d%%.";
+    L["MCF_CR_BLOCK_TOOLTIP"] = CR_BLOCK_TOOLTIP;
     L["MCF_RESISTANCE_TOOLTIP_SUBTEXT"] = "Reduces %s damage taken by an average of %.2f%%.";
     L["MCF_CR_ARMOR_PENETRATION_TOOLTIP"] = "Reduces enemy armor (only for your attacks).\nArmor Penetration Rating: %d (enemy armor reduced for %.2f%%).";
     L["MCF_SPELL_PENETRATION_TOOLTIP"] = SPELL_PENETRATION_TOOLTIP;
     L["MCF_CR_EXPERTISE_TOOLTIP"] = CR_EXPERTISE_TOOLTIP;
 
-    L["MCF_STAT_AVERAGE_ITEM_LEVEL"] = STAT_AVERAGE_ITEM_LEVEL; --"Ур. предметов";
-    L["MCF_STAT_AVERAGE_ITEM_LEVEL_EQUIPPED"] = STAT_AVERAGE_ITEM_LEVEL_EQUIPPED; --"(Надето %d)";
+    L["MCF_STAT_AVERAGE_ITEM_LEVEL"] = STAT_AVERAGE_ITEM_LEVEL;
+    L["MCF_STAT_AVERAGE_ITEM_LEVEL_EQUIPPED"] = STAT_AVERAGE_ITEM_LEVEL_EQUIPPED;
     L["MCF_STAT_GEARSCORE_LABEL"] = "Item Level (GS)";
     L["MCF_STAT_GEARSCORE"] = "(Gear Score %d)";
 end
