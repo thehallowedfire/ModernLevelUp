@@ -1,5 +1,5 @@
 MCF_DEFAULT_SETTINGS = {
-	["characterFrameCollapsed"] = "0",
+	["characterFrameCollapsed"] = "1",
 
 	["statCategoryOrder"] = "", --"1,2,3,4,5,6,7",
 	["statCategoryOrder_2"] = "", --"1,2,3,4,5,6,7",
