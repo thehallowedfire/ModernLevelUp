@@ -318,7 +318,7 @@ function MCF_CharacterFrame_Collapse()
     CharacterFrameCloseButton:SetPoint("TOPRIGHT", CharacterFrame, "TOPRIGHT", -28, -9);
     -- Fixing CharacterNameFrame coordinates
     CharacterNameFrame:ClearAllPoints();
-    CharacterNameFrame:SetPoint("TOP", CharacterModelFrame, "TOP", 2, 59);
+    CharacterNameFrame:SetPoint("TOP", CharacterModelFrame, "TOP", 4, 59);
     -- Fixing CharacterLevelText coordinates
     CharacterLevelText:SetPoint("TOP", CharacterNameText, "TOP", 0, -31);
 
