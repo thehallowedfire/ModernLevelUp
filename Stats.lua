@@ -1842,9 +1842,15 @@ function MCF_PaperDollFrame_SetSpellBonusDamage(statFrame, unit)
 		statFrame.bonusDamage = nil;
 	end
 	
+	local healerClasses = {
+		["DRUID"] = true,
+		["PALADIN"] = true,
+		["PRIEST"] = true,
+		["SHAMAN"] = true,
+	};
     local _, class = UnitClass(unit);
 	local spellHealing = GetSpellBonusHealing();
-	if ( (spellHealing == minModifier) or (class ~= "DRUID" and "PALADIN" and "PRIEST" and "SHAMAN") ) then
+	if ( (spellHealing == minModifier) or (not healerClasses[class]) ) then
 		_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, STAT_SPELLPOWER));
 		statFrame.tooltip = STAT_SPELLPOWER;
 		statFrame.tooltip2 = STAT_SPELLPOWER_TOOLTIP;
@@ -1880,9 +1886,15 @@ function MCF_PaperDollFrame_SetSpellBonusHealing(statFrame, unit)
 	end
 	statFrame.bonusDamage = nil;
 	
+	local healerClasses = {
+		["DRUID"] = true,
+		["PALADIN"] = true,
+		["PRIEST"] = true,
+		["SHAMAN"] = true,
+	};
     local _, class = UnitClass(unit);
 	local spellHealing = GetSpellBonusHealing();
-	if ( (spellHealing == minDamage) or (class ~= "DRUID" and "PALADIN" and "PRIEST" and "SHAMAN") ) then
+	if ( (spellHealing == minDamage) or (not healerClasses[class]) ) then
 		statFrame:Hide();
 		return;
 	end
