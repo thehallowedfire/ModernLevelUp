@@ -232,10 +232,9 @@ function MCF_PaperDollFrame_OnShow(self)
     MCF_PaperDollFrame_SetLevel();
     MCF_PaperDollFrame_UpdateStats();
 
-    if ( not UnitHasRelicSlot("player") ) then
+	local _, class = UnitClass("player");
+	if ( not ((class == "HUNTER") or (class == "ROGUE") or (class == "WARRIOR")) ) then
 		CharacterAmmoSlot:Hide();
-	else
-		CharacterAmmoSlot:Show();
 	end
 
 	CharacterStatsPane.initialOffsetY = 0;
@@ -319,14 +318,9 @@ function MCF_CharacterFrame_Collapse()
     CharacterFrameCloseButton:SetPoint("TOPRIGHT", CharacterFrame, "TOPRIGHT", -28, -9);
     -- Fixing CharacterNameFrame coordinates
     CharacterNameFrame:ClearAllPoints();
-    CharacterNameFrame:SetPoint("LEFT", CharacterFrame, "LEFT", 73, 0);
-    CharacterNameFrame:SetPoint("TOP", CharacterFrame, "TOP", 0, -18);
-    CharacterNameFrame:SetPoint("RIGHT", CharacterFrame, "RIGHT", -93, 0);
+    CharacterNameFrame:SetPoint("TOP", CharacterModelFrame, "TOP", 2, 59);
     -- Fixing CharacterLevelText coordinates
-    CharacterLevelText:SetPoint("LEFT", CharacterFrame, "LEFT", 73, -50);
-    CharacterLevelText:SetPoint("TOP", CharacterFrame, "TOP", 0, -50);
-    CharacterLevelText:SetPoint("RIGHT", CharacterFrame, "RIGHT", -93, -50);
-
+    CharacterLevelText:SetPoint("TOP", CharacterNameText, "TOP", 0, -31);
 
 	CharacterFrame.Expanded = false;
 	CharacterFrameExpandButton:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Up");
@@ -354,13 +348,9 @@ function MCF_CharacterFrame_Expand()
     CharacterFrameCloseButton:SetPoint("TOPRIGHT", CharacterFrame, "TOPRIGHT", -28 + 202, -9);
     -- Fixing CharacterNameFrame coordinates
     CharacterNameFrame:ClearAllPoints();
-    CharacterNameFrame:SetPoint("LEFT", CharacterFrame, "LEFT", 73 + 101, 0);
-    CharacterNameFrame:SetPoint("TOP", CharacterFrame, "TOP", 0 + 101, -18);
-    CharacterNameFrame:SetPoint("RIGHT", CharacterFrame, "RIGHT", -93 + 101, 0);
+    CharacterNameFrame:SetPoint("TOP", CharacterModelFrame, "TOP", 2 + 101, 59);
     -- Fixing CharacterLevelText coordinates
-    CharacterLevelText:SetPoint("LEFT", CharacterFrame, "LEFT", 73 + 101, -50);
-    CharacterLevelText:SetPoint("TOP", CharacterFrame, "TOP", 0 + 101, -50);
-    CharacterLevelText:SetPoint("RIGHT", CharacterFrame, "RIGHT", -93 + 101, -50);
+    CharacterLevelText:SetPoint("TOP", CharacterNameText, "TOP", 0, -31);
 
 	CharacterFrame.Expanded = true;
 	CharacterFrameExpandButton:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Up");
@@ -407,12 +397,15 @@ function MCF_PaperDollFrame_SetLevel()
 	-- Hack: if the string is very long, move it a bit so that it has more room (although it will no longer be centered)
 	if (CharacterLevelText:GetWidth() > 210) then
 		if (CharacterFrameInsetRight:IsVisible()) then
-			CharacterLevelText:SetPoint("TOP", 6, -49);
+			--[[ CharacterLevelText:SetPoint("TOP", -10, -36); ]]
+			CharacterLevelText:AdjustPointsOffset(-10, 0);
 		else
-			CharacterLevelText:SetPoint("TOP", 26, -49);
+			--[[ CharacterLevelText:SetPoint("TOP", 10, -36); ]]
+			CharacterLevelText:AdjustPointsOffset(10, 0);
 		end
 	else
-		CharacterLevelText:SetPoint("TOP", 16, -49);
+		--[[ CharacterLevelText:SetPoint("TOP", 0, -36); ]]
+		CharacterLevelText:AdjustPointsOffset(0, 0);
 	end
 end
 
