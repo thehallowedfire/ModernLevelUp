@@ -699,6 +699,83 @@ function MCF_RangedHitChance_OnEnter(statFrame)
 	GameTooltip:Show();
 end
 
+--[[ function MCF_SpellHitCheckTalents()
+	local _, class = UnitClass("player");
+	if ( not MCF_TALENTS_FOR_SPELLHIT[class] ) then
+		return;
+	end
+
+	local result = {};
+	for tableIndex, talent in pairs(MCF_TALENTS_FOR_SPELLHIT[class]) do
+		local _, _, _, _, rank = GetTalentInfo(talent.tab, talent.index);
+		if (rank > 0 ) then
+			local id;
+			if ( not talent.all ) then
+				for i=1, #talent.schools do
+					if talent.schools[i] then
+						id = i-1;
+					end
+				end
+			end
+
+			local plusHit = rank * talent.increment;
+
+			result[tableIndex] = {all = talent.all, school = id, plusHit = plusHit};
+		end
+	end
+
+	return result;
+end
+
+function MCF_SpellHitChance_OnEnter(statFrame)
+
+	if (MOVING_STAT_CATEGORY) then return; end
+	GameTooltip:SetOwner(statFrame, "ANCHOR_RIGHT");
+	local hitChance = GetCombatRatingBonus(CR_HIT_SPELL);
+
+	local hitFromTalents = MCF_SpellHitCheckTalents();
+	local schoolHitChance, school, additionalHit;
+	if ( hitFromTalents and (#hitFromTalents > 0) ) then
+		for i=1, #hitFromTalents do
+			if hitFromTalents[i].all then
+				hitChance = hitChance + hitFromTalents[i].plusHit;
+			else
+				school = hitFromTalents[i].school;
+				additionalHit = hitFromTalents[i].plusHit;
+			end
+		end
+	end
+	schoolHitChance = hitChance;
+
+	if (hitChance >= 0) then
+		hitChance = format("+%.2F%%", hitChance);
+	else
+		hitChance = RED_FONT_COLOR_CODE..format("%.2F%%", hitChance)..FONT_COLOR_CODE_CLOSE;
+	end
+	GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_HIT_CHANCE).." "..hitChance..FONT_COLOR_CODE_CLOSE);
+
+	if ( school ) then
+		schoolHitChance = format("+%.2F%%", schoolHitChance + additionalHit);
+		GameTooltip:AddDoubleLine(_G["DAMAGE_SCHOOL"..school], schoolHitChance, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+		GameTooltip:AddTexture("Interface\\PaperDollInfoFrame\\SpellSchoolIcon"..school);
+	end
+
+	GameTooltip:AddLine(format(STAT_HIT_SPELL_TOOLTIP, GetCombatRating(CR_HIT_SPELL), GetCombatRatingBonus(CR_HIT_SPELL)));
+	GameTooltip:AddLine(" ");
+	GameTooltip:AddDoubleLine(STAT_TARGET_LEVEL, MISS_CHANCE, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
+	local playerLevel = UnitLevel("player");
+	for i=0, 3 do
+		local missChance = format("%.2F%%", MCF_GetSpellMissChance(i));
+		local level = playerLevel + i;
+			if (i == 3) then
+				level = level.." / |TInterface\\TargetingFrame\\UI-TargetingFrame-Skull:0|t";
+			end
+		GameTooltip:AddDoubleLine("      "..level, missChance.."    ", NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+	end
+		
+	GameTooltip:Show();
+end ]]
+
 function MCF_SpellHitChance_OnEnter(statFrame)
 
 	if (MOVING_STAT_CATEGORY) then return; end
@@ -710,6 +787,7 @@ function MCF_SpellHitChance_OnEnter(statFrame)
 		hitChance = RED_FONT_COLOR_CODE..format("%.2F%%", hitChance)..FONT_COLOR_CODE_CLOSE;
 	end
 	GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_HIT_CHANCE).." "..hitChance..FONT_COLOR_CODE_CLOSE);
+	GameTooltip:AddLine(L["MCF_SPELLHIT_NOTALENTS_TOOLTIP"]);
 	GameTooltip:AddLine(format(STAT_HIT_SPELL_TOOLTIP, GetCombatRating(CR_HIT_SPELL), GetCombatRatingBonus(CR_HIT_SPELL)));
 	GameTooltip:AddLine(" ");
 	GameTooltip:AddDoubleLine(STAT_TARGET_LEVEL, MISS_CHANCE, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
@@ -2148,7 +2226,7 @@ function MCF_PaperDollFrame_SetSpellPenetration(statFrame, unit)
 	local text = _G[statFrame:GetName().."StatText"];
 	local spellPenetration = GetSpellPenetration();
 	text:SetText(spellPenetration);
-	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE ..SPELL_PENETRATION.. FONT_COLOR_CODE_CLOSE;
+	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE ..L["MCF_SPELL_PENETRATION"].. FONT_COLOR_CODE_CLOSE;
 	statFrame.tooltip2 = format(L["MCF_SPELL_PENETRATION_TOOLTIP"], spellPenetration, spellPenetration);
 	statFrame:Show();
 end

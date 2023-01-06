@@ -342,6 +342,36 @@ MCF_BASE_ENEMY_PARRY_CHANCE = {
 
 MCF_DUAL_WIELD_HIT_PENALTY = 19.0;
 
+-- Unused for now, keep in case decide to improve SpellHit tooltip
+MCF_TALENTS_FOR_SPELLHIT = {
+	["MAGE"] = {
+		-- Arcane Focus
+		[1] = {
+			tab = 1,
+			index = 3,
+			increment = 1,
+			all = false,
+			schools = {
+				nil,
+				nil,
+				false, -- Holy (id 2)
+				false, -- Fire
+				false, -- Nature
+				false, -- Frost
+				false, -- Shadow
+				true,   -- Arcane
+			}
+		},
+		-- Precision
+		[2] = {
+			tab = 3,
+			index = 17,
+			increment = 1,
+			all = true,
+		},
+	},
+};
+
 ----------------------------------------------------------------------------------
 ------------------------------------- TITLES -------------------------------------
 ----------------------------------------------------------------------------------
