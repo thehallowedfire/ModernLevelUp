@@ -745,7 +745,7 @@ function MCF_Expertise_OnEnter(statFrame)
 	end
 	
 	GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, _G["COMBAT_RATING_NAME"..CR_EXPERTISE]).." "..expertiseDisplay..FONT_COLOR_CODE_CLOSE);
-	GameTooltip:AddLine(format(CR_EXPERTISE_TOOLTIP, expertisePercentDisplay, GetCombatRating(CR_EXPERTISE), GetCombatRatingBonus(CR_EXPERTISE)), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true);
+	GameTooltip:AddLine(format(L["MCF_CR_EXPERTISE_TOOLTIP"], expertisePercentDisplay, GetCombatRating(CR_EXPERTISE), GetCombatRatingBonus(CR_EXPERTISE)), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true);
 	GameTooltip:AddLine(" ");
 	
 	-- Dodge chance
@@ -1228,7 +1228,7 @@ end
 
 function MCF_PaperDollFrame_SetResistance(statFrame, unit, resistanceIndex)
 	local base, resistance, positive, negative = UnitResistance(unit, resistanceIndex);
-	local resistanceNameShort = _G["DAMAGE_SCHOOL"..resistanceIndex];
+	local resistanceNameShort = _G["DAMAGE_SCHOOL"..(resistanceIndex+1)];
 	local resistanceName = _G["RESISTANCE"..resistanceIndex.."_NAME"];
 	local resistanceIconCode = "|TInterface\\PaperDollInfoFrame\\SpellSchoolIcon"..(resistanceIndex+1)..":0|t";
 	_G[statFrame:GetName().."Label"]:SetText(resistanceIconCode.." "..format(STAT_FORMAT, resistanceNameShort));
@@ -1305,7 +1305,7 @@ function MCF_PaperDollFrame_SetParry(statFrame, unit)
 	end
 	
 	local chance = GetParryChance();
-	MCF_PaperDollFrame_SetLabelAndText(statFrame, STAT_PARRY, chance, 1);
+	MCF_PaperDollFrame_SetLabelAndText(statFrame, L["MCF_STAT_PARRY"], chance, 1);
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, PARRY_CHANCE).." "..string.format("%.02f", chance).."%"..FONT_COLOR_CODE_CLOSE;
 	statFrame.tooltip2 = format(CR_PARRY_TOOLTIP, GetCombatRating(CR_PARRY), GetCombatRatingBonus(CR_PARRY));
 	statFrame:Show();
@@ -2144,12 +2144,12 @@ function MCF_PaperDollFrame_SetSpellPenetration(statFrame, unit)
 		return;
 	end
 	
-	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, SPELL_PENETRATION));
+	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_SPELL_PENETRATION"]));
 	local text = _G[statFrame:GetName().."StatText"];
 	local spellPenetration = GetSpellPenetration();
 	text:SetText(spellPenetration);
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE ..SPELL_PENETRATION.. FONT_COLOR_CODE_CLOSE;
-	statFrame.tooltip2 = format(SPELL_PENETRATION_TOOLTIP, spellPenetration, spellPenetration);
+	statFrame.tooltip2 = format(L["MCF_SPELL_PENETRATION_TOOLTIP"], spellPenetration, spellPenetration);
 	statFrame:Show();
 end
 
@@ -2187,7 +2187,7 @@ function MCF_PaperDollFrame_SetManaRegen(statFrame, unit)
 		return;
 	end
 	
-	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, MANA_REGEN));
+	_G[statFrame:GetName().."Label"]:SetText(format(STAT_FORMAT, L["MCF_MANA_REGEN"]));
 	local text = _G[statFrame:GetName().."StatText"];
 	if ( not UnitHasMana("player") ) then
 		text:SetText(NOT_APPLICABLE);
@@ -2200,7 +2200,7 @@ function MCF_PaperDollFrame_SetManaRegen(statFrame, unit)
 	base = floor( base * 5.0 );
 	casting = floor( casting * 5.0 );
 	text:SetText(base);
-	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. MANA_REGEN .. FONT_COLOR_CODE_CLOSE;
+	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. L["MCF_MANA_REGEN"] .. FONT_COLOR_CODE_CLOSE;
 	statFrame.tooltip2 = format(L["MCF_MANA_REGEN_TOOLTIP"], base);
 	statFrame:Show();
 end

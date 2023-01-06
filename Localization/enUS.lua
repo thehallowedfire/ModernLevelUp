@@ -42,6 +42,9 @@ if GetLocale() == ("enUS") then
     L["MCF_WEAPON_SPEED"] = WEAPON_SPEED; --"Скорость атаки";
     L["MCF_STAT_HASTE"] = "Haste";
     L["MCF_STAT_ARMOR_PENETRATION"] = "Armor Penetration";
+    L["MCF_SPELL_PENETRATION"] = SPELL_PENETRATION;
+    L["MCF_MANA_REGEN"] = MANA_REGEN;
+    L["MCF_STAT_PARRY"] = STAT_PARRY;
 
     L["MCF_CR_CRIT_MELEE_TOOLTIP"] = "Chance of attacks doing extra damage.\nCrit rating %d (+%.2f%% crit chance)";
     L["MCF_CR_CRIT_RANGED_TOOLTIP"] = "Chance of attacks doing extra damage.\nCrit rating %d (+%.2f%% crit chance)";
@@ -51,6 +54,8 @@ if GetLocale() == ("enUS") then
     L["MCF_CR_BLOCK_TOOLTIP"] = CR_BLOCK_TOOLTIP; --"Рейтинг блока %d увеличивает вероятность блокировать удар на %.2f%%.\nПри успешном блоке урон уменьшается на %d%%.";
     L["MCF_RESISTANCE_TOOLTIP_SUBTEXT"] = "Reduces %s damage taken by an average of %.2f%%.";
     L["MCF_CR_ARMOR_PENETRATION_TOOLTIP"] = "Reduces enemy armor (only for your attacks).\nArmor Penetration Rating: %d (enemy armor reduced for %.2f%%).";
+    L["MCF_SPELL_PENETRATION_TOOLTIP"] = SPELL_PENETRATION_TOOLTIP;
+    L["MCF_CR_EXPERTISE_TOOLTIP"] = CR_EXPERTISE_TOOLTIP;
 
     L["MCF_STAT_AVERAGE_ITEM_LEVEL"] = STAT_AVERAGE_ITEM_LEVEL; --"Ур. предметов";
     L["MCF_STAT_AVERAGE_ITEM_LEVEL_EQUIPPED"] = STAT_AVERAGE_ITEM_LEVEL_EQUIPPED; --"(Надето %d)";
