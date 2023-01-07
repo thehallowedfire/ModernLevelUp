@@ -17,6 +17,9 @@ function MCF_OnEvent(self, event, ...)
 
         SetUIPanelAttribute(CharacterFrame, "pushable", 7);
 
+		-- Creating options frame
+		MCF_CreateOptionsFrame();
+
         -- Cleaning frame from unnecessary elements and textures
         MCF_CleanDefaultFrame();
         MCF_DeleteFrameTextures(PaperDollFrame);
@@ -47,6 +50,16 @@ function MCF_OnEvent(self, event, ...)
         CharacterHeadSlot:SetPoint("TOPLEFT", CharacterFrameInset, "TOPLEFT", 3, -2);
         CharacterHandsSlot:SetPoint("TOPLEFT", CharacterFrameInset, "TOPRIGHT", -43, -2);
         CharacterMainHandSlot:SetPoint("TOPLEFT", PaperDollItemsFrame, "BOTTOMLEFT", 120, 129);
+
+		-- Dealing with default GearManagerDialog
+		GearManagerDialog:SetFrameStrata("TOOLTIP");
+		GearManagerDialog:EnableMouse(false);
+		GearManagerDialog:SetScript("OnLoad", nil);
+		GearManagerDialog:SetScript("OnShow", nil);
+		GearManagerDialog:SetScript("OnHide", nil);
+		GearManagerDialog:SetSize(0, 0);
+		GearManagerDialog:SetPoint("TOPLEFT", CharacterFrame, "TOPLEFT", 10, -12);
+
 
         -- Registering events on CharacterFrame
         CharacterFrame:RegisterEvent("PLAYER_PVP_RANK_CHANGED");

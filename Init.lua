@@ -12,6 +12,3 @@ MCF:RegisterEvent("PLAYER_REGEN_ENABLED");
 
 -- Setting script to addon's support frame
 MCF:SetScript("OnEvent", MCF_OnEvent);
-
--- Creating options frame
-MCF_CreateOptionsFrame();
