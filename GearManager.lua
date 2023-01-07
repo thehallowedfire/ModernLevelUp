@@ -29,7 +29,28 @@ local itemSlotButtons = {
 function MCF_CreateEquipmentManagerPane(frame)
     frame.TitlesPane = CreateFrame("ScrollFrame", "PaperDollEquipmentManagerPane", frame, "MCF-PaperDollEquipmentManagerPaneTemplate");
     frame.DialogPopup = CreateFrame("Frame", "MCF_GearManagerDialogPopup", frame, "MCF-GearManagerDialogPopupTemplate");
-    MCF_GearManagerDialogPopup_OnLoad(MCF_GearManagerDialogPopup);
+end
+
+function MCF_EquipmentManager_CheckSetChange(button)
+	if (not PaperDollEquipmentManagerPane.selectedSetID) then
+		return;
+	end
+	if ( (button.location == PDFITEMFLYOUT_UNIGNORESLOT_LOCATION) or (button.location == PDFITEMFLYOUT_IGNORESLOT_LOCATION) ) then
+		local setIgnoredItems = C_EquipmentSet.GetIgnoredSlots(PaperDollEquipmentManagerPane.selectedSetID)
+		for i=1, #itemSlotButtons do
+			local slotIgnored = itemSlotButtons[i].ignored;
+			if (slotIgnored == nil) then
+				slotIgnored = false;
+			end
+
+			if ( setIgnoredItems and (slotIgnored ~= setIgnoredItems[i]) and not MCF_GearManagerDialogPopup:IsShown() ) then
+				PaperDollEquipmentManagerPaneSaveSet:Enable();
+				break;
+			else
+				PaperDollEquipmentManagerPaneSaveSet:Disable();
+			end
+		end
+	end
 end
 
 -- PaperDollEquipmentManagerPane scripts
@@ -42,6 +63,9 @@ function MCF_PaperDollEquipmentManagerPane_OnLoad(self)
 	self:RegisterEvent("EQUIPMENT_SETS_CHANGED");
 	self:RegisterEvent("PLAYER_EQUIPMENT_CHANGED");
 	self:RegisterEvent("BAG_UPDATE");
+
+	--PaperDollFrameItemFlyoutButton_OnClick(self, button, down);
+	hooksecurefunc("PaperDollFrameItemFlyoutButton_OnClick", MCF_EquipmentManager_CheckSetChange);
 end
 -- NOT READY
 function MCF_PaperDollEquipmentManagerPane_OnShow(self)
@@ -75,7 +99,6 @@ function MCF_PaperDollEquipmentManagerPane_OnEvent(self, event, ...)
 			end
 		end
 	end
-
 
 	if (self:IsShown()) then
 		if ( event == "EQUIPMENT_SETS_CHANGED" ) then
@@ -171,12 +194,25 @@ function MCF_GearSetButton_OnClick (self, button, down)
 	else
 		-- This is the "New Set" button
 		MCF_GearManagerDialogPopup:Show();
+		--[[ GearManagerDialog:Hide(); ]]
 		
 		PaperDollEquipmentManagerPane.setID = nil;
 		PaperDollEquipmentManagerPane.selectedSetName = nil;
 		PaperDollEquipmentManagerPane.selectedSetID = nil;
 		MCF_PaperDollFrame_ClearIgnoredSlots();
 		MCF_PaperDollEquipmentManagerPane_Update();
+
+		-- HACK to make ignore slots working "correct"
+		PaperDollEquipmentManagerPane.tempSetID = 0;
+		C_EquipmentSet.CreateEquipmentSet("MCF_TEMP_SET");
+		PaperDollEquipmentManagerPane.tempSetID = C_EquipmentSet.GetEquipmentSetID("MCF_TEMP_SET");
+		for i=1, (#PaperDollEquipmentManagerPane.buttons) do
+			if (PaperDollEquipmentManagerPane.buttons[i].name == "MCF_TEMP_SET") then
+				PaperDollEquipmentManagerPane.buttons[i]:Hide();
+				break;
+			end
+		end
+
 		-- Ignore shirt and tabard by default
 		MCF_PaperDollFrame_IgnoreSlot(4);
 		MCF_PaperDollFrame_IgnoreSlot(19);
@@ -236,6 +272,13 @@ function MCF_GetEquipmentSetInfoByName(arg) -- arg could be: "", "name", 1 (numb
 end
 
 function MCF_PaperDollEquipmentManagerPane_Update()
+	-- HACK to make ignore slots working "correct"
+	if ( PaperDollEquipmentManagerPane.tempSetID ) then
+		return;
+	elseif ( C_EquipmentSet.GetEquipmentSetID("MCF_TEMP_SET") ) then
+		C_EquipmentSet.DeleteEquipmentSet(C_EquipmentSet.GetEquipmentSetID("MCF_TEMP_SET"));
+	end
+
 	local _, _, setID, isEquipped = MCF_GetEquipmentSetInfoByName(PaperDollEquipmentManagerPane.selectedSetName or "");
 	if (setID) then
 		if (isEquipped) then
@@ -561,16 +604,24 @@ function MCF_GearManagerDialogPopupOkay_OnClick(self, button, pushed)
 		else
 			UIErrorsFrame:AddMessage(ERR_CLIENT_LOCKED_OUT, 1.0, 0.1, 0.1, 1.0);
 		end
+		PaperDollEquipmentManagerPane.tempSetID = nil;
 		return;
-	elseif ( C_EquipmentSet.GetNumEquipmentSets() >= MAX_EQUIPMENT_SETS_PER_PLAYER ) then
+	elseif ( (not C_EquipmentSet.GetEquipmentSetID("MCF_TEMP_SET")) or C_EquipmentSet.GetNumEquipmentSets() >= MAX_EQUIPMENT_SETS_PER_PLAYER + 1 ) then
 		UIErrorsFrame:AddMessage(EQUIPMENT_SETS_TOO_MANY, 1.0, 0.1, 0.1, 1.0);
 		return;
 	end
-	C_EquipmentSet.CreateEquipmentSet(popup.name, icon);
-	
-	-- HACK to make ignored slots working
-	local newSetID = C_EquipmentSet.GetEquipmentSetID(popup.name);
-	C_EquipmentSet.SaveEquipmentSet(newSetID, icon);
+
+	-- HACK to make ignore slots working "correct"
+	C_EquipmentSet.SaveEquipmentSet(PaperDollEquipmentManagerPane.tempSetID, icon);
+	C_EquipmentSet.ModifyEquipmentSet(PaperDollEquipmentManagerPane.tempSetID, popup.name);
+	PaperDollEquipmentManagerPane.tempSetID = nil;
+	MCF_PaperDollEquipmentManagerPane_Update();
+	for i=1, (#PaperDollEquipmentManagerPane.buttons) do
+		if (PaperDollEquipmentManagerPane.buttons[i].name == popup.name) then
+			PaperDollEquipmentManagerPane.buttons[i]:Show();
+			break;
+		end
+	end
 
 	popup:Hide();
 end
