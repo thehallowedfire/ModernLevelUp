@@ -61,6 +61,7 @@ function MCF_PaperDollEquipmentManagerPane_OnHide(self)
 	MCF_GearManagerDialogPopup:Hide();
 	StaticPopup_Hide("CONFIRM_SAVE_EQUIPMENT_SET");
 	StaticPopup_Hide("MCF_CONFIRM_OVERWRITE_EQUIPMENT_SET");
+	GearManagerDialog:Hide();
 end
 function MCF_PaperDollEquipmentManagerPane_OnEvent(self, event, ...)
 
@@ -121,6 +122,8 @@ function MCF_PaperDollEquipmentManagerPaneEquipSet_OnClick (self)
 		--[[ C_EquipmentSet.UseEquipmentSet(C_EquipmentSet.GetEquipmentSetID(selectedSetName)); ]]
         EquipmentManager_EquipSet(selectedSetID);
 	end
+
+	--[[ GearManagerDialog:Show(); ]]
 end
 
 function MCF_PaperDollEquipmentManagerPaneSaveSet_OnClick (self)
@@ -154,7 +157,10 @@ function MCF_GearSetButton_OnEnter (self)
 end
 -- NOT READY
 function MCF_GearSetButton_OnClick (self, button, down)
+	GearManagerDialog:Show();
 	if ( self.setID ) then
+		MCF_GearManagerDialogPopup:Hide();
+
 		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);		-- inappropriately named, but a good sound.
 		PaperDollEquipmentManagerPane.selectedSetName = self.name;
 		PaperDollEquipmentManagerPane.selectedSetID = self.setID;
@@ -162,10 +168,10 @@ function MCF_GearSetButton_OnClick (self, button, down)
 		MCF_PaperDollFrame_ClearIgnoredSlots();
 		MCF_PaperDollFrame_IgnoreSlotsForSet(self.setID);
 		MCF_PaperDollEquipmentManagerPane_Update();
-		MCF_GearManagerDialogPopup:Hide();
 	else
 		-- This is the "New Set" button
 		MCF_GearManagerDialogPopup:Show();
+		
 		PaperDollEquipmentManagerPane.setID = nil;
 		PaperDollEquipmentManagerPane.selectedSetName = nil;
 		PaperDollEquipmentManagerPane.selectedSetID = nil;
@@ -201,7 +207,7 @@ end
 function MCF_PaperDollFrame_IgnoreSlotsForSet (setID)
 	local set = C_EquipmentSet.GetIgnoredSlots(setID);
 	for slot, ignored in ipairs(set) do
-		if ( ignored == EQUIPMENT_SET_IGNORED_SLOT ) then
+		if ( ignored == true ) then
 			C_EquipmentSet.IgnoreSlotForSave(slot);
 			itemSlotButtons[slot].ignored = true;
 			PaperDollItemSlotButton_Update(itemSlotButtons[slot]);
@@ -381,12 +387,14 @@ function MCF_GearManagerDialogPopup_OnLoad (self)
 	end
 end
 function MCF_GearManagerDialogPopup_OnShow (self)
+	GearManagerDialog:Show();
 	PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN);
 	self.name = nil;
 	self.isEdit = false;
 	MCF_RecalculateGearManagerDialogPopup();
 end
 function MCF_GearManagerDialogPopup_OnHide (self)
+	GearManagerDialog:Hide();
 	MCF_GearManagerDialogPopup.name = nil;
 	MCF_GearManagerDialogPopup:SetSelection(true, nil);
 	MCF_GearManagerDialogPopupEditBox:SetText("");
@@ -426,12 +434,12 @@ function MCF_GearManagerDialogPopup_Update ()
 			button.icon:SetTexture(texture);
 			button:Show();
 			if ( index == popup.selectedIcon ) then
-				button:SetChecked(1);
+				button:SetChecked(true);
 			elseif ( texture == popup.selectedTexture ) then
-				button:SetChecked(1);
+				button:SetChecked(true);
 				popup:SetSelection(false, index);
 			else
-				button:SetChecked(nil);
+				button:SetChecked(false);
 			end
 		else
 			button.icon:SetTexture("");
@@ -559,6 +567,11 @@ function MCF_GearManagerDialogPopupOkay_OnClick(self, button, pushed)
 		return;
 	end
 	C_EquipmentSet.CreateEquipmentSet(popup.name, icon);
+	
+	-- HACK to make ignored slots working
+	local newSetID = C_EquipmentSet.GetEquipmentSetID(popup.name);
+	C_EquipmentSet.SaveEquipmentSet(newSetID, icon);
+
 	popup:Hide();
 end
 function MCF_GearManagerDialogPopupCancel_OnClick()
@@ -576,120 +589,3 @@ end
 ----------------------------------------------------------------------------------
 --------------------------------- ITEM SLOT BUTTON -------------------------------
 ----------------------------------------------------------------------------------
-function MCF_PaperDollItemSlotButton_OnClick (self, button)
-	MerchantFrame_ResetRefundItem();
-	if ( button == "LeftButton" ) then
-		local type = GetCursorInfo();
-		if ( type == "merchant" and MerchantFrame.extendedCost ) then
-			MerchantFrame_ConfirmExtendedItemCost(MerchantFrame.extendedCost);
-		else
-			PickupInventoryItem(self:GetID());
-			if ( CursorHasItem() ) then
-				MerchantFrame_SetRefundItem(self, 1);
-			end
-		end
-	else
-		UseInventoryItem(self:GetID());
-	end
-end
-
-function MCF_PaperDollItemSlotButton_OnModifiedClick (self, button)
-	if ( HandleModifiedItemClick(GetInventoryItemLink("player", self:GetID())) ) then
-		return;
-	end
-	if ( IsModifiedClick("SOCKETITEM") ) then
-		SocketInventoryItem(self:GetID());
-	end
-end
-
-function MCF_PaperDollItemSlotButton_Update (self)
-	local textureName = GetInventoryItemTexture("player", self:GetID());
-	local cooldown = _G[self:GetName().."Cooldown"];
-	if ( textureName ) then
-		SetItemButtonTexture(self, textureName);
-		SetItemButtonCount(self, GetInventoryItemCount("player", self:GetID()));
-		if ( GetInventoryItemBroken("player", self:GetID()) ) then
-			SetItemButtonTextureVertexColor(self, 0.9, 0, 0);
-			SetItemButtonNormalTextureVertexColor(self, 0.9, 0, 0);
-		else
-			SetItemButtonTextureVertexColor(self, 1.0, 1.0, 1.0);
-			SetItemButtonNormalTextureVertexColor(self, 1.0, 1.0, 1.0);
-		end
-		--[[ if ( cooldown ) then
-			local start, duration, enable = GetInventoryItemCooldown("player", self:GetID());
-			CooldownFrame_SetTimer(cooldown, start, duration, enable);
-		end ]] --MCFFIX temporary disabled, doesn't show cooldown texture
-		
-		self.hasItem = 1;
-	else
-		local textureName = self.backgroundTextureName;
-		if ( self.checkRelic and UnitHasRelicSlot("player") ) then
-			textureName = "Interface\\Paperdoll\\UI-PaperDoll-Slot-Relic.blp";
-		end
-		SetItemButtonTexture(self, textureName);
-		SetItemButtonCount(self, 0);
-		SetItemButtonTextureVertexColor(self, 1.0, 1.0, 1.0);
-		SetItemButtonNormalTextureVertexColor(self, 1.0, 1.0, 1.0);
-		--[[ if ( cooldown ) then
-			cooldown:Hide();
-		end ]] --MCFFIX temporary disabled, doesn't show cooldown texture
-		self.hasItem = nil;
-	end
-	
-	if (not PaperDollEquipmentManagerPane:IsShown()) then
-		self.ignored = nil;
-	end
-	
-	if ( self.ignored and self.ignoreTexture ) then
-		self.ignoreTexture:Show();
-	elseif ( self.ignoreTexture ) then
-		self.ignoreTexture:Hide();
-	end
-
-	PaperDollItemSlotButton_UpdateLock(self);
-
-	-- Update repair all button status
-	MerchantFrame_UpdateGuildBankRepair();
-	MerchantFrame_UpdateCanRepairAll();
-end
-
-function MCF_PaperDollItemSlotButton_UpdateLock (self)
-	if ( IsInventoryItemLocked(self:GetID()) ) then
-		--this:SetNormalTexture("Interface\\Buttons\\UI-Quickslot");
-		SetItemButtonDesaturated(self, 1);
-	else 
-		--this:SetNormalTexture("Interface\\Buttons\\UI-Quickslot2");
-		SetItemButtonDesaturated(self, nil);
-	end
-end
-
-function MCF_PaperDollItemSlotButton_OnEnter (self)
-	self:RegisterEvent("MODIFIER_STATE_CHANGED");
-	--[[ EquipmentFlyout_UpdateFlyout(self);
-	if ( not EquipmentFlyout_SetTooltipAnchor(self) ) then
-		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-	end ]]
-	GameTooltip:SetOwner(self, "ANCHOR_RIGHT"); --MCFTEST added this line without if condition because EquipmentFlyout function doesn't exist
-
-	local hasItem, hasCooldown, repairCost = GameTooltip:SetInventoryItem("player", self:GetID());
-	if ( not hasItem ) then
-		local text = _G[strupper(strsub(self:GetName(), 13))];
-		if ( self.checkRelic and UnitHasRelicSlot("player") ) then
-			text = RELICSLOT;
-		end
-		GameTooltip:SetText(text);
-	end
-	if ( InRepairMode() and repairCost and (repairCost > 0) ) then
-		GameTooltip:AddLine(REPAIR_COST, "", 1, 1, 1);
-		SetTooltipMoney(GameTooltip, repairCost);
-		GameTooltip:Show();
-	else
-		CursorUpdate(self);
-	end
-end
-
-function MCF_PaperDollItemSlotButton_OnLeave (self)
-	self:UnregisterEvent("MODIFIER_STATE_CHANGED");
-	GameTooltip:Hide();
-	ResetCursor();
-end
