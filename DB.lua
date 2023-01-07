@@ -396,4 +396,4 @@ StaticPopupDialogs["MCF_CONFIRM_OVERWRITE_EQUIPMENT_SET"] = {
 	timeout = 0,
 	exclusive = 1,
 	whileDead = 1,
-}
+};
