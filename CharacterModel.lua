@@ -9,7 +9,7 @@ function MCF_CharacterModelFrame_OnMouseUp (self, button)
 	Model_OnMouseUp(self, button);
 end
 
--- Changing CharacterModelFrame
+-- Editing CharacterModelFrame
 function MCF_SetUpCharacterModelFrame(frame)
     frame:SetSize(231, 320);
     frame:SetPoint("TOPLEFT", PaperDollFrame, 65, -78); -- Added x+16, y-12 because anchors in Cata were in another place
@@ -37,16 +37,15 @@ function MCF_SetUpCharacterModelFrame(frame)
     MCF_CharacterModelSetScripts(frame);
 end
 
--- This function is being called from MCFPaperDollFrame_OnShow
--- MCFSetPaperDollBackground(MCFCharacterModelFrame, "player"); -- this is how it's been called
--- MCF_SetPaperDollBackground(CharacterModelFrame, "player"); -- this is for testing
 function MCF_SetPaperDollBackground(model, unit)
 	local race, fileName = UnitRace(unit);
 	local texture = DressUpTexturePath(fileName);
 	-- Hack to make troll's texture actual troll's instead of orc's. Need to check other races (like gnomes). Files are in the game.
 	if ( fileName == "Troll" ) then
-		texture = "Interface\\DressUpFrame\\DressUpBackground-Troll"
-	end
+		texture = "Interface\\DressUpFrame\\DressUpBackground-Troll";
+    elseif ( fileName == "Gnome" ) then
+        texture = "Interface\\DressUpFrame\\DressUpBackground-Gnome";
+    end
 
 	model.BackgroundTopLeft:SetTexture(texture..1);
 	model.BackgroundTopRight:SetTexture(texture..2);
@@ -62,10 +61,10 @@ function MCF_SetPaperDollBackground(model, unit)
 		model.BackgroundOverlay:SetAlpha(0.3);
 	elseif ( strupper(fileName) == "TROLL" or strupper(fileName) == "ORC") then
 		model.BackgroundOverlay:SetAlpha(0.6);
-	elseif ( strupper(fileName) == "WORGEN" ) then
+	--[[ elseif ( strupper(fileName) == "WORGEN" ) then
 		model.BackgroundOverlay:SetAlpha(0.5);
 	elseif ( strupper(fileName) == "GOBLIN" ) then
-		model.BackgroundOverlay:SetAlpha(0.6);
+		model.BackgroundOverlay:SetAlpha(0.6); ]]
 	else
 		model.BackgroundOverlay:SetAlpha(0.7);
 	end
