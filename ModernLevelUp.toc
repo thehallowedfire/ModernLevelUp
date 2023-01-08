@@ -2,15 +2,9 @@
 ## Title: Modern Level Up
 ## Notes: Re-creates modern Level Up announcement
 ## Author: Vladislav Kondrashov
-## Version: 0.0.1
-
-#Localization/enUS.lua
-#Localization/ruRU.lua
+## Version: 0.1.0
 
 DB/Classes/Hunter.lua
 
 LevelUpDisplay.lua
 LevelUpDisplay.xml
-#Core.lua
-
-#Init.lua
