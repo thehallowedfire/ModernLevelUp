@@ -4,6 +4,9 @@
 ## Author: Vladislav Kondrashov
 ## Version: 0.1.0
 
+Localization/enUS.lua
+Localization/ruRU.lua
+
 DB/Classes/Hunter.lua
 
 LevelUpDisplay.lua
