@@ -82,11 +82,9 @@
 								</Origin>
 								<Scripts>
 									<OnFinished>
-										<!-- LevelUpDisplayBlackBg:Show(); -->
 										LevelUpDisplayGLine:Show();
 										LevelUpDisplayGLine2:Show();
 										self:GetParent():GetParent():Show();
-										print("1", self:GetParent():GetParent():GetName());
 									</OnFinished>
 								</Scripts>
 							</Scale>
@@ -113,13 +111,8 @@
 							<Scale scaleX="1000.0" scaleY="1.0" duration="0.5" order="2"/>
 							<Scripts>
 								<OnPlay>
-									print("debug1");
 									LevelUpDisplayBlackBg.grow:Play();
 								</OnPlay>
-								<OnFinished>
-									<!-- self:GetParent():Show(); -->
-									print("2", self:GetParent():GetParent():GetName());
-								</OnFinished>
 							</Scripts>
 						</AnimationGroup>
 					</Animations>
@@ -136,16 +129,9 @@
 					<Animations>
 						<AnimationGroup parentKey="grow">
 							<Scale scaleX="0.001" scaleY="1.0" duration="0.0" startDelay="1.5" order="1"/>
-							<Scripts>
-								<OnFinished>
-									<!-- self:GetParent():Show(); -->
-									print("3", self:GetParent():GetParent():GetName());
-								</OnFinished>
-							</Scripts>
 							<Scale scaleX="1000.0" scaleY="1.0" duration="0.5" order="2"/>
 							<Scripts>
 								<OnPlay>
-									print("debug2");
 									LevelUpDisplayBlackBg:Hide();
 									LevelUpDisplayGLine:Hide();
 									LevelUpDisplayGLine2:Hide();
