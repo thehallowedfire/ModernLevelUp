@@ -106,33 +106,17 @@ LEVEL_UP_TYPES = {
 									},
 
 
------- HACKS BELOW		
- ------ HACKS BELOW		
- ------ HACKS BELOW
- 
- 	["Teleports"] 			= {	spellID=109424	},
-	["PortalsHorde"]		= {	spellID=109400	},
-	["PortalsAlliance"]		= {	spellID=109401	},
+------ HACKS BELOW
 									
  	["LockMount1"] 			= {	spellID=5784	},
  	["LockMount2"] 			= {	spellID=23161	},
  	["PaliMount1"] 			= {	spellID=34769	},
  	["PaliMount2"] 			= {	spellID=34767	},
- 	["PaliMountTauren1"] 			= {	spellID=69820	},--MLUREWORK
- 	["PaliMountTauren2"] 			= {	spellID=69826	},--MLUREWORK
- 	["PaliMountDraenei1"] 			= {	spellID=73629	},--MLUREWORK
- 	["PaliMountDraenei2"] 			= {	spellID=73630	},--MLUREWORK
- 	
 	
+	["Plate"] 				= {	spellID=750, feature=true},
+	["Mail"] 				= {	spellID=8737, feature=true},	
 	
-	["Plate"] 			= {	spellID=750, feature=true},
-	["Mail"] 			= {	spellID=8737, feature=true	},
-	
-	
-	
-	
-	
-	["TrackBeast"] 			= {	spellID=1494  },
+	["TrackBeast"] 				= {	spellID=1494  },
 	["TrackHumanoid"] 			= {	spellID=19883  },
 	["TrackUndead"] 			= {	spellID=19884  },
 	["TrackHidden"] 			= {	spellID=19885  },
@@ -140,29 +124,14 @@ LEVEL_UP_TYPES = {
 	["TrackDemons"] 			= {	spellID=19878 },
 	["TrackGiants"] 			= {	spellID=19882  },
 	["TrackDragonkin"] 			= {	spellID=19879  },
-	
- 
 
- ------ END HACKS
+------ END HACKS
 }
 
 
 
 
 LEVEL_UP_CLASS_HACKS = {
-	
-	["MAGEHorde"] 		= {
-							--  Level  = {unlock}
-								[24] = {"Teleports"},
-								[42] = {"PortalsHorde"},
-							},
-	["MAGEAlliance"]	= {
-							--  Level  = {unlock}
-								[24] = {"Teleports"},
-								[42] = {"PortalsAlliance"},
-							},
-
-
 	["WARLOCK"] 		= {
 							--  Level  = {unlock}
 								[20] = {"LockMount1"},
@@ -173,7 +142,6 @@ LEVEL_UP_CLASS_HACKS = {
 							--  Level  = {unlock}
 								[40] = {"Mail"},
 							},
-
 
 	["HUNTER"] 		= {
 							--  Level  = {unlock}
@@ -188,7 +156,6 @@ LEVEL_UP_CLASS_HACKS = {
 								[52] = {"TrackDragonkin"},
 							},
 							
-
 	["WARRIOR"] 		= {
 							--  Level  = {unlock}
 								[40] = {"Plate"},
@@ -199,16 +166,6 @@ LEVEL_UP_CLASS_HACKS = {
 								[20] = {"PaliMount1"},
 								[40] = {"PaliMount2", "Plate"},
 							},
-	["PALADINTauren"]	= {
-							--  Level  = {unlock}
-								[20] = {"PaliMountTauren1"},--MLUREWORK
-								[40] = {"PaliMountTauren2", "Plate"},--MLUREWORK
-							},	
-	["PALADINDraenei"]	= {
-							--  Level  = {unlock}
-								[20] = {"PaliMountDraenei1"},
-								[40] = {"PaliMountDraenei2", "Plate"},
-							},	
 }
 
 --/run LevelUpDisplay_OnEvent(LevelUpDisplay, "PLAYER_LEVEL_UP", 10)
@@ -265,9 +222,15 @@ function MLU_GetCurrentLevelSpells(level)
 		return nil;
 	end
 	local IDsTable = {};
-	if (MLU.SpellsByLevel[level]) then
-		for i=1, #MLU.SpellsByLevel[level] do
-			IDsTable[i] = MLU.SpellsByLevel[level][i].id;
+	local spellsOnLvl = MLU.SpellsByLevel[level];
+	local faction = UnitFactionGroup("player");
+	if (spellsOnLvl) then
+		for i=1, #spellsOnLvl do
+			if ( spellsOnLvl[i].faction and (faction ~= spellsOnLvl[i].faction) ) then
+				-- skip
+			else
+				IDsTable[i] = spellsOnLvl[i].id;
+			end
 		end
 	end
 	return IDsTable;
