@@ -318,6 +318,7 @@ function LevelUpDisplay_BuildCharacterList(self)
 	local spells = MLU_GetCurrentLevelSpells(self.level);
 	for _,spell in pairs(spells) do		
 		name, _, icon = GetSpellInfo(spell);
+
 		C_Spell.RequestLoadSpellData(spell);
 		rank = GetSpellSubtext(spell);
 		if (rank and rank ~= "") then
@@ -325,6 +326,7 @@ function LevelUpDisplay_BuildCharacterList(self)
 		else
 			rank = "";
 		end
+		
 		self.unlockList[#self.unlockList +1] = { text = name..rank, subText = LEVEL_UP_ABILITY, icon = icon, subIcon = SUBICON_TEXCOOR_BOOK,
 																link=LEVEL_UP_ABILITY2.." "..GetSpellLink(spell)
 															};
