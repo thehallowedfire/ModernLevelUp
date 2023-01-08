@@ -15,6 +15,8 @@ if GetLocale() == "ruRU" then
     L["MCF_OPTIONS_CONFIRM_RESET"] = "Вы действительно хотите сбросить настройки Modern Character Frame?";
     L["MCF_OPTIONS_RESETED_MESSAGE"] = "Настройки Modern Character Frame были сброшены.";
 
+    L["MCF_EQUIPMENT_SETS_NAME_RESERVED"] = "Это название комплекта экипировки ограничено для использования.";
+
     L["MCF_PLAYER_LEVEL"] = "|c%2$s%4$s (%3$s)|r %1$s-го уровня";
     L["MCF_PLAYER_LEVEL_NO_SPEC"] = "|c%2$s%3$s|r %1$s-го уровня";
 
