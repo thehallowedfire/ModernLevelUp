@@ -1,4 +1,5 @@
 local _, MLU = ...;
+
 --[[ if (MLU.currentClass ~= "HUNTER") then return end; ]]
 MLU.SpellsByLevel = {
     [1] = {{id = 1494},},
