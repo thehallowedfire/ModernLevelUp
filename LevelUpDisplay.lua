@@ -1,8 +1,5 @@
 local _, MLU = ...;
-
-MLU_LEVEL_UP = "Поздравляем, вы достигли |cffFF4E00|Hlevelup:%d:LEVEL_UP_TYPE_CHARACTER|h[%d-го уровня]|h|r!";
-MLU_LEVEL_UP_TALENT_MAIN = "Доступно новое очко талантов";
-MLU_LEVEL_GAINED = "%d-го уровня";
+local L = MLU;
 
 LEVEL_UP_TYPE_CHARACTER = "character";	--Name used in globalstring LEVEL_UP
 --[[ LEVEL_UP_TYPE_GUILD = "guild"; ]]	--Name used in globalstring GUILD_LEVEL_UP
@@ -46,7 +43,7 @@ local levelUpTexCoords = {
 LEVEL_UP_TYPES = {
 	["TalentPoint"] 		= {	icon="Interface\\Icons\\Ability_Marksmanship",
 										subIcon=SUBICON_TEXCOOR_ARROW,
-										text=MLU_LEVEL_UP_TALENT_MAIN,
+										text=L["MLU_LEVEL_UP_TALENT_MAIN"],
 										subText=LEVEL_UP_TALENT_SUB,
 										link=LEVEL_UP_TALENTPOINT_LINK; -- doesn't work
 									},
@@ -321,7 +318,14 @@ function LevelUpDisplay_BuildCharacterList(self)
 	local spells = MLU_GetCurrentLevelSpells(self.level);
 	for _,spell in pairs(spells) do		
 		name, _, icon = GetSpellInfo(spell);
-		self.unlockList[#self.unlockList +1] = { text = name, subText = LEVEL_UP_ABILITY, icon = icon, subIcon = SUBICON_TEXCOOR_BOOK,
+		C_Spell.RequestLoadSpellData(spell);
+		rank = GetSpellSubtext(spell);
+		if (rank and rank ~= "") then
+			rank = " ("..rank..")";
+		else
+			rank = "";
+		end
+		self.unlockList[#self.unlockList +1] = { text = name..rank, subText = LEVEL_UP_ABILITY, icon = icon, subIcon = SUBICON_TEXCOOR_BOOK,
 																link=LEVEL_UP_ABILITY2.." "..GetSpellLink(spell)
 															};
 	end
@@ -397,17 +401,17 @@ function LevelUpDisplay_OnShow(self)
 		if ( self.type == LEVEL_UP_TYPE_CHARACTER ) then
 			LevelUpDisplay_BuildCharacterList(self);
 			self.levelFrame.reachedText:SetText(LEVEL_UP_YOU_REACHED);
-			self.levelFrame.levelText:SetFormattedText(MLU_LEVEL_GAINED,self.level);
+			self.levelFrame.levelText:SetFormattedText(L["MLU_LEVEL_GAINED"],self.level);
 		elseif ( self.type == LEVEL_UP_TYPE_PET ) then
 			LevelUpDisplay_BuildPetList(self);
 			local petName = UnitName("pet");
 			self.levelFrame.reachedText:SetFormattedText(PET_LEVEL_UP_REACHED, petName or "");
-			self.levelFrame.levelText:SetFormattedText(MLU_LEVEL_GAINED,self.level);
+			self.levelFrame.levelText:SetFormattedText(L["MLU_LEVEL_GAINED"],self.level);
 		--[[ elseif ( self.type == LEVEL_UP_TYPE_GUILD ) then
 			LevelUpDisplay_BuildGuildList(self);
 			local guildName = GetGuildInfo("player");
 			self.levelFrame.reachedText:SetFormattedText(GUILD_LEVEL_UP_YOU_REACHED, guildName);
-			self.levelFrame.levelText:SetFormattedText(MLU_LEVEL_GAINED,self.level); ]]
+			self.levelFrame.levelText:SetFormattedText(L["MLU_LEVEL_GAINED"],self.level); ]]
 		end
 		self.gLine:SetTexCoord(unpack(levelUpTexCoords[self.type].gLine));
 		self.gLine2:SetTexCoord(unpack(levelUpTexCoords[self.type].gLine));
@@ -471,17 +475,17 @@ function LevelUpDisplaySide_OnShow(self)
 	if ( self.type == LEVEL_UP_TYPE_CHARACTER ) then
 		LevelUpDisplay_BuildCharacterList(self);
 		self.reachedText:SetText(LEVEL_UP_YOU_REACHED);
-		self.levelText:SetFormattedText(MLU_LEVEL_GAINED,self.level);
+		self.levelText:SetFormattedText(L["MLU_LEVEL_GAINED"],self.level);
 	elseif ( self.type == LEVEL_UP_TYPE_PET ) then
 		LevelUpDisplay_BuildPetList(self);
 		local petName = self.arg1;
 		self.reachedText:SetFormattedText(PET_LEVEL_UP_REACHED, petName);
-		self.levelText:SetFormattedText(MLU_LEVEL_GAINED,self.level);
+		self.levelText:SetFormattedText(L["MLU_LEVEL_GAINED"],self.level);
 	--[[ elseif ( self.type == LEVEL_UP_TYPE_GUILD ) then
 		LevelUpDisplay_BuildGuildList(self);
 		local guildName = GetGuildInfo("player");
 		self.reachedText:SetFormattedText(GUILD_LEVEL_UP_YOU_REACHED, guildName);
-		self.levelText:SetFormattedText(MLU_LEVEL_GAINED,self.level); ]]
+		self.levelText:SetFormattedText(L["MLU_LEVEL_GAINED"],self.level); ]]
 	end
 	self.goldBG:SetTexCoord(unpack(levelUpTexCoords[self.type].goldBG));
 	self.dot:SetTexCoord(unpack(levelUpTexCoords[self.type].dot));
@@ -561,7 +565,7 @@ function LevelUpDisplay_ChatPrint(self, level, levelUpType)
 	local levelstring;
 	if ( levelUpType == LEVEL_UP_TYPE_CHARACTER ) then
 		LevelUpDisplay_BuildCharacterList(chatLevelUP);
-		levelstring = format(MLU_LEVEL_UP, level, level);
+		levelstring = format(L["MLU_LEVEL_UP"], level, level);
 		info = ChatTypeInfo["SYSTEM"];
 	elseif ( levelUpType == LEVEL_UP_TYPE_PET ) then
 		LevelUpDisplay_BuildPetList(chatLevelUP);
