@@ -97,7 +97,7 @@ LEVEL_UP_TYPES = {
 										link=LEVEL_UP_FEATURE2..MLU_LEVEL_UP_BG_LINK -- doesn't work
 									},
 
-	--[[ ["LFDUnlocked"] 		= {	icon="Interface\\AddOns\\ModernLevelUp\\Textures\\LevelUpIcon-LFD",
+	--[[ ["LFDUnlocked"] 		= {	icon="Interface\\Icons\\LevelUpIcon-LFD",
 										subIcon=SUBICON_TEXCOOR_LOCK,
 										text=LOOKING_FOR_DUNGEON,
 										subText=LEVEL_UP_FEATURE,
