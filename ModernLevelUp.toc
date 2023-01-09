@@ -7,8 +7,16 @@
 Localization/enUS.lua
 Localization/ruRU.lua
 
-DB/Classes/Mage.lua
-DB/Classes/Hunter.lua
+DB/Deathknight.lua
+DB/Druid.lua
+DB/Hunter.lua
+DB/Mage.lua
+DB/Paladin.lua
+DB/Priest.lua
+DB/Rogue.lua
+DB/Shaman.lua
+DB/Warlock.lua
+DB/Warrior.lua
 
 LevelUpDisplay.lua
 LevelUpDisplay.xml
