@@ -331,10 +331,11 @@ function LevelUpDisplay_BuildCharacterList(self)
 		else
 			rank = "";
 		end
-		
-		self.unlockList[#self.unlockList +1] = { text = name..rank, subText = LEVEL_UP_ABILITY, icon = icon, subIcon = SUBICON_TEXCOOR_BOOK,
-																link=LEVEL_UP_ABILITY2.." "..GetSpellLink(spell)
-															};
+		if GetSpellLink(spell) then
+			self.unlockList[#self.unlockList +1] = { text = name..rank, subText = LEVEL_UP_ABILITY, icon = icon, subIcon = SUBICON_TEXCOOR_BOOK,
+																	link=LEVEL_UP_ABILITY2.." "..GetSpellLink(spell)
+																};
+		end
 	end
 
 	
