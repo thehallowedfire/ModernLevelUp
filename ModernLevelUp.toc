@@ -2,7 +2,7 @@
 ## Title: Modern Level Up
 ## Notes: Re-creates modern Level Up announcement
 ## Author: Vladislav Kondrashov
-## Version: 0.2.0
+## Version: 0.3.0
 
 Localization/enUS.lua
 Localization/ruRU.lua
