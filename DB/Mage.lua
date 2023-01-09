@@ -2,6 +2,7 @@ local _, MLU = ...;
 
 local _, class = UnitClass("player");
 if (class ~= "MAGE") then return end;
+
 MLU.SpellsByLevel = {
     [1] = {{id = 1459},},
 	[4] = {{id = 5504},{id = 116},},
