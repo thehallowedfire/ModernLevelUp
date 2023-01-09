@@ -1,6 +1,36 @@
 local _, MLU = ...;
 local L = MLU;
 
+-- MLU NEW FUNCTIONS — HACK FOR CUSTOM CHAT LINKS
+MLU_LEVEL_UP_BG_LINK = "|cffFF4E00|Hgarrmission:MLU:pvpbgs|h["..BATTLEGROUNDS.."]|h|r";
+
+hooksecurefunc("SetItemRef", function(link)
+	local linkType, addon, param = strsplit(":", link);
+	if linkType == "garrmission" and addon == "MLU" then
+		MLU_CustomChatLink_OnClick(param);
+	end
+end);
+local hookcount;
+function MLU_CustomChatLink_OnClick(param)
+	if hookcount then
+		if ( param == "pvpbgs" ) then
+			TogglePVPFrame();
+		elseif ( param == "glyphpane" ) then
+			ToggleGlyphFrame();
+		end
+		hookcount = nil;
+	else
+		hookcount = 1;
+	end
+end
+
+-- MLU NEW FUNCTION
+local Orig_ChatFrame_DisplayLevelUp = ChatFrame_DisplayLevelUp;
+ChatFrame_DisplayLevelUp = function(self, level, ...)
+	LevelUpDisplay_ChatPrint(self, level, LEVEL_UP_TYPE_CHARACTER);
+end;
+----------------------------------------------------------------------------------
+
 LEVEL_UP_TYPE_CHARACTER = "character";	--Name used in globalstring LEVEL_UP
 --[[ LEVEL_UP_TYPE_GUILD = "guild"; ]]	--Name used in globalstring GUILD_LEVEL_UP
 LEVEL_UP_TYPE_PET = "pet" -- Name used in globalstring PET_LEVEL_UP
@@ -8,10 +38,8 @@ LEVEL_UP_TYPE_PET = "pet" -- Name used in globalstring PET_LEVEL_UP
 LEVEL_UP_EVENTS = {
 --  Level  = {unlock}
 	[10] = {"TalentsUnlocked", "BGsUnlocked"},
-	[15] = {"LFDUnlocked",}, --MLUREWORK
-	[15] = {"GlyphMajor"},--,"GlyphMajor", "GlyphMinor"},
-	[30] = {"DuelSpec"},
-	[30] = {"GlyphMajor"},--,"GlyphMajor", "GlyphMinor"},
+	[15] = {--[[ "LFDUnlocked",  ]]"GlyphMajor",},
+	[30] = {"DuelSpec", "GlyphMajor"},
 	[80] = {"GlyphMajor"},--,"GlyphMajor", "GlyphMinor"},
 }
 
@@ -66,35 +94,35 @@ LEVEL_UP_TYPES = {
 										subIcon=SUBICON_TEXCOOR_LOCK,
 										text=BATTLEFIELDS,
 										subText=LEVEL_UP_FEATURE,
-										link=LEVEL_UP_FEATURE2..LEVEL_UP_BG_LINK -- doesn't work
+										link=LEVEL_UP_FEATURE2..MLU_LEVEL_UP_BG_LINK -- doesn't work
 									},
 
-	["LFDUnlocked"] 		= {	icon="Interface\\AddOns\\ModernLevelUp\\Textures\\LevelUpIcon-LFD",
+	--[[ ["LFDUnlocked"] 		= {	icon="Interface\\AddOns\\ModernLevelUp\\Textures\\LevelUpIcon-LFD",
 										subIcon=SUBICON_TEXCOOR_LOCK,
 										text=LOOKING_FOR_DUNGEON,
 										subText=LEVEL_UP_FEATURE,
-										link=LEVEL_UP_FEATURE2..LEVEL_UP_LFD_LINK -- doesn't work
-									},
+										link=LEVEL_UP_FEATURE2..LEVEL_UP_LFD_LINK
+									}, ]]
 
-	["GlyphPrime"] 				= {	icon="Interface\\Icons\\Inv_inscription_tradeskill01",
+	--[[ ["GlyphPrime"] 				= {	icon="Interface\\Icons\\Inv_inscription_tradeskill01",
 										subIcon=SUBICON_TEXCOOR_LOCK,
 										text=GLYPHS,
 										subText=LEVEL_UP_FEATURE,
-										link=LEVEL_UP_GLYPH3_LINK -- doesn't work
-									},
+										link=LEVEL_UP_GLYPH3_LINK
+									}, ]]
 
 	["GlyphMajor"] 				= {	icon="Interface\\Icons\\Inv_inscription_tradeskill01",
 										subIcon=SUBICON_TEXCOOR_LOCK,
 										text=GLYPHS,
 										subText=LEVEL_UP_FEATURE,
-										link=LEVEL_UP_GLYPH1_LINK -- doesn't work
+										link=L["MLU_LEVEL_UP_GLYPH1_LINK"] -- doesn't work
 									},
 
 	["GlyphMinor"] 				= {	icon="Interface\\Icons\\Inv_inscription_tradeskill01",
 										subIcon=SUBICON_TEXCOOR_LOCK,
 										text=GLYPHS,
 										subText=LEVEL_UP_FEATURE,
-										link=LEVEL_UP_GLYPH2_LINK -- doesn't work
+										link=L["MLU_LEVEL_UP_GLYPH2_LINK"] -- doesn't work
 									},
 
 
@@ -145,15 +173,15 @@ LEVEL_UP_CLASS_HACKS = {
 
 	["HUNTER"] 		= {
 							--  Level  = {unlock}
-								[4] = {"TrackBeast"},
+								--[[ [4] = {"TrackBeast"},
 								[12] = {"TrackHumanoid"},
 								[18] = {"TrackUndead"},
 								[26] = {"TrackHidden"},
 								[34] = {"TrackElemental"},
-								[36] = {"TrackDemons"},
+								[36] = {"TrackDemons"}, ]]
 								[40] = {"Mail"},
-								[46] = {"TrackGiants"},
-								[52] = {"TrackDragonkin"},
+								--[[ [46] = {"TrackGiants"},
+								[52] = {"TrackDragonkin"}, ]]
 							},
 							
 	["WARRIOR"] 		= {
@@ -168,9 +196,21 @@ LEVEL_UP_CLASS_HACKS = {
 							},
 }
 
+-- MLU NEW FUNCTION
 --/run LevelUpDisplay_OnEvent(LevelUpDisplay, "PLAYER_LEVEL_UP", 10)
+local testLevelCounter = 2;
 function MLU_TestLevelUp(level)
-	LevelUpDisplay_OnEvent(LevelUpDisplay, "PLAYER_LEVEL_UP", level);
+	if level then
+		LevelUpDisplay_OnEvent(LevelUpDisplay, "PLAYER_LEVEL_UP", level);
+		LevelUpDisplay_ChatPrint(ChatFrame1, level, LEVEL_UP_TYPE_CHARACTER);
+		PlaySound(888);
+		testLevelCounter = level + 1;
+	else
+		LevelUpDisplay_OnEvent(LevelUpDisplay, "PLAYER_LEVEL_UP", testLevelCounter);
+		LevelUpDisplay_ChatPrint(ChatFrame1, testLevelCounter, LEVEL_UP_TYPE_CHARACTER);
+		PlaySound(888);
+		testLevelCounter = testLevelCounter + 1;
+	end
 end
 
 function LevelUpDisplay_OnLoad(self)
@@ -182,7 +222,7 @@ end
 
 function LevelUpDisplay_OnEvent(self, event, ...)
 	local arg1 = ...;
-	if event ==  "PLAYER_LEVEL_UP" then
+	if event == "PLAYER_LEVEL_UP" then
 		local level = ...
 		self.level = level;
 		self.type = LEVEL_UP_TYPE_CHARACTER;
@@ -248,10 +288,12 @@ Original function gives results on 1, 50, 60, 68, 70, 80 levels:
 ]]
 function MLU_GetCurrentLevelFeatures(level)
 	local featuresTable = {
-		[1] = {5019,},
-		[60] = {34090,},
-		[68] = {54197,},
-		[70] = {34091,},
+		[1] = 5019, -- ??
+		[20] = 33388, -- 60% riding skill
+		[40] = 33391, -- 100% riding skill
+		[60] = 34090, -- 150% flying skill
+		[68] = 54197, -- Northrend flying skill (probably need to be hidden)
+		[70] = 34091, -- 280% flying skill
 	};
 
 	if (featuresTable[level]) then
@@ -325,7 +367,7 @@ function LevelUpDisplay_BuildCharacterList(self)
 	for _,feature in pairs(features) do		
 		name, _, icon = GetSpellInfo(feature);
 		self.unlockList[#self.unlockList +1] = { text = name, subText = LEVEL_UP_FEATURE, icon = icon, subIcon = SUBICON_TEXCOOR_LOCK,
-																link=LEVEL_UP_FEATURE2.." "..GetSpellLink(feature)
+																link=LEVEL_UP_FEATURE2..GetSpellLink(feature)
 															};
 	end	
 	
@@ -553,10 +595,9 @@ function LevelUpDisplay_ChatPrint(self, level, levelUpType)
 	end
 	
 	if levelUpType == LEVEL_UP_TYPE_CHARACTER and (level == 15 or level == 30 or level == 80) then
-		self:AddMessage(LEVEL_UP_GLYPH1_LINK, info.r, info.g, info.b, info.id);
-		self:AddMessage(LEVEL_UP_GLYPH2_LINK, info.r, info.g, info.b, info.id);
+		--[[ self:AddMessage(L["MLU_LEVEL_UP_GLYPH1_LINK"], info.r, info.g, info.b, info.id); ]]
+		self:AddMessage(L["MLU_LEVEL_UP_GLYPH2_LINK"], info.r, info.g, info.b, info.id);
 	end
 end
-
 
 
