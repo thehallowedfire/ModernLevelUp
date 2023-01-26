@@ -10,17 +10,19 @@ hooksecurefunc("SetItemRef", function(link)
 		MLU_CustomChatLink_OnClick(param);
 	end
 end);
-local hookcount;
+local wasHooked;
 function MLU_CustomChatLink_OnClick(param)
-	if hookcount then
-		if ( param == "pvpbgs" ) then
+	if wasHooked then
+		if InCombatLockdown() then
+			UIErrorsFrame:AddMessage(ERR_NOT_IN_COMBAT, 1.0, 0.1, 0.1, 1.0);
+		elseif ( param == "pvpbgs" ) then
 			TogglePVPFrame();
 		elseif ( param == "glyphpane" ) then
 			ToggleGlyphFrame();
 		end
-		hookcount = nil;
+		wasHooked = nil;
 	else
-		hookcount = 1;
+		wasHooked = 1;
 	end
 end
 
@@ -565,7 +567,7 @@ function LevelUpDisplaySide_Remove()
 end
 
 
--- LevelUpDisplay_ChatPrint(ChatFrame1, level, LEVEL_UP_TYPE_CHARACTER)
+-- /run LevelUpDisplay_ChatPrint(ChatFrame1, level, LEVEL_UP_TYPE_CHARACTER)
 -- Chat print function 
 function LevelUpDisplay_ChatPrint(self, level, levelUpType)
 	local info;
